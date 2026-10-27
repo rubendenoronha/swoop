@@ -15,6 +15,8 @@ struct LaunchItem: Identifiable {
     let keepAlive: Bool
     let domain: Domain
     var disabled: Bool
+    /// Pax's own launch items are never disabled, removed or flagged.
+    var isPax: Bool { PaxProtection.isProtectedLaunchItem(label: label, path: path, program: program) }
     var programExists: Bool {
         guard let p = program, p.hasPrefix("/") else { return true }
         return FileManager.default.fileExists(atPath: p)
@@ -49,6 +51,7 @@ enum LaunchItems {
 
     /// Enable/disable without deleting anything (launchctl's own override database).
     static func setEnabled(_ item: LaunchItem, _ enabled: Bool) -> String? {
+        if item.isPax { return PaxProtection.note }
         switch item.domain {
         case .user, .allUsersAgent:
             let target = "gui/\(uid)/\(item.label)"
@@ -74,6 +77,7 @@ enum LaunchItems {
     /// Removes a user agent (stops it, then Trash via FileRemover). System items need an
     /// administrator and are moved to your Trash with `mv` (still listed in the restore log).
     static func remove(_ item: LaunchItem, reason: String) -> String? {
+        if item.isPax { return PaxProtection.note }
         if item.domain == .user {
             Shell.run("/bin/launchctl", ["bootout", "gui/\(uid)/\(item.label)"])
             let r = FileRemover.shared.remove([URL(fileURLWithPath: item.path)], module: "Login Items", defaultReason: reason)
@@ -95,7 +99,12 @@ enum LaunchItems {
         return out.components(separatedBy: ", ").filter { !$0.isEmpty }
     }
 
+    static func isPaxLoginItem(_ name: String) -> Bool {
+        PaxProtection.processNames.contains(name.lowercased()) || PaxProtection.isPaxLaunchdLabel(name)
+    }
+
     static func removeLoginItem(_ name: String) -> Bool {
+        if isPaxLoginItem(name) { return false }
         AppleScript.run("tell application \"System Events\" to delete login item \"\(name.replacingOccurrences(of: "\"", with: ""))\"")
     }
 }

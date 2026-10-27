@@ -108,7 +108,8 @@ final class Providers {
                 NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: a.path)])
             },
         ]
-        if running != nil {
+        let isPax = PaxGuardrails.isPaxApp(path: a.path, bundleID: a.bundleID)
+        if running != nil && !isPax {
             actions.append(LauncherAction(title: "Quit", symbol: "xmark.circle") {
                 NSWorkspace.shared.runningApplications.first { $0.bundleURL?.path == a.path }?.terminate()
             })
@@ -116,9 +117,11 @@ final class Providers {
                 NSWorkspace.shared.runningApplications.first { $0.bundleURL?.path == a.path }?.forceTerminate()
             })
         }
-        actions.append(LauncherAction(title: "Uninstall…", symbol: "trash") {
-            CleanerWindow.show(.uninstaller, appPath: a.path)
-        })
+        if !isPax {
+            actions.append(LauncherAction(title: "Uninstall…", symbol: "trash") {
+                CleanerWindow.show(.uninstaller, appPath: a.path)
+            })
+        }
         actions.append(LauncherAction(title: "Copy Path", symbol: "doc.on.doc", closes: false) { Actions.copy(a.path) })
         return LauncherItem(id: "app." + (a.bundleID ?? a.path), title: a.name, subtitle: a.path,
                             icon: .file(a.path), accessory: running != nil ? "Running" : "Application",
@@ -156,7 +159,8 @@ final class Providers {
         let lower = q.lowercased()
         guard lower.hasPrefix("uninstall ") else { return [] }
         let name = String(q.dropFirst("uninstall ".count))
-        return installedApps.filter { !($0.bundleID ?? "").hasPrefix("com.apple.") && !$0.path.hasPrefix("/System") }
+        return installedApps.filter { !($0.bundleID ?? "").hasPrefix("com.apple.") && !$0.path.hasPrefix("/System")
+                && !PaxGuardrails.isPaxApp(path: $0.path, bundleID: $0.bundleID) }
             .compactMap { a -> (InstalledApp, Double)? in
                 FuzzyMatcher.match(name, in: a.name).map { (a, $0.score) }
             }

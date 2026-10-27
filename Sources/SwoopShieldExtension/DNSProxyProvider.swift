@@ -11,6 +11,13 @@ final class DNSProxyProvider: NEDNSProxyProvider {
     private let work = DispatchQueue(label: "swoop.shield.dns", qos: .userInitiated, attributes: .concurrent)
 
     override func startProxy(options: [String: Any]? = nil, completionHandler: @escaping (Error?) -> Void) {
+        // Never filter DNS next to Pax (the app doesn't enable the proxy then; this is the backstop).
+        if ShieldExtension.shared.engine.currentConfig.paxCompatible {
+            NSLog("Swoop Shield: Pax is filtering DNS on this Mac; the DNS proxy stays off")
+            completionHandler(NSError(domain: "com.swoopkey.swoop.shield", code: 1,
+                                      userInfo: [NSLocalizedDescriptionKey: "Pax is filtering DNS on this Mac"]))
+            return
+        }
         NSLog("Swoop Shield DNS proxy started")
         completionHandler(nil)
     }

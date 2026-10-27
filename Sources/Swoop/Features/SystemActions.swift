@@ -80,6 +80,7 @@ enum SystemActions {
                               ok: "Quit All") else { return }
         for app in NSWorkspace.shared.runningApplications where app.activationPolicy == .regular {
             if app.bundleIdentifier == Bundle.main.bundleIdentifier || app.bundleIdentifier == "com.apple.finder" { continue }
+            if PaxGuardrails.isPaxApp(app) { continue }   // Pax is never quit by Swoop
             app.terminate()
         }
     }

@@ -131,6 +131,16 @@ public struct SecurityFinding: Equatable, Identifiable {
     public let severity: Severity
     public let title: String
     public let reasons: [String]       // plain-English explanation of every signal
+    /// Part of something Swoop never removes or disables (Pax). The UI hides Remove/Disable.
+    public var isProtected: Bool = false
+
+    public init(path: String, severity: Severity, title: String, reasons: [String], isProtected: Bool = false) {
+        self.path = path
+        self.severity = severity
+        self.title = title
+        self.reasons = reasons
+        self.isProtected = isProtected
+    }
 }
 
 /// Heuristics, not signatures: Swoop explains *why* something looks off and lets the
@@ -152,6 +162,10 @@ public enum PersistenceAnalyzer {
                          "/usr/bin/osascript", "/usr/bin/perl", "/usr/bin/ruby", "/usr/bin/curl", "/usr/bin/env"]
 
     public static func analyze(_ item: PersistenceItem) -> SecurityFinding {
+        if PaxProtection.isProtectedLaunchItem(label: item.label, path: item.path, program: item.program) {
+            return SecurityFinding(path: item.path, severity: .info, title: item.label ?? (item.path as NSString).lastPathComponent,
+                                   reasons: [PaxProtection.note], isProtected: true)
+        }
         var reasons: [String] = []
         var sev = SecurityFinding.Severity.info
         func flag(_ s: SecurityFinding.Severity, _ r: String) { reasons.append(r); if s > sev { sev = s } }

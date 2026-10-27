@@ -183,7 +183,11 @@ struct LoginItemsView: View {
                             HStack {
                                 Text(name)
                                 Spacer()
-                                Button("Remove") { if LaunchItems.removeLoginItem(name) { m.load() } }
+                                if LaunchItems.isPaxLoginItem(name) {
+                                    Text("Protected (Pax)").font(.caption).foregroundColor(.secondary).help(PaxProtection.note)
+                                } else {
+                                    Button("Remove") { if LaunchItems.removeLoginItem(name) { m.load() } }
+                                }
                             }
                         }
                     }
@@ -213,11 +217,15 @@ struct LaunchRow: View {
                 Text(item.program ?? item.path).font(.caption).foregroundColor(item.programExists ? .secondary : .orange).lineLimit(1).truncationMode(.middle)
             }
             Spacer()
+            if item.isPax {
+                Text("Protected (Pax)").font(.caption).foregroundColor(.secondary).help(PaxProtection.note)
+            } else {
             if !item.programExists { Text("Program missing").font(.caption).foregroundColor(.orange) }
             Toggle("", isOn: Binding(get: { !item.disabled }, set: { on in
                 if let err = LaunchItems.setEnabled(item, on) { Actions.info("Couldn't change \(item.label)", err) }
                 reload()
             })).labelsHidden().toggleStyle(.switch).help(item.domain == .daemon ? "Needs an administrator password" : "")
+            }
             Button { NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: item.path)]) } label: { Image(systemName: "magnifyingglass") }
                 .buttonStyle(.borderless)
         }
@@ -272,11 +280,15 @@ struct SecurityView: View {
                     Section("Background items") {
                         ForEach(r.launch.filter { m.showOK || $0.finding.severity != .info }) { pair in
                             FindingRow(finding: pair.finding, extra: pair.item.domain.rawValue) {
+                                if pair.finding.isProtected || pair.item.isPax {
+                                    Text("Protected (Pax)").font(.caption).foregroundColor(.secondary)
+                                } else {
                                 Button("Disable") { if let e = LaunchItems.setEnabled(pair.item, false) { Actions.info("Couldn't disable", e) }; m.scan() }
                                 Button("Remove…") {
                                     guard Actions.confirm("Remove \(pair.item.label)?", pair.finding.reasons.joined(separator: "\n"), ok: "Remove", destructive: true) else { return }
                                     if let e = LaunchItems.remove(pair.item, reason: pair.finding.reasons.joined(separator: " ")) { Actions.info("Couldn't remove", e) }
                                     m.scan()
+                                }
                                 }
                             }
                         }

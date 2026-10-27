@@ -117,7 +117,15 @@ jobs:
       - name: Build + test (debug)
         run: |
           set -o pipefail
-          { swift build 2>&1 && swift test 2>&1; } | tee "$RUNNER_TEMP/test.log"
+          # Build each macOS target on its own first so one failing target doesn't hide the
+          # errors in the others, then the whole package and the tests.
+          fail=0
+          for t in Swoop SwoopShieldExtension SwoopSafariBlocker SwoopSafariWebExtension swoop-resolver swoop-shield-compile; do
+            echo "==> swift build --target $t"
+            swift build --target "$t" 2>&1 | tee -a "$RUNNER_TEMP/test.log" || fail=1
+          done
+          [ "$fail" = 0 ] || { echo "target build failed"; exit 1; }
+          { swift build 2>&1 && swift test 2>&1; } | tee -a "$RUNNER_TEMP/test.log"
       - name: Developer ID certificate and notary credentials
         id: signing
         env:

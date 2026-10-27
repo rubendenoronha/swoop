@@ -40,6 +40,7 @@ targets.append(.executableTarget(
         .linkedFramework("NetworkExtension"),
         .linkedFramework("SystemExtensions"),
         .linkedFramework("SafariServices"),
+        .linkedFramework("SystemConfiguration"),
     ]
 ))
 // NetworkExtension system extension (DNS proxy + content filter). build-app.sh wraps the

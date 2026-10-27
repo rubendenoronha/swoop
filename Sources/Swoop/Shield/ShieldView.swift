@@ -94,11 +94,15 @@ struct ShieldOverview: View {
             }
 
             Section("Protection") {
+                if shield.paxPresent {
+                    PaxCompatibilityPanel()
+                } else {
                 Picker("Mode", selection: Binding(get: { shield.mode }, set: { shield.switchMode(to: $0) })) {
-                    ForEach(ShieldMode.allCases) { Text($0.title).tag($0) }
+                    ForEach(ShieldMode.allCases.filter { $0 != .worksWithPax }) { Text($0.title).tag($0) }
                 }
                 .pickerStyle(.radioGroup)
                 Text(shield.mode.detail).font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
+                }
                 if shield.mode == .systemExtension && !shield.systemExtensionAvailable {
                     Text("This build doesn't include the signed system extension (it needs a Developer ID build with the Network Extension entitlement). Local resolver gives you the same filtering.")
                         .font(.caption).foregroundColor(.orange).fixedSize(horizontal: false, vertical: true)
@@ -513,16 +517,23 @@ struct ShieldAdvancedView: View {
                     .font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
             }
             Section("Encrypted DNS") {
+                if shield.paxPresent {
+                    Text("Pax handles DNS on this Mac, so Shield leaves encrypted DNS and the upstream alone.")
+                        .font(.caption).foregroundColor(.orange).fixedSize(horizontal: false, vertical: true)
+                }
                 Picker("Apps using their own DNS", selection: Binding(get: { shield.config.encryptedDNS }, set: { v in shield.update { $0.encryptedDNS = v } })) {
                     ForEach(EncryptedDNSMode.allCases, id: \.self) { Text($0.title).tag($0) }
                 }
+                .disabled(shield.paxPresent)
                 Toggle("Ask iCloud Private Relay to step aside on this Mac", isOn: Binding(get: { shield.config.blockPrivateRelay }, set: { v in shield.update { $0.blockPrivateRelay = v } }))
+                    .disabled(shield.paxPresent)
                 Text("Firefox, Chrome and some apps can send DNS over HTTPS straight to Google or Cloudflare, skipping Shield. Shield tells Firefox to switch that off, makes public DoH servers unreachable so browsers fall back to the system resolver, and (system extension) blocks DNS-over-TLS/QUIC. Private Relay: macOS will show a notice that Private Relay is off for this network.")
                     .font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
                 Picker("Upstream DNS", selection: upstreamChoice) {
                     Text("Same as macOS (your network's DNS)").tag("system")
                     ForEach(Upstream.presets, id: \.title) { Text($0.title).tag($0.title) }
                 }
+                .disabled(shield.paxPresent)
             }
             Section("Menu bar") {
                 Toggle("Show blocked-today counter in the menu bar", isOn: $shield.menuBarCounter)
@@ -543,5 +554,31 @@ struct ShieldAdvancedView: View {
             }
         }
         .formStyle(.grouped)
+    }
+}
+
+/// Shown instead of the mode picker when Pax (accountability blocker) is on this Mac.
+struct PaxCompatibilityPanel: View {
+    @ObservedObject private var shield = ShieldController.shared
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label("Works with Pax", systemImage: "checkmark.shield").font(.headline)
+            Text(ShieldMode.worksWithPax.detail)
+                .font(.callout).fixedSize(horizontal: false, vertical: true)
+            Text("Shield won't install a DNS filter, local resolver or DNS profile, won't change your DNS settings, /etc/hosts or firewall, and never blocks Pax's servers or the filters it relies on.")
+                .font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
+            if !shield.pax.reasons.isEmpty {
+                Text("Found: " + shield.pax.reasons.joined(separator: " "))
+                    .font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
+            }
+            if shield.systemExtensionAvailable {
+                Toggle("Also drop connections to blocked ad servers (content filter)", isOn: Binding(
+                    get: { shield.config.paxContentFilter }, set: { shield.setPaxContentFilter($0) }))
+                Text("The content filter can only ever block connections; it can't let through or redirect anything Pax blocks.")
+                    .font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .onAppear { shield.recheckPax() }
     }
 }

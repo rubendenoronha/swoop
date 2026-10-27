@@ -80,6 +80,8 @@ public enum ShieldCompiler {
     ||youtube.com/get_midroll_
     ||doubleclick.net^$third-party
     ||googlesyndication.com^$third-party
+    ! Pax (paxpeace.com, accountability blocker): Swoop never blocks its site or servers.
+    @@||paxpeace.com^$important
     """
 
     public static let builtInSource = FilterListSource(

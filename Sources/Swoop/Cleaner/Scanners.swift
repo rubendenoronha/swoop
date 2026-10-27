@@ -176,6 +176,7 @@ enum Uninstaller {
     static func candidates() -> [InstalledApp] {
         Providers.shared.installedApps.filter { a in
             !a.path.hasPrefix("/System") && !(a.bundleID ?? "").hasPrefix("com.apple.")
+                && !PaxGuardrails.isPaxApp(path: a.path, bundleID: a.bundleID)
                 && a.bundleID != Bundle.main.bundleIdentifier && FileManager.default.fileExists(atPath: a.path)
         }
     }
@@ -224,7 +225,8 @@ enum Uninstaller {
         for folder in folders {
             if cancel?.cancelled == true { break }
             let dir = (home as NSString).appendingPathComponent(folder)
-            for name in JunkScanner.list(dir) where LeftoverMatcher.isOrphan(entryName: name, installed: installed) {
+            for name in JunkScanner.list(dir) where LeftoverMatcher.isOrphan(entryName: name, installed: installed)
+                && !PaxProtection.isProtectedPath((dir as NSString).appendingPathComponent(name)) {
                 // Ask Launch Services too: an app elsewhere on disk still counts as installed.
                 if let bid = LeftoverMatcher.bundleID(fromEntryName: name),
                    NSWorkspace.shared.urlForApplication(withBundleIdentifier: bid) != nil { continue }
@@ -256,5 +258,37 @@ enum CodeSign {
         }
         if let team = dict[kSecCodeInfoTeamIdentifier as String] as? String { return "Team \(team)" }
         return nil
+    }
+
+    /// The signing Team ID (no validity check: only used to recognise protected apps).
+    static func teamID(of path: String) -> String? {
+        var code: SecStaticCode?
+        guard SecStaticCodeCreateWithPath(URL(fileURLWithPath: path) as CFURL, [], &code) == errSecSuccess, let c = code else { return nil }
+        var info: CFDictionary?
+        guard SecCodeCopySigningInformation(c, SecCSFlags(rawValue: kSecCSSigningInformation), &info) == errSecSuccess,
+              let dict = info as? [String: Any] else { return nil }
+        return dict[kSecCodeInfoTeamIdentifier as String] as? String
+    }
+}
+
+/// Pax (accountability blocker) is protected everywhere in Swoop; see SwoopCore.PaxProtection.
+enum PaxGuardrails {
+    private static var teamCache: [String: Bool] = [:]
+    private static let lock = NSLock()
+
+    /// Bundle ID, path, or (for apps whose name mentions Pax) the signing Team ID.
+    static func isPaxApp(path: String, bundleID: String?) -> Bool {
+        if PaxProtection.isProtectedApp(bundleID: bundleID, path: path) { return true }
+        let name = (path as NSString).lastPathComponent.lowercased()
+        guard name.hasPrefix("pax") else { return false }
+        lock.lock(); if let v = teamCache[path] { lock.unlock(); return v }; lock.unlock()
+        let v = PaxProtection.isPaxTeamID(CodeSign.teamID(of: path))
+        lock.lock(); teamCache[path] = v; lock.unlock()
+        return v
+    }
+
+    static func isPaxApp(_ app: NSRunningApplication) -> Bool {
+        if PaxProtection.isProtectedProcess(name: app.localizedName, bundleID: app.bundleIdentifier, path: app.bundleURL?.path) { return true }
+        return app.bundleURL.map { isPaxApp(path: $0.path, bundleID: app.bundleIdentifier) } ?? false
     }
 }

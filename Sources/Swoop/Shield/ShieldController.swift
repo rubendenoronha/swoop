@@ -13,8 +13,21 @@ import ShieldCore
 import SystemExtensions
 
 enum ShieldMode: String, CaseIterable, Identifiable {
-    case systemExtension, localResolver, encryptedProfile, browserOnly
+    case systemExtension, localResolver, encryptedProfile, browserOnly, worksWithPax
     var id: String { rawValue }
+
+    /// The modes that filter DNS for the whole Mac. None of them run next to Pax.
+    var isDNSLevel: Bool { self == .systemExtension || self == .localResolver || self == .encryptedProfile }
+
+    var layer: ShieldLayer {
+        switch self {
+        case .systemExtension: return .dnsProxy
+        case .localResolver: return .localResolver
+        case .encryptedProfile: return .encryptedDNSProfile
+        case .browserOnly: return .browserExtension
+        case .worksWithPax: return .contentFilterDropOnly
+        }
+    }
 
     var title: String {
         switch self {
@@ -22,6 +35,7 @@ enum ShieldMode: String, CaseIterable, Identifiable {
         case .localResolver: return "Local resolver"
         case .encryptedProfile: return "Encrypted DNS profile"
         case .browserOnly: return "Browsers only"
+        case .worksWithPax: return "Works with Pax"
         }
     }
 
@@ -35,6 +49,8 @@ enum ShieldMode: String, CaseIterable, Identifiable {
             return "Switches macOS to a public ad-blocking DNS server with a configuration profile. Not on-device: the provider's lists apply, not Swoop's, and there are no stats."
         case .browserOnly:
             return "No system-wide filtering; only the Safari and Chrome/Firefox extensions block ads."
+        case .worksWithPax:
+            return "Pax already filters DNS for this whole Mac, so Shield stays out of its way: it blocks ads in Safari and your other browsers, never touches DNS, /etc/hosts or the firewall, and never blocks Pax's servers. For system-wide ad blocking, turn on Pax's Ads switch."
         }
     }
 }
@@ -65,6 +81,10 @@ final class ShieldController: NSObject, ObservableObject {
         didSet { UserDefaults.standard.set(menuBarCounter, forKey: "shieldMenuBarCounter"); MenuBarMonitor.shared.refreshVisibility() }
     }
     @Published var profileProvider: String { didSet { UserDefaults.standard.set(profileProvider, forKey: "shieldProfileProvider") } }
+    /// Pax (accountability blocker) found on this Mac: Shield runs in "Works with Pax" mode.
+    @Published private(set) var pax: PaxPresence = .absent
+    var paxPresent: Bool { pax.detected }
+    private var paxCheckCounter = 0
 
     let lists = ShieldListManager()
     private var xpc: NSXPCConnection?
@@ -118,6 +138,10 @@ final class ShieldController: NSObject, ObservableObject {
     // MARK: lifecycle
 
     func start() {
+        // Pax first: nothing DNS-level may start before we know it isn't there.
+        let (_, presence) = PaxDetector.scan()
+        pax = presence
+        if presence.detected { enterPaxMode(initial: true) }
         lists.onCompiled = { [weak self] index in self?.distribute(index: index) }
         lists.start(enabledIDs: config.enabledLists)
         if config.enabled { activate(mode) }
@@ -135,12 +159,22 @@ final class ShieldController: NSObject, ObservableObject {
 
     func switchMode(to new: ShieldMode) {
         guard new != mode else { return }
+        if paxPresent && !PaxCompatibility.permits(new.layer, paxPresent: true) {
+            Actions.info("Pax is filtering this Mac", "Pax already filters DNS here, and a second DNS filter would clash with it. Shield keeps blocking ads in your browsers; for system-wide ad blocking, turn on Pax's Ads switch.")
+            return
+        }
+        if new == .worksWithPax && !paxPresent { return }
         if config.enabled { deactivate(mode) }
         mode = new
         if config.enabled { activate(new) }
     }
 
     private func activate(_ m: ShieldMode) {
+        // Hard rule: no DNS-level layer next to Pax, whatever led here.
+        if paxPresent && !PaxCompatibility.permits(m.layer, paxPresent: true) {
+            if mode != .worksWithPax { enterPaxMode(initial: false) }
+            return
+        }
         switch m {
         case .systemExtension:
             guard systemExtensionAvailable else {
@@ -157,8 +191,68 @@ final class ShieldController: NSObject, ObservableObject {
             installProfile()
         case .browserOnly:
             setStatus(.active("Browser extensions only"))
+        case .worksWithPax:
+            if config.paxContentFilter && systemExtensionAvailable {
+                setStatus(.starting("Starting the content filter…"))
+                let req = OSSystemExtensionRequest.activationRequest(forExtensionWithIdentifier: ShieldController.extensionID, queue: .main)
+                req.delegate = self
+                OSSystemExtensionManager.shared.submitRequest(req)
+            } else {
+                if systemExtensionAvailable { configureManagers(enabled: false) }
+                setStatus(.active("Works with Pax · browsers"))
+            }
         }
         writeBrowserState()
+    }
+
+    // MARK: Works with Pax
+
+    /// Pax found: stop every DNS-level layer without touching network DNS settings, /etc/hosts
+    /// or pf (Pax owns those), and switch to browser-level blocking.
+    private func enterPaxMode(initial: Bool) {
+        if mode != .worksWithPax {
+            UserDefaults.standard.set(mode.rawValue, forKey: "shieldModeBeforePax")
+        }
+        let previous = mode
+        if previous == .systemExtension, systemExtensionAvailable { configureManagers(enabled: false) }
+        if resolverInstalled { removeLocalResolverKeepingDNS() }
+        mode = .worksWithPax
+        if !config.paxCompatible {
+            update { $0.paxCompatible = true }
+        }
+        if previous == .encryptedProfile {
+            Actions.info("Remove the Swoop Shield DNS profile", "Pax is filtering this Mac, and Shield's DNS profile would override it. Open System Settings › Privacy & Security › Profiles (macOS 13–14: System Settings › Profiles), select \"Swoop Shield\" and click Remove.")
+        }
+        if config.enabled && !initial { activate(.worksWithPax) }
+        if !initial { Notifier.show("Shield now works with Pax", body: "Pax filters DNS on this Mac; Shield blocks ads in your browsers.") }
+    }
+
+    /// Pax removed: go back to the mode the user had before.
+    private func leavePaxMode() {
+        guard mode == .worksWithPax else { return }
+        if systemExtensionAvailable { configureManagers(enabled: false) }
+        update { $0.paxCompatible = false }
+        let before = ShieldMode(rawValue: UserDefaults.standard.string(forKey: "shieldModeBeforePax") ?? "") ?? .browserOnly
+        mode = before == .worksWithPax ? .browserOnly : before
+        if config.enabled { activate(mode) }
+    }
+
+    /// Re-checks for Pax (every minute, and when the Shield tab opens).
+    func recheckPax() {
+        DispatchQueue.global(qos: .utility).async {
+            let (_, p) = PaxDetector.scan()
+            DispatchQueue.main.async {
+                let was = self.pax.detected
+                self.pax = p
+                if p.detected && (!was || self.mode != .worksWithPax || !self.config.paxCompatible) { self.enterPaxMode(initial: false) }
+                else if !p.detected && was { self.leavePaxMode() }
+            }
+        }
+    }
+
+    func setPaxContentFilter(_ on: Bool) {
+        update { $0.paxContentFilter = on }
+        if mode == .worksWithPax && config.enabled { activate(.worksWithPax) }
     }
 
     private func deactivate(_ m: ShieldMode) {
@@ -256,7 +350,7 @@ final class ShieldController: NSObject, ObservableObject {
     private func pushConfig() {
         let data = config.encoded()
         switch mode {
-        case .systemExtension:
+        case .systemExtension, .worksWithPax:
             proxy()?.applyConfig(data) { _ in }
         case .localResolver:
             break   // the resolver watches config.json, written in update()
@@ -267,7 +361,7 @@ final class ShieldController: NSObject, ObservableObject {
 
     /// New compiled lists from ShieldListManager.
     private func distribute(index: Data) {
-        if mode == .systemExtension, config.enabled {
+        if mode == .systemExtension || (mode == .worksWithPax && config.paxContentFilter), config.enabled {
             proxy()?.loadIndex(index) { ok, err in if !ok { NSLog("Shield: extension refused the index: \(err ?? "?")") } }
         }
         // config.json and shield.swsh live in ShieldController.dir, which the local resolver reads.
@@ -302,10 +396,11 @@ final class ShieldController: NSObject, ObservableObject {
             proto.serverAddress = "Swoop Shield"
             dns.providerProtocol = proto
             dns.localizedDescription = "Swoop Shield"
-            dns.isEnabled = enabled
+            // Never a DNS proxy next to Pax (it treats one as tampering).
+            dns.isEnabled = enabled && self?.mode == .systemExtension && self?.paxPresent == false
             dns.saveToPreferences { err in
                 if let e = err { self?.setStatus(.problem("DNS proxy: \(e.localizedDescription)")); return }
-                if enabled { self?.afterExtensionReady() }
+                if enabled && dns.isEnabled { self?.afterExtensionReady() }
             }
         }
         let filter = NEFilterManager.shared()
@@ -318,13 +413,19 @@ final class ShieldController: NSObject, ObservableObject {
             filter.providerConfiguration = fc
             filter.localizedDescription = "Swoop Shield"
             // The content filter only blocks encrypted-DNS bypass and blocked hostnames.
-            filter.isEnabled = enabled && self?.config.encryptedDNS == .blockBypass
-            filter.saveToPreferences { err in if let e = err { NSLog("Shield filter: \(e.localizedDescription)") } }
+            // Next to Pax only the drop-only filter may run, and only if the user turned it on.
+            let paxFilter = self?.mode == .worksWithPax && self?.config.paxContentFilter == true
+            let normalFilter = self?.mode == .systemExtension && self?.paxPresent == false && self?.config.encryptedDNS == .blockBypass
+            filter.isEnabled = enabled && (paxFilter || normalFilter)
+            filter.saveToPreferences { err in
+                if let e = err { NSLog("Shield filter: \(e.localizedDescription)"); return }
+                if enabled && paxFilter { self?.afterExtensionReady() }
+            }
         }
     }
 
     private func afterExtensionReady() {
-        setStatus(.active("System-wide (system extension)"))
+        setStatus(.active(mode == .worksWithPax ? "Works with Pax · browsers + content filter" : "System-wide (system extension)"))
         proxy()?.applyConfig(config.encoded()) { _ in }
         if let idx = try? Data(contentsOf: ShieldController.dir.appendingPathComponent("shield.swsh")) {
             proxy()?.loadIndex(idx) { _, _ in }
@@ -351,6 +452,7 @@ final class ShieldController: NSObject, ObservableObject {
     // MARK: local resolver (fallback)
 
     private func installLocalResolver() {
+        guard !paxPresent else { return }   // port 53 and the DNS settings belong to Pax
         guard let bin = Bundle.main.url(forAuxiliaryExecutable: "swoop-resolver") else {
             setStatus(.problem("swoop-resolver is missing from the app bundle."))
             return
@@ -419,6 +521,7 @@ final class ShieldController: NSObject, ObservableObject {
 
     private func uninstallLocalResolver() {
         guard resolverInstalled else { return }
+        if paxPresent { removeLocalResolverKeepingDNS(); return }
         let dir = ShieldController.dir.path
         let script = """
         D='\(dir.replacingOccurrences(of: "'", with: "'\\''"))'
@@ -439,9 +542,22 @@ final class ShieldController: NSObject, ObservableObject {
         }
     }
 
+    /// Stops and removes swoop-resolver without touching any network DNS settings (used when
+    /// Pax is present: the DNS settings are Pax's, and changing them would look like tampering).
+    private func removeLocalResolverKeepingDNS() {
+        let script = """
+        launchctl bootout system/\(ShieldController.resolverLabel) 2>/dev/null || true
+        rm -f /Library/LaunchDaemons/\(ShieldController.resolverLabel).plist '/Library/Application Support/Swoop/swoop-resolver'
+        """
+        DispatchQueue.global(qos: .userInitiated).async {
+            _ = Shell.runAsAdmin(script, prompt: "Pax is filtering this Mac. Swoop wants to remove its own local resolver so the two don't clash (your DNS settings stay as they are).")
+        }
+    }
+
     // MARK: encrypted DNS profile (fallback)
 
     private func installProfile() {
+        guard !paxPresent else { return }
         guard let p = DNSProfileBuilder.providers.first(where: { $0.id == profileProvider }) ?? DNSProfileBuilder.providers.first else { return }
         let xml = DNSProfileBuilder.profile(name: p.name, url: p.url, addresses: p.addresses)
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("Swoop Shield DNS.mobileconfig")
@@ -458,13 +574,15 @@ final class ShieldController: NSObject, ObservableObject {
     // MARK: stats
 
     private func poll() {
+        paxCheckCounter += 1
+        if paxCheckCounter >= 30 { paxCheckCounter = 0; recheckPax() }   // every ~60 s
         // Expire pauses and keep the menu bar honest even when nobody looks at the tab.
         if let until = config.pausedUntil {
             if until <= Date() { update { $0.pausedUntil = nil } } else if config.enabled && status != .paused(until: until) { status = .paused(until: until) }
         } else if case .paused = status { activateStatusAfterPause() }
         switch mode {
-        case .systemExtension:
-            guard config.enabled, systemExtensionAvailable else { return }
+        case .systemExtension, .worksWithPax:
+            guard config.enabled, systemExtensionAvailable, mode == .systemExtension || config.paxContentFilter else { return }
             proxy()?.fetchStats { [weak self] data in
                 guard let s = ShieldStats.decode(data) else { return }
                 DispatchQueue.main.async { self?.stats = s; MenuBarMonitor.shared.refreshVisibility() }
@@ -497,6 +615,7 @@ final class ShieldController: NSObject, ObservableObject {
         case .localResolver: status = .active("System-wide (local resolver)")
         case .browserOnly: status = .active("Browser extensions only")
         case .encryptedProfile: status = .active("Encrypted DNS profile")
+        case .worksWithPax: status = .active(config.paxContentFilter && systemExtensionAvailable ? "Works with Pax · browsers + content filter" : "Works with Pax · browsers")
         }
     }
 
@@ -569,7 +688,7 @@ extension ShieldController: OSSystemExtensionRequestDelegate {
     }
 
     func request(_ request: OSSystemExtensionRequest, didFinishWithResult result: OSSystemExtensionRequest.Result) {
-        if config.enabled && mode == .systemExtension {
+        if config.enabled && (mode == .systemExtension || (mode == .worksWithPax && config.paxContentFilter)) {
             configureManagers(enabled: true)
             if result == .willCompleteAfterReboot { setStatus(.needsApproval("Restart your Mac to finish installing Shield.")) }
         } else {

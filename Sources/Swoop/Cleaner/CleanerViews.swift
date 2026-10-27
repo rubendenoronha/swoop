@@ -352,6 +352,11 @@ final class UninstallerModel: ObservableObject {
     func select(_ path: String) {
         selectedPath = path
         guard let app = apps.first(where: { $0.path == path }) ?? Providers.shared.installedApps.first(where: { $0.path == path }) else { return }
+        if PaxGuardrails.isPaxApp(path: app.path, bundleID: app.bundleID) {
+            selectedPath = nil
+            Actions.info("Pax is protected", PaxProtection.note)
+            return
+        }
         loading = true
         DispatchQueue.global(qos: .userInitiated).async {
             let t = Uninstaller.leftovers(for: app)
@@ -369,6 +374,7 @@ final class UninstallerModel: ObservableObject {
 
     func uninstall() {
         guard var t = target else { return }
+        if PaxGuardrails.isPaxApp(path: t.app.path, bundleID: t.app.bundleID) { return }
         if let running = NSWorkspace.shared.runningApplications.first(where: { $0.bundleURL?.path == t.app.path }) {
             guard Actions.confirm("Quit \(t.app.name)?", "It has to be closed before it can be removed.", ok: "Quit") else { return }
             running.terminate()

@@ -59,6 +59,8 @@ public struct PathSafety {
         guard rawPath.hasPrefix("/") else { return .denied("not an absolute path") }
         let path = Self.normalize(rawPath)
         if path == "/" { return .denied("root") }
+        // Pax (accountability blocker) is never touched, wherever it lives.
+        if PaxProtection.isProtectedPath(path) { return .denied("part of Pax (protected)") }
 
         // App bundles in /Applications (one level, or one subfolder level).
         if path.hasPrefix("/Applications/") {

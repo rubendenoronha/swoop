@@ -86,6 +86,48 @@ cut off. A small built-in set of well-known cloaking networks (Eulerian, AT Inte
 target belongs to a different site than the query. The full AdGuard cname-trackers list (MIT) is
 an optional list.
 
+## Using Swoop with Pax
+
+[Pax](https://paxpeace.com) is an accountability / adult-content blocker for the Mac. Its
+root service, pax-guard, owns the Mac's DNS (a filtering forwarder on 127.0.0.1:53 that the
+network settings point at), adds `/etc/hosts` blocks and `pf` rules, installs a locked device
+profile with browser policies, uses DNS over HTTPS to `dns.paxpeace.com` / `api.paxpeace.com`
+with CleanBrowsing and AdGuard Family as fallbacks, and treats DNS changes, VPN-like or
+DNS-proxy network extensions as tampering. Swoop is built to sit next to it without clashing.
+
+**How Swoop recognises Pax** (any one is enough; read-only checks, re-run every minute and
+whenever the Shield tab opens): `/Library/PaxGuard` exists; a pax-guard launchd job (plist in
+`/Library/LaunchDaemons` or the process is running); the Pax app (`org.paxmobile.pax`,
+`org.paxpeace.pax`, or an app signed by Pax's Team ID `Z94GSK7JA8`); the system resolver is
+127.0.0.1 and pax-guard is installed or running; or Pax's profile is installed (`profiles`
+output, or managed browser policies mentioning Pax). The decision logic is
+`ShieldCore/PaxCompatibility.swift` (unit-tested); the app gathers the signals in
+`Sources/Swoop/Shield/PaxDetector.swift`.
+
+**What Shield does when Pax is present ("Works with Pax" mode)**
+
+- It never installs or enables its DNS-proxy system extension, local resolver (so nothing else
+  listens on port 53) or encrypted-DNS profile, and never changes network DNS settings,
+  `/etc/hosts` or `pf`. If one of those was running before Pax arrived, Shield turns it off:
+  the DNS proxy is disabled and swoop-resolver is removed **without** touching DNS settings
+  (they belong to Pax); a Swoop DNS profile can't be removed by an app, so Shield asks you to
+  remove it in System Settings.
+- It never blocks Pax's servers or the resolvers Pax relies on (`paxpeace.com` and subdomains,
+  `cleanbrowsing.org`, AdGuard Family, Quad9 and Cloudflare's malware-blocking resolvers, by
+  name and address), and its own DNS-bypass blocking (DoH/DoT/DoQ, Firefox canary, Private
+  Relay opt-out) is off. The built-in browser rules always allow `paxpeace.com`.
+- It keeps blocking ads in Safari (content blockers + web extension) and in Chrome/Firefox
+  (the browser extension). Signed builds can also run the content filter, opt-in and drop-only:
+  it can block connections to ad servers but can't allow or redirect anything Pax blocks.
+- The Shield tab explains that Pax already filters DNS and suggests turning on Pax's **Ads**
+  switch for system-wide ad blocking. If Pax is removed, Shield goes back to the mode you had.
+
+**The cleaner treats Pax as protected** (`SwoopCore/PaxProtection.swift`): the Uninstaller,
+leftover and junk scans, Login Items, Security Check, Quit All / Force Quit and every file
+removal skip the Pax app, pax-guard, `/Library/PaxGuard`, its launch daemons and its profile
+(shown as "Protected (Pax)", never flagged). Maintenance tasks never touch Pax, DNS settings,
+`/etc/hosts` or `pf`; flushing the DNS cache is fine.
+
 ## Filter lists and licences
 
 Swoop doesn't bundle or redistribute third-party lists. Each Mac downloads them from their

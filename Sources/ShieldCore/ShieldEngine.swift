@@ -78,6 +78,11 @@ public struct ShieldConfig: Codable, Equatable {
     public var appPauses: [AppPause] = []
     public var sitePauses: [SitePause] = []
     public var upstream: Upstream = .system
+    /// Pax is installed: no DNS-level layers, no DNS-bypass blocking, Pax's servers never blocked
+    /// (set by Swoop.app from PaxCompatibility; see docs/SHIELD.md, "Using Swoop with Pax").
+    public var paxCompatible = false
+    /// Next to Pax, also run the drop-only content filter (off unless the user turns it on).
+    public var paxContentFilter = false
 
     public init() {}
 
@@ -97,7 +102,8 @@ public struct ShieldConfig: Codable, Equatable {
     // Tolerant decoding: a config written by an older/newer Swoop still loads.
     enum CodingKeys: String, CodingKey {
         case enabled, enabledLists, blockResponse, encryptedDNS, blockPrivateRelay, cnameUncloaking, builtInCloakTrackers,
-             logQueries, logRetentionHours, customRules, allowlist, pausedUntil, appPauses, sitePauses, upstream
+             logQueries, logRetentionHours, customRules, allowlist, pausedUntil, appPauses, sitePauses, upstream,
+             paxCompatible, paxContentFilter
     }
 
     public init(from decoder: Decoder) throws {
@@ -118,6 +124,8 @@ public struct ShieldConfig: Codable, Equatable {
         appPauses = (try? c.decode([AppPause].self, forKey: .appPauses)) ?? []
         sitePauses = (try? c.decode([SitePause].self, forKey: .sitePauses)) ?? []
         upstream = (try? c.decode(Upstream.self, forKey: .upstream)) ?? .system
+        paxCompatible = (try? c.decode(Bool.self, forKey: .paxCompatible)) ?? false
+        paxContentFilter = (try? c.decode(Bool.self, forKey: .paxContentFilter)) ?? false
     }
 
     public static func decode(_ data: Data) -> ShieldConfig? {
@@ -143,6 +151,12 @@ public struct ShieldDecision: Equatable {
     public var note: String?
 
     public static let pass = ShieldDecision(action: .passed, info: nil, note: nil)
+
+    public init(action: ShieldAction, info: MatchInfo?, note: String?) {
+        self.action = action
+        self.info = info
+        self.note = note
+    }
 }
 
 public struct QueryLogEntry: Codable, Equatable, Identifiable {
@@ -318,7 +332,8 @@ public final class ShieldEngine {
     }
 
     static func makePolicy(_ c: ShieldConfig) -> EncryptedDNSPolicy {
-        EncryptedDNSPolicy(mode: c.encryptedDNS, blockPrivateRelay: c.blockPrivateRelay,
+        // Next to Pax, Shield never interferes with anyone's encrypted DNS (Pax uses DoH itself).
+        EncryptedDNSPolicy(mode: c.paxCompatible ? .allow : c.encryptedDNS, blockPrivateRelay: c.paxCompatible ? false : c.blockPrivateRelay,
                            upstreamHosts: c.upstream.hosts, upstreamIPs: c.upstream.ips)
     }
 
@@ -354,6 +369,9 @@ public final class ShieldEngine {
             return ShieldDecision(action: .passed, info: nil, note: "app paused")
         }
         guard let name = DomainName.normalize(rawName) else { return .pass }
+        if c.paxCompatible, PaxCompatibility.isProtectedHost(name) {
+            return ShieldDecision(action: .passed, info: nil, note: "pax")
+        }
         if let s = c.sitePauses.first(where: { ($0.until.map { $0 > now } ?? true) && DomainName.isSubdomain(name, of: $0.domain) }) {
             return ShieldDecision(action: .allowed, info: MatchInfo(source: "site-pause", rule: "@@||\(s.domain)^"), note: "site paused")
         }
@@ -386,6 +404,8 @@ public final class ShieldEngine {
         let (c, m, p, _) = snapshot()
         guard c.enabled, !c.isPaused(at: now) else { return .allow }
         if let a = app, c.appPauses.contains(where: { $0.id == a && ($0.until.map { $0 > now } ?? true) }) { return .allow }
+        // Next to Pax the filter only ever drops, and never anything of Pax's.
+        if c.paxCompatible, PaxCompatibility.isProtectedIP(remoteIP) || PaxCompatibility.isProtectedHost(remoteHostname) { return .allow }
         let v = p.flowVerdict(remoteIP: remoteIP, remoteHostname: remoteHostname, port: port, proto: proto)
         if case .drop = v { return v }
         // Apps that connect by hostname (URLSession, Network.framework) are checked again
