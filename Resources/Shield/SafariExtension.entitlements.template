@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- Safari content blockers and the Safari Web Extension: sandboxed, reading the rules
+       Swoop.app writes into the shared App Group container. -->
+  <key>com.apple.security.app-sandbox</key><true/>
+  <key>com.apple.security.application-groups</key>
+  <array><string>__TEAM_ID__.com.swoopkey.swoop.shield</string></array>
+</dict>
+</plist>

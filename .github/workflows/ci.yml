@@ -1,0 +1,261 @@
+# SPDX-License-Identifier: MIT
+#
+# core-linux:   SwoopCore + ShieldCore tests on Linux (cheap, fast), scriptlet tests (node).
+# shield-lists: downloads the real filter lists, compiles them with swoop-shield-compile,
+#               checks the Safari / declarativeNetRequest output against the browsers' limits
+#               and builds the Chromium + Firefox extension zips (artifacts, with attribution).
+# macos:        full app build, tests, universal Swoop.app + DMG artifact, incl. the Shield
+#               system extension, Safari extensions and swoop-resolver. With the signing
+#             secrets present (MACOS_CERT_P12, MACOS_CERT_PASSWORD, APPLE_ID, APPLE_TEAM_ID,
+#             APPLE_APP_PASSWORD) the app and DMG are signed with the Developer ID
+#             certificate and notarised + stapled; without them the build is ad-hoc signed.
+#             Optional GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET bake a default Google Drive
+#             OAuth client into Info.plist.
+#             Swoop Shield's system extension is only activatable when SHIELD_APP_PROFILE and
+#             SHIELD_EXT_PROFILE (base64 Developer ID provisioning profiles with the Network
+#             Extensions + System Extension capabilities) are set as well; see docs/SHIELD.md.
+# On a tag v* the DMG is attached to a GitHub Release.
+# Logs are force-pushed to the orphan `ci-logs` branch (readable without the Actions UI).
+#
+# The repo may be pushed with the Git data / contents API, which can drop exec bits,
+# so every *.sh is made executable first.
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SWOOP_VERSION: "0.2.0"
+
+jobs:
+  core-linux:
+    runs-on: ubuntu-latest
+    container: swift:6.0-jammy
+    steps:
+      - uses: actions/checkout@v4
+      - name: swift test (SwoopCore + ShieldCore)
+        run: |
+          set -o pipefail
+          swift test 2>&1 | tee core-linux.log
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: core-linux-log, path: core-linux.log, retention-days: 7 }
+
+  webext:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Scriptlet tests + syntax check
+        run: |
+          node Extensions/webext/test/scriptlets.test.js
+          for f in Extensions/webext/*.js; do node --check "$f"; done
+          for m in Extensions/webext/manifest.*.json Extensions/webext/rules/*.json Extensions/webext/cosmetic.json; do python3 -m json.tool "$m" >/dev/null; done
+          python3 scripts/check-dnr.py Extensions/webext/rules/*.json
+
+  shield-lists:
+    runs-on: ubuntu-latest
+    container: swift:6.0-jammy
+    steps:
+      - uses: actions/checkout@v4
+      - run: apt-get update -qq && apt-get install -y -qq python3 zip >/dev/null
+      - name: Compile the default filter lists
+        shell: bash
+        run: |
+          set -o pipefail
+          swift build -c release --product swoop-shield-compile
+          # Exit code 3 = some list couldn't be fetched (mirrors exhausted); the rest still compile.
+          .build/release/swoop-shield-compile --download --out build/shield 2>&1 | tee shield-lists.log || [ "${PIPESTATUS[0]}" -eq 3 ]
+          test -s build/shield/shield.swsh
+      - name: Check browser rule limits
+        run: |
+          python3 scripts/check-dnr.py build/shield/webext/rules/*.json
+          python3 scripts/check-safari.py build/shield/safari/*.json
+      - name: Build browser extensions
+        run: SWOOP_VERSION="$SWOOP_VERSION" ./scripts/build-webext.sh build/shield
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Swoop-Shield-browser-extensions
+          path: |
+            dist/Swoop-Shield-chromium-${{ env.SWOOP_VERSION }}.zip
+            dist/Swoop-Shield-firefox-${{ env.SWOOP_VERSION }}.zip
+            build/shield/report.json
+            build/shield/lists.json
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: shield-lists-log, path: shield-lists.log, retention-days: 7 }
+
+  macos:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: find . -name "*.sh" -exec chmod +x {} +
+      - name: Toolchain
+        run: |
+          sw_vers
+          swift --version
+          xcode-select -p
+      - name: Build + test (debug)
+        run: |
+          set -o pipefail
+          { swift build 2>&1 && swift test 2>&1; } | tee "$RUNNER_TEMP/test.log"
+      - name: Developer ID certificate and notary credentials
+        id: signing
+        env:
+          MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
+          MACOS_CERT_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$MACOS_CERT_P12" ]]; then
+            echo "No MACOS_CERT_P12 secret: ad-hoc signed build."
+            echo "identity=-" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          KC="$RUNNER_TEMP/swoop-signing.keychain-db"
+          KCPW="$(uuidgen)"
+          security create-keychain -p "$KCPW" "$KC"
+          security set-keychain-settings -lut 21600 "$KC"
+          security unlock-keychain -p "$KCPW" "$KC"
+          P12="$RUNNER_TEMP/cert.p12"
+          printf '%s' "$MACOS_CERT_P12" | tr -d '\r\n ' | base64 --decode > "$P12"
+          security import "$P12" -k "$KC" -P "$MACOS_CERT_PASSWORD" -f pkcs12 -T /usr/bin/codesign -T /usr/bin/security
+          rm -f "$P12"
+          curl -fsSL -o "$RUNNER_TEMP/DeveloperIDG2CA.cer" https://www.apple.com/certificateauthority/DeveloperIDG2CA.cer \
+            && security import "$RUNNER_TEMP/DeveloperIDG2CA.cer" -k "$KC" >/dev/null 2>&1 || true
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KCPW" "$KC" >/dev/null
+          security list-keychains -d user -s "$KC" $(security list-keychains -d user | tr -d '"')
+          ID="$(security find-identity -v -p codesigning "$KC" | sed -n 's/.*"\(Developer ID Application: [^"]*\)".*/\1/p' | head -n 1)"
+          if [[ -z "$ID" ]]; then
+            echo "MACOS_CERT_P12 holds no valid Developer ID Application identity"; exit 1
+          fi
+          echo "::add-mask::$ID"
+          echo "Signing with a Developer ID Application identity (team ${ID##* (}"
+          echo "identity=$ID" >> "$GITHUB_OUTPUT"
+          echo "keychain=$KC" >> "$GITHUB_OUTPUT"
+          for v in APPLE_ID APPLE_TEAM_ID APPLE_APP_PASSWORD; do
+            [[ -n "${!v}" ]] || { echo "$v secret is not set: can't notarise"; exit 1; }
+          done
+          xcrun notarytool store-credentials swoop --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" \
+            --password "$APPLE_APP_PASSWORD" --keychain "$KC" --validate
+          echo "notary=swoop" >> "$GITHUB_OUTPUT"
+      - name: Build Swoop.app + DMG (universal)
+        env:
+          UNIVERSAL: "1"
+          SIGN_IDENTITY: ${{ steps.signing.outputs.identity }}
+          NOTARY_PROFILE: ${{ steps.signing.outputs.notary }}
+          NOTARY_KEYCHAIN: ${{ steps.signing.outputs.keychain }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          SHIELD_APP_PROFILE: ${{ secrets.SHIELD_APP_PROFILE }}
+          SHIELD_EXT_PROFILE: ${{ secrets.SHIELD_EXT_PROFILE }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        run: |
+          set -o pipefail
+          ./scripts/build-app.sh 2>&1 | tee "$RUNNER_TEMP/build.log"
+      - name: Check the bundle
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/build.log") 2>&1
+          echo; echo "==> Check the bundle"
+          codesign --verify --deep --strict --verbose=2 dist/Swoop.app
+          ARCHS="$(lipo -archs dist/Swoop.app/Contents/MacOS/Swoop)"
+          echo "architectures: $ARCHS"
+          [[ "$ARCHS" == *arm64* && "$ARCHS" == *x86_64* ]] || { echo "not universal"; exit 1; }
+          MINOS="$(otool -l dist/Swoop.app/Contents/MacOS/Swoop | awk '/LC_BUILD_VERSION/{f=1} f&&/minos/{print $2; exit}')"
+          echo "minos: $MINOS"
+          [[ "$MINOS" == "13.0" ]] || { echo "minimum macOS is not 13.0"; exit 1; }
+          plutil -p dist/Swoop.app/Contents/Info.plist
+          test -f dist/Swoop.app/Contents/Resources/AppIcon.icns
+          echo; echo "==> Swoop Shield"
+          SYSX=dist/Swoop.app/Contents/Library/SystemExtensions/com.swoopkey.swoop.shield.systemextension
+          plutil -p "$SYSX/Contents/Info.plist"
+          for b in dist/Swoop.app/Contents/MacOS/swoop-resolver "$SYSX/Contents/MacOS/com.swoopkey.swoop.shield" \
+                   dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker1.appex/Contents/MacOS/SwoopSafariBlocker \
+                   dist/Swoop.app/Contents/PlugIns/SwoopShieldPageCleaner.appex/Contents/MacOS/SwoopSafariWebExtension; do
+            A="$(lipo -archs "$b")"; echo "$(basename "$b"): $A"
+            [[ "$A" == *arm64* && "$A" == *x86_64* ]] || { echo "$b is not universal"; exit 1; }
+          done
+          [[ "$(ls -d dist/Swoop.app/Contents/PlugIns/*.appex | wc -l | tr -d ' ')" == "7" ]] || { echo "expected 7 Safari extensions"; exit 1; }
+          for x in dist/Swoop.app/Contents/PlugIns/*.appex "$SYSX"; do codesign --verify --strict "$x"; done
+          test -f dist/Swoop.app/Contents/Resources/BrowserExtension/chromium/manifest.json
+          test -f dist/Swoop.app/Contents/Resources/BrowserExtension/firefox/manifest.json
+          echo "app entitlements:"; codesign -d --entitlements - --xml dist/Swoop.app 2>/dev/null | plutil -p - || true
+          echo "system extension entitlements:"; codesign -d --entitlements - --xml "$SYSX" 2>/dev/null | plutil -p - || true
+          if [[ -f dist/Swoop.app/Contents/embedded.provisionprofile ]]; then echo "Network Extension build (profiles embedded)"; else echo "No provisioning profiles: Shield runs without the system extension"; fi
+          ./.build/release/swoop-resolver --help >/dev/null 2>&1 || true
+          hdiutil imageinfo "dist/Swoop-${SWOOP_VERSION}.dmg" | head -n 12
+          spctl -a -vv dist/Swoop.app 2>&1 || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Swoop-${{ env.SWOOP_VERSION }}-universal-dmg
+          path: dist/Swoop-${{ env.SWOOP_VERSION }}.dmg
+          if-no-files-found: error
+          retention-days: 30
+      - name: Publish release (tags v* only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NOTE: ${{ steps.signing.outputs.notary == 'swoop' && 'Signed with Developer ID and notarised by Apple.' || 'Ad-hoc signed, not notarised.' }}
+        run: |
+          set -euo pipefail
+          TAG="$GITHUB_REF_NAME"
+          [[ "$TAG" == "v$SWOOP_VERSION" ]] || { echo "tag $TAG doesn't match SWOOP_VERSION $SWOOP_VERSION"; exit 1; }
+          cp "dist/Swoop-$SWOOP_VERSION.dmg" dist/Swoop.dmg
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "dist/Swoop-$SWOOP_VERSION.dmg" dist/Swoop.dmg --clobber
+          else
+            gh release create "$TAG" "dist/Swoop-$SWOOP_VERSION.dmg" dist/Swoop.dmg --title "Swoop $SWOOP_VERSION" --notes "Swoop $SWOOP_VERSION. $NOTE"
+          fi
+      - name: Publish logs to the ci-logs branch
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          SIGNER: ${{ steps.signing.outputs.identity }}
+        run: |
+          set -euo pipefail
+          D="$RUNNER_TEMP/ci-logs"; rm -rf "$D" && mkdir -p "$D"
+          for f in test.log build.log; do
+            if [ -f "$RUNNER_TEMP/$f" ]; then
+              if [ -n "${SIGNER:-}" ] && [ "$SIGNER" != "-" ]; then
+                python3 -c 'import sys,os; s=open(sys.argv[1],errors="replace").read(); n=os.environ["SIGNER"]; print(s.replace(n,"[signing identity]"),end="")' "$RUNNER_TEMP/$f" > "$D/$f"
+              else
+                cp "$RUNNER_TEMP/$f" "$D/$f"
+              fi
+            else
+              echo "not produced" > "$D/$f"
+            fi
+          done
+          printf 'status: %s\nrun: %s/%s/actions/runs/%s\ncommit: %s\nref: %s\nfinished: %s\n' "$JOB_STATUS" "$GITHUB_SERVER_URL" \
+            "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" "$GITHUB_SHA" "$GITHUB_REF" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$D/status.txt"
+          cd "$D" && git init -q && git checkout -q --orphan ci-logs
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "ci $GITHUB_RUN_NUMBER: $JOB_STATUS ($GITHUB_SHA)"
+          ok=0
+          for i in 1 2 3 4 5; do
+            if git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:refs/heads/ci-logs; then ok=1; break; fi
+            sleep $((i * 4))
+          done
+          [ "$ok" = 1 ] || echo "::warning::couldn't push ci-logs"
+      - name: Remove the signing keychain
+        if: always() && steps.signing.outputs.keychain != ''
+        run: security delete-keychain "${{ steps.signing.outputs.keychain }}" || true

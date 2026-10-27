@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: MIT -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Swoop Shield</title>
+  <style>
+    :root { color-scheme: light dark; font: 13px -apple-system, system-ui, sans-serif; }
+    body { margin: 0; width: 280px; padding: 14px; }
+    h1 { font-size: 15px; margin: 0 0 2px; display: flex; align-items: center; gap: 8px; }
+    h1 img { width: 20px; height: 20px; }
+    .site { color: GrayText; margin-bottom: 12px; word-break: break-all; }
+    .count { font-size: 26px; font-weight: 600; }
+    .label { color: GrayText; margin-bottom: 12px; }
+    button { width: 100%; padding: 7px; margin-top: 6px; border-radius: 7px; border: 1px solid #8884; background: Canvas; color: CanvasText; font: inherit; cursor: pointer; }
+    button.primary { background: #2f6fed; color: white; border: none; }
+    .note { margin-top: 12px; color: GrayText; font-size: 11px; line-height: 1.35; }
+  </style>
+</head>
+<body>
+  <h1><img src="icons/32.png" alt="">Swoop Shield</h1>
+  <div class="site" id="site">–</div>
+  <div class="count" id="count">–</div>
+  <div class="label">requests blocked on this page</div>
+  <button class="primary" id="toggleSite">Pause on this site</button>
+  <button id="toggleAll">Turn off everywhere</button>
+  <div class="note">System-wide blocking for every app is in the Swoop app (Settings › Shield). This extension adds in-page ad removal. Nothing you browse leaves your device.</div>
+  <script src="popup.js"></script>
+</body>
+</html>
