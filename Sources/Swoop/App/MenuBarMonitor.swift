@@ -12,6 +12,22 @@ final class MenuBarMonitor: NSObject, NSMenuDelegate {
     private let reader = StatsReader()
     private(set) var stats = SystemStats()
 
+    /// The Swoop mark as a menu-bar template image (vector PDF from Resources/MenuBar, copied into
+    /// the bundle by build-app.sh). Falls back to an SF Symbol when run outside the bundle (swift run).
+    private static let statusImage: NSImage? = {
+        if let url = Bundle.main.url(forResource: "SwoopMenuBarTemplate", withExtension: "pdf"),
+           let img = NSImage(contentsOf: url) {
+            img.size = NSSize(width: 18, height: 18)
+            img.isTemplate = true
+            img.accessibilityDescription = "Swoop"
+            return img
+        }
+        let img = NSImage(systemSymbolName: "bird.fill", accessibilityDescription: "Swoop")
+            ?? NSImage(systemSymbolName: "sparkles", accessibilityDescription: "Swoop")
+        img?.isTemplate = true
+        return img
+    }()
+
     func start() {
         _ = reader.read()   // prime CPU ticks
         refreshVisibility()
@@ -40,10 +56,7 @@ final class MenuBarMonitor: NSObject, NSMenuDelegate {
 
     private func updateTitle() {
         guard let b = item?.button else { return }
-        let img = NSImage(systemSymbolName: "bird.fill", accessibilityDescription: "Swoop")
-            ?? NSImage(systemSymbolName: "sparkles", accessibilityDescription: "Swoop")
-        img?.isTemplate = true
-        b.image = img
+        b.image = Self.statusImage
         b.imagePosition = .imageLeading
         var parts: [String] = []
         var tips: [String] = []

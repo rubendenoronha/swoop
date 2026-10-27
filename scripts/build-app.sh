@@ -31,6 +31,7 @@
 #   SHIELD_APP_PROFILE=     Developer ID provisioning profile for com.swoopkey.swoop (path or base64)
 #   SHIELD_EXT_PROFILE=     Developer ID provisioning profile for com.swoopkey.swoop.shield (path or base64)
 #   SHIELD_RULES=           optional swoop-shield-compile --out dir: bake full list rules into the browser extension
+#   DMG_STYLE=1             0 = plain DMG (skip the Finder background/icon layout step)
 #   BUNDLE_ID=com.swoopkey.swoop
 #   OUT_DIR=dist
 set -euo pipefail
@@ -162,6 +163,8 @@ PLIST
 plutil -lint "$APP/Contents/Info.plist" >/dev/null
 printf 'APPL????' > "$APP/Contents/PkgInfo"
 cp -X "$ROOT/LICENSE" "$APP/Contents/Resources/"
+# Menu-bar template images (vector PDF; the app marks them as templates at runtime)
+cp -X "$ROOT"/Resources/MenuBar/*.pdf "$APP/Contents/Resources/" 2>/dev/null || true
 cp -X "$ROOT"/examples/scripts/* "$APP/Contents/Resources/Examples/" 2>/dev/null || true
 for b in "$BIN_RESOURCES"/*.bundle; do
   if [[ -e "$b" ]]; then ditto "$b" "$APP/Contents/Resources/$(basename "$b")"; fi
@@ -341,7 +344,68 @@ $OPEN_STEP
    Safari > Settings > Extensions.
 TXT
 rm -f "$DMG"
-hdiutil create -volname "Swoop $VERSION" -srcfolder "$STAGE" -fs HFS+ -format UDZO -ov "$DMG" >/dev/null
+VOLNAME="Swoop $VERSION"
+# Styled DMG: background art with an app -> Applications arrow (Resources/DMG, 660x400 @1x/@2x).
+# Finder lays it out through AppleScript; if that isn't possible (no GUI session, Finder busy,
+# DMG_STYLE=0) we fall back to a plain DMG with the same contents.
+styled_dmg() {
+  local bg1="$ROOT/Resources/DMG/dmg-background.png" bg2="$ROOT/Resources/DMG/dmg-background@2x.png"
+  [[ "${DMG_STYLE:-1}" == "1" && -f "$bg1" ]] || return 1
+  command -v osascript >/dev/null || return 1
+  mkdir -p "$STAGE/.background"
+  local bgname="background.png"
+  if [[ -f "$bg2" ]] && tiffutil -cathidpicheck "$bg1" "$bg2" -out "$STAGE/.background/background.tiff" >/dev/null 2>&1; then
+    bgname="background.tiff"
+  else
+    cp -X "$bg1" "$STAGE/.background/background.png"
+  fi
+  local rwdir; rwdir="$(mktemp -d)"
+  local rw="$rwdir/Swoop-rw.dmg"
+  hdiutil create -volname "$VOLNAME" -srcfolder "$STAGE" -fs HFS+ -format UDRW -ov "$rw" >/dev/null || return 1
+  local mnt; mnt="$(hdiutil attach -readwrite -noverify -noautoopen "$rw" | awk -F'\t' '/\/Volumes\//{print $NF; exit}')"
+  [[ -n "$mnt" && -d "$mnt" ]] || { rm -rf "$rwdir"; return 1; }
+  local disk; disk="$(basename "$mnt")"
+  # perl alarm = portable timeout: Finder scripting can hang on headless machines
+  if ! perl -e 'alarm shift; exec @ARGV' 90 osascript >/dev/null <<OSA
+tell application "Finder"
+  tell disk "$disk"
+    open
+    set current view of container window to icon view
+    set toolbar visible of container window to false
+    set statusbar visible of container window to false
+    set the bounds of container window to {200, 120, 860, 520}
+    set viewOptions to the icon view options of container window
+    set arrangement of viewOptions to not arranged
+    set icon size of viewOptions to 96
+    set text size of viewOptions to 12
+    set background picture of viewOptions to file ".background:$bgname"
+    set position of item "Swoop.app" of container window to {165, 165}
+    set position of item "Applications" of container window to {495, 165}
+    set position of item "Read me first.txt" of container window to {330, 305}
+    close
+    open
+    update without registering applications
+    delay 2
+    close
+  end tell
+end tell
+OSA
+  then
+    echo "   (Finder layout unavailable; making a plain DMG)"
+    hdiutil detach "$mnt" -force >/dev/null 2>&1 || true
+    rm -rf "$rwdir" "$STAGE/.background"
+    return 1
+  fi
+  sync
+  hdiutil detach "$mnt" >/dev/null 2>&1 || { sleep 3; hdiutil detach "$mnt" -force >/dev/null; }
+  hdiutil convert "$rw" -format UDZO -imagekey zlib-level=9 -o "$DMG" >/dev/null || { rm -rf "$rwdir"; return 1; }
+  rm -rf "$rwdir"
+  echo "   styled DMG (background + icon layout)"
+}
+if ! styled_dmg; then
+  rm -f "$DMG"
+  hdiutil create -volname "$VOLNAME" -srcfolder "$STAGE" -fs HFS+ -format UDZO -ov "$DMG" >/dev/null
+fi
 hdiutil verify "$DMG" >/dev/null
 if [[ "$SIGN_IDENTITY" != "-" ]]; then
   codesign --force --sign "$SIGN_IDENTITY" --timestamp "$DMG"

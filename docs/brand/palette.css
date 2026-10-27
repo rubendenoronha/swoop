@@ -1,0 +1,27 @@
+:root {
+  --swoop-iris: #5B4CFF; /* Iris: rgb(91, 76, 255) */
+  --swoop-ink: #0D0B1E; /* Night Ink: rgb(13, 11, 30) */
+  --swoop-indigo: #1E1B5E; /* Indigo: rgb(30, 27, 94) */
+  --swoop-orchid: #B35CF0; /* Orchid: rgb(179, 92, 240) */
+  --swoop-apricot: #FF9A76; /* Apricot: rgb(255, 154, 118) */
+  --swoop-glow: #FFD9BF; /* Glow: rgb(255, 217, 191) */
+  --swoop-paper: #FAF8F5; /* Paper: rgb(250, 248, 245) */
+  --swoop-mist: #EFECF4; /* Mist: rgb(239, 236, 244) */
+  --swoop-haze: #D9D5E3; /* Haze: rgb(217, 213, 227) */
+  --swoop-stone: #6E6A7C; /* Stone: rgb(110, 106, 124) */
+  --swoop-graphite: #2E2B3B; /* Graphite: rgb(46, 43, 59) */
+  --swoop-success: #1FA971; /* Freed: rgb(31, 169, 113) */
+  --swoop-warn: #E8930C; /* Review: rgb(232, 147, 12) */
+  --swoop-danger: #E5484D; /* Danger: rgb(229, 72, 77) */
+  --swoop-shield: #12A594; /* Shield: rgb(18, 165, 148) */
+  --swoop-success-text: #0F7A52;
+  --swoop-warn-text: #9A5B00;
+  --swoop-danger-text: #C42B31;
+  --swoop-shield-text: #0A7368;
+  --swoop-gradient: linear-gradient(135deg, #4B3FE8 0%, #9456EC 58%, #F0868F 100%);
+  --swoop-gradient-shield: linear-gradient(135deg, #12A594 0%, #0B6E8C 100%);
+  --swoop-font-display: 'Inter Display', 'Inter', system-ui, sans-serif;
+  --swoop-font-text: 'Inter', system-ui, sans-serif;
+  --swoop-font-accent: 'Instrument Serif', Georgia, serif; /* italic only */
+  --swoop-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}

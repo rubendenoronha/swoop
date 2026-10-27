@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-header-dark.png">
+    <img alt="Swoop: your whole Mac, in one swoop. Launcher, cleaner and ad blocker for macOS. Free and open source." src="docs/assets/readme-header-light.png" width="100%">
+  </picture>
+</p>
+
 # Swoop
 
 **A free, open-source launcher, Mac cleaner and system-wide ad blocker in one native app.** Raycast-style search, clipboard history, snippets and window management; a CleanMyMac-style cleaner that explains every item and can undo everything it removes; and Swoop Shield, which blocks ads, trackers and malware for every app and browser on your Mac.
@@ -131,3 +138,7 @@ examples/scripts/    sample Raycast-compatible script commands
 - **Swoop Shield:** approving the system extension (System Settings › General › Login Items & Extensions › Network Extensions) plus the DNS proxy and content filter prompts. Local resolver mode asks for an admin password instead. The Safari extensions are switched on in Safari › Settings › Extensions.
 
 © 2026 DE NORONHA LTD. MIT licence.
+
+## Brand
+
+Logos, the app icon, colours and fonts live in [`docs/brand`](docs/brand) (SVG logos, `palette.css`). The type is Inter, Instrument Serif and JetBrains Mono, all under the SIL Open Font License. The GitHub social preview is [`docs/assets/social-preview.png`](docs/assets/social-preview.png). Please keep the Swoop name and logo for the official project; forks are welcome under MIT with their own name and mark.
