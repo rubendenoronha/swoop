@@ -266,6 +266,8 @@ final class ShieldController: NSObject, ObservableObject {
             openProfilesSettings()
         case .browserOnly:
             break
+        case .worksWithPax:
+            if systemExtensionAvailable { configureManagers(enabled: false) }
         }
         setStatus(.off)
         writeBrowserState()

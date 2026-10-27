@@ -1,27 +1,38 @@
 :root {
-  --swoop-iris: #5B4CFF; /* Iris: rgb(91, 76, 255) */
-  --swoop-ink: #0D0B1E; /* Night Ink: rgb(13, 11, 30) */
-  --swoop-indigo: #1E1B5E; /* Indigo: rgb(30, 27, 94) */
-  --swoop-orchid: #B35CF0; /* Orchid: rgb(179, 92, 240) */
-  --swoop-apricot: #FF9A76; /* Apricot: rgb(255, 154, 118) */
-  --swoop-glow: #FFD9BF; /* Glow: rgb(255, 217, 191) */
-  --swoop-paper: #FAF8F5; /* Paper: rgb(250, 248, 245) */
-  --swoop-mist: #EFECF4; /* Mist: rgb(239, 236, 244) */
-  --swoop-haze: #D9D5E3; /* Haze: rgb(217, 213, 227) */
-  --swoop-stone: #6E6A7C; /* Stone: rgb(110, 106, 124) */
-  --swoop-graphite: #2E2B3B; /* Graphite: rgb(46, 43, 59) */
-  --swoop-success: #1FA971; /* Freed: rgb(31, 169, 113) */
-  --swoop-warn: #E8930C; /* Review: rgb(232, 147, 12) */
-  --swoop-danger: #E5484D; /* Danger: rgb(229, 72, 77) */
-  --swoop-shield: #12A594; /* Shield: rgb(18, 165, 148) */
-  --swoop-success-text: #0F7A52;
-  --swoop-warn-text: #9A5B00;
-  --swoop-danger-text: #C42B31;
-  --swoop-shield-text: #0A7368;
-  --swoop-gradient: linear-gradient(135deg, #4B3FE8 0%, #9456EC 58%, #F0868F 100%);
-  --swoop-gradient-shield: linear-gradient(135deg, #12A594 0%, #0B6E8C 100%);
-  --swoop-font-display: 'Inter Display', 'Inter', system-ui, sans-serif;
+  --swoop-dusk: #4A5A82; /* Dusk: rgb(74, 90, 130) */
+  --swoop-slate: #5F7393; /* Slate: rgb(95, 115, 147) */
+  --swoop-periwinkle: #9AA5CC; /* Periwinkle: rgb(154, 165, 204) */
+  --swoop-mauve: #9C8A9E; /* Mauve: rgb(156, 138, 158) */
+  --swoop-rose: #D29B9E; /* Rose: rgb(210, 155, 158) */
+  --swoop-peach: #E8A986; /* Peach: rgb(232, 169, 134) */
+  --swoop-shell: #F4DCCB; /* Shell: rgb(244, 220, 203) */
+  --swoop-cream: #F6F3EE; /* Cream: rgb(246, 243, 238) */
+  --swoop-mist: #EEEAE4; /* Mist: rgb(238, 234, 228) */
+  --swoop-haze: #E2DDD6; /* Haze: rgb(226, 221, 214) */
+  --swoop-stone: #6B6670; /* Stone: rgb(107, 102, 112) */
+  --swoop-graphite: #3B3840; /* Graphite: rgb(59, 56, 64) */
+  --swoop-ink: #1E1C21; /* Ink: rgb(30, 28, 33) */
+  --swoop-night: #262A3B; /* Night: rgb(38, 42, 59) */
+  --swoop-success: #86AD95; /* Freed: rgb(134, 173, 149) */
+  --swoop-warn: #D8AC6C; /* Review: rgb(216, 172, 108) */
+  --swoop-danger: #C8776D; /* Danger: rgb(200, 119, 109) */
+  --swoop-shield: #6FA59C; /* Shield: rgb(111, 165, 156) */
+  --swoop-success-text: #3F6B52;
+  --swoop-warn-text: #85590F;
+  --swoop-danger-text: #A3433A;
+  --swoop-shield-text: #3B6F68;
+  --swoop-gradient-sky: linear-gradient(180deg, #5B6E90 0%, #7383A3 30%, #8F8AA2 58%, #A28E9C 82%, #B9938F 100%);
+  --swoop-gradient-symbol: linear-gradient(135deg, #5A6D8F 0%, #8886A4 45%, #C3949B 80%, #DE9F8E 100%);
+  --swoop-gradient-dawn: linear-gradient(180deg, #C9D0E8 0%, #E4E4EE 30%, #F3EFEC 62%, #F6F3EE 100%);
+  --swoop-gradient-night: linear-gradient(180deg, #1F2231 0%, #2A2F45 45%, #3F3F57 80%, #5A4E60 100%);
+  --swoop-gradient-shield: linear-gradient(135deg, #8DBDB2 0%, #4F857F 100%);
+  --swoop-card: #FFFFFF;
+  --swoop-card-shadow: 0 1px 2px rgba(30,28,33,.06), 0 12px 40px rgba(47,54,82,.14);
+  --swoop-glass: rgba(255,255,255,.22); /* frosted pill on the sky; pair with backdrop-filter: blur(16px) */
+  --swoop-glass-border: rgba(255,255,255,.45);
+  --swoop-radius-card: 24px; --swoop-radius-pill: 999px;
+  --swoop-font-display: 'Fraunces', Georgia, serif; /* opsz 72, wght 360-460, SOFT 100, WONK 0 */
   --swoop-font-text: 'Inter', system-ui, sans-serif;
-  --swoop-font-accent: 'Instrument Serif', Georgia, serif; /* italic only */
+  --swoop-font-accent: 'Fraunces', Georgia, serif; /* italic, same axes */
   --swoop-font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }

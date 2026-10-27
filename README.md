@@ -142,4 +142,4 @@ examples/scripts/    sample Raycast-compatible script commands
 
 ## Brand
 
-Logos, the app icon, colours and fonts live in [`docs/brand`](docs/brand) (SVG logos, `palette.css`). The type is Inter, Instrument Serif and JetBrains Mono, all under the SIL Open Font License. The GitHub social preview is [`docs/assets/social-preview.png`](docs/assets/social-preview.png). Please keep the Swoop name and logo for the official project; forks are welcome under MIT with their own name and mark.
+Logos, the app icon, colours and fonts live in [`docs/brand`](docs/brand) (SVG logos, `palette.css`). The type is Fraunces, Inter and JetBrains Mono, all under the SIL Open Font License. The GitHub social preview is [`docs/assets/social-preview.png`](docs/assets/social-preview.png). Please keep the Swoop name and logo for the official project; forks are welcome under MIT with their own name and mark.

@@ -378,6 +378,17 @@ public struct BatteryHealth: Equatable {
     public let condition: String?        // "Normal" / "Service Recommended"
     public let temperatureC: Double?
 
+    public init(cycleCount: Int?, designCapacity: Int?, maxCapacity: Int?, currentCharge: Int?, isCharging: Bool,
+                condition: String?, temperatureC: Double?) {
+        self.cycleCount = cycleCount
+        self.designCapacity = designCapacity
+        self.maxCapacity = maxCapacity
+        self.currentCharge = currentCharge
+        self.isCharging = isCharging
+        self.condition = condition
+        self.temperatureC = temperatureC
+    }
+
     public var healthPercent: Int? {
         guard let d = designCapacity, d > 0, let m = maxCapacity else { return nil }
         return min(100, Int((Double(m) / Double(d) * 100).rounded()))
