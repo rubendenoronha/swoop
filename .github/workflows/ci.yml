@@ -102,7 +102,9 @@ jobs:
         with: { name: shield-lists-log, path: shield-lists.log, retention-days: 7 }
 
   macos:
-    runs-on: macos-15
+    # Intel runner: GitHub's macOS arm64 pool is capacity-constrained (jobs were dropped with
+    # "not acquired by Runner of type hosted"). The build is universal either way (cross-compiled).
+    runs-on: macos-15-intel
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4

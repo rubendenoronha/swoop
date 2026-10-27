@@ -28,6 +28,7 @@ Press **⌥Space** (or any shortcut you record, including ⌘Space or a double-t
 - **Emoji picker** built from the system's Unicode data.
 - **Script commands**: drop Raycast-compatible scripts (`# @raycast.schemaVersion 1`, `title`, `mode`, `argument1`…) into `~/Library/Application Support/Swoop/Scripts`. Modes: fullOutput, compact, silent, inline. Examples in `examples/scripts`.
 - **Web search fallback** (Google, DuckDuckGo, Bing, Kagi or Ecosia).
+- **Opens at login** by default (untick "Open Swoop at login" on the last setup step, or change it any time in Settings › General › Startup).
 - **Hotkeys for everything**: open Swoop, any command, window layout, clipboard history, cleaner action, script command or quicklink. The recorder warns about conflicts with Swoop's other bindings, with macOS's own shortcuts (read from your Keyboard Shortcuts settings, so ⌘Space shows how to free it from Spotlight), and with combinations another app has already taken.
 
 ## Shield: system-wide ad blocking

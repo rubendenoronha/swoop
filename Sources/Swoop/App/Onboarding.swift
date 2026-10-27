@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 import AppKit
+import ServiceManagement
 import SwiftUI
 import SwoopCore
 
@@ -14,6 +15,24 @@ enum Onboarding {
     }
 
     static func close() { window?.close() }
+
+    /// Registers (or leaves unregistered) Swoop as a login item when setup finishes.
+    static func applyLaunchAtLogin(_ on: Bool) {
+        let service = SMAppService.mainApp
+        do {
+            if on {
+                if service.status != .enabled { try service.register() }
+            } else if service.status == .enabled {
+                try service.unregister()
+            }
+        } catch {
+            NSLog("Swoop: launch at login: \(error.localizedDescription)")
+        }
+        if on && service.status == .requiresApproval {
+            Actions.info("Open Swoop at login", "Approve Swoop in System Settings › General › Login Items.")
+            SMAppService.openSystemSettingsLoginItems()
+        }
+    }
 
     private static func make() -> NSWindow {
         let w = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 620, height: 520), styleMask: [.titled, .closable, .fullSizeContentView],
@@ -31,6 +50,9 @@ struct OnboardingView: View {
     @State private var step = 0
     @State private var ax = Permissions.accessibility
     @State private var fda = Permissions.fullDiskAccess
+    /// Launch at login is on by default; the last step lets people opt out.
+    @State private var openAtLogin = true
+    @State private var loginNeedsApproval = SMAppService.mainApp.status == .requiresApproval
     @ObservedObject private var prefs = Prefs.shared
     let timer = Timer.publish(every: 1.5, on: .main, in: .common).autoconnect()
 
@@ -57,6 +79,7 @@ struct OnboardingView: View {
                     Button(step == 0 ? "Get Started" : "Continue") { step += 1 }.keyboardShortcut(.defaultAction)
                 } else {
                     Button("Start Using Swoop") {
+                        Onboarding.applyLaunchAtLogin(openAtLogin)
                         prefs.onboardingDone = true
                         Onboarding.close()
                         LauncherController.shared.show(mode: .root)
@@ -141,6 +164,12 @@ struct OnboardingView: View {
             Text("You're set").font(.title.weight(.semibold))
             Text("Press \(prefs.trigger(for: HotKeyCenter.launcherID)?.display ?? "⌥Space") to open Swoop. Try “clean junk”, “left half”, “clipboard”, or a sum like 12*7.")
                 .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+            Toggle("Open Swoop at login", isOn: $openAtLogin)
+                .toggleStyle(.checkbox)
+                .padding(.top, 8)
+            if openAtLogin && loginNeedsApproval {
+                Text("Approve Swoop in System Settings › General › Login Items.").font(.caption).foregroundColor(.orange)
+            }
         }
     }
 }
