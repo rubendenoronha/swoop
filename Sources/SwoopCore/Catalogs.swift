@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: MIT
 import Foundation
+#if canImport(CoreGraphics)
+import CoreGraphics
+#endif
 
 // MARK: - Window layouts
 
