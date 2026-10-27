@@ -7,6 +7,15 @@ import Glibc
 import Darwin
 #endif
 
+/// The C bind(2) (a type in scope can have its own `bind` method).
+func posixBind(_ fd: Int32, _ addr: UnsafePointer<sockaddr>, _ len: socklen_t) -> Int32 {
+    #if canImport(Glibc)
+    return Glibc.bind(fd, addr, len)
+    #else
+    return Darwin.bind(fd, addr, len)
+    #endif
+}
+
 func net(_ s: String) -> NetworkRule { RuleParser.parseLine(s).network! }
 func cos(_ s: String) -> CosmeticRule { RuleParser.parseLine(s).cosmetic! }
 
@@ -355,7 +364,7 @@ final class LocalResolverTests: XCTestCase {
             let s = socket(AF_INET, SOCK_DGRAM, 0)
             #endif
             guard s >= 0, let addr = SocketAddress(host: "127.0.0.1", port: 0) else { return nil }
-            guard addr.withSockaddr({ bind(s, $0, $1) }) == 0 else { return nil }
+            guard addr.withSockaddr({ posixBind(s, $0, $1) }) == 0 else { return nil }
             var sin = sockaddr_in()
             var len = socklen_t(MemoryLayout<sockaddr_in>.size)
             _ = withUnsafeMutablePointer(to: &sin) { $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { getsockname(s, $0, &len) } }
