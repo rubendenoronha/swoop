@@ -105,7 +105,7 @@ enum LaunchItems {
 
     static func removeLoginItem(_ name: String) -> Bool {
         if isPaxLoginItem(name) { return false }
-        AppleScript.run("tell application \"System Events\" to delete login item \"\(name.replacingOccurrences(of: "\"", with: ""))\"")
+        return AppleScript.run("tell application \"System Events\" to delete login item \"\(name.replacingOccurrences(of: "\"", with: ""))\"")
     }
 }
 
