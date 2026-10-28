@@ -14,7 +14,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SRC="$ROOT/Extensions/webext"
 RULES="${1:-}"
 OUT="$ROOT/dist/webext"
-VERSION="${SWOOP_VERSION:-0.2.1}"
+VERSION="${SWOOP_VERSION:-0.2.2}"
 command -v python3 >/dev/null || { echo "build-webext: python3 is required" >&2; exit 1; }
 
 rm -rf "$OUT"

@@ -6,7 +6,7 @@
 #
 #   ./scripts/build-app.sh            # this Mac's architecture, ad-hoc signed
 #   UNIVERSAL=1 ./scripts/build-app.sh
-#   open dist/Swoop-0.2.1.dmg
+#   open dist/Swoop-0.2.2.dmg
 #
 # Swoop Shield adds to the bundle:
 #   Contents/MacOS/swoop-resolver                                  local DNS fallback daemon
@@ -20,7 +20,7 @@
 # local-resolver / profile / browser modes.
 #
 # Environment:
-#   SWOOP_VERSION=0.2.1     CFBundleShortVersionString and DMG name
+#   SWOOP_VERSION=0.2.2     CFBundleShortVersionString and DMG name
 #   UNIVERSAL=1             arm64 + x86_64 (lipo); CI always builds universal
 #   SIGN_IDENTITY=-         "-" = ad-hoc (default). Releases: "Developer ID Application: <name> (<team>)"
 #   NOTARY_PROFILE=         `xcrun notarytool store-credentials` profile: notarise + staple app and DMG
@@ -44,7 +44,7 @@ for tool in swift codesign hdiutil plutil ditto; do
   command -v "$tool" >/dev/null 2>&1 || die "$tool not found. Install the Command Line Tools: xcode-select --install"
 done
 
-VERSION="${SWOOP_VERSION:-0.2.1}"
+VERSION="${SWOOP_VERSION:-0.2.2}"
 UNIVERSAL="${UNIVERSAL:-0}"
 SIGN_IDENTITY="${SIGN_IDENTITY:--}"
 NOTARY_PROFILE="${NOTARY_PROFILE:-}"

@@ -38,7 +38,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  SWOOP_VERSION: "0.2.1"
+  SWOOP_VERSION: "0.2.2"
 
 jobs:
   core-linux:
