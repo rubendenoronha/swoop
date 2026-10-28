@@ -16,16 +16,16 @@
   --swoop-success: #86AD95; /* Freed: rgb(134, 173, 149) */
   --swoop-warn: #D8AC6C; /* Review: rgb(216, 172, 108) */
   --swoop-danger: #C8776D; /* Danger: rgb(200, 119, 109) */
-  --swoop-shield: #6FA59C; /* Shield: rgb(111, 165, 156) */
+  --swoop-shield: #7C6585; /* Shield: rgb(124, 101, 133) */
   --swoop-success-text: #3F6B52;
   --swoop-warn-text: #85590F;
   --swoop-danger-text: #A3433A;
-  --swoop-shield-text: #3B6F68;
+  --swoop-shield-text: #4C507A;
   --swoop-gradient-sky: linear-gradient(180deg, #7D7FA6 0%, #A890A8 35%, #DDA594 70%, #F0B98E 100%);
   --swoop-gradient-symbol: linear-gradient(180deg, #6A6E99 0%, #8E80A2 45%, #C8949A 80%, #E6AA8C 100%);
   --swoop-gradient-dawn: linear-gradient(180deg, #C9D0E8 0%, #E4E4EE 30%, #F3EFEC 62%, #F6F3EE 100%);
   --swoop-gradient-night: linear-gradient(180deg, #1F2231 0%, #2A2F45 45%, #3F3F57 80%, #5A4E60 100%);
-  --swoop-gradient-shield: linear-gradient(135deg, #8DBDB2 0%, #4F857F 100%);
+  --swoop-gradient-shield: linear-gradient(135deg, #2E3658 0%, #4C507A 45%, #7C6585 80%, #A86F7E 100%);
   --swoop-card: #FFFFFF;
   --swoop-card-shadow: 0 1px 2px rgba(30,28,33,.06), 0 12px 40px rgba(47,54,82,.14);
   --swoop-glass: rgba(255,255,255,.22); /* frosted pill on the sky; pair with backdrop-filter: blur(16px) */
