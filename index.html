@@ -249,11 +249,11 @@
       .x-table .x-us { background: #f6f7fa; }
       .x-table td { color: var(--stone); }
       .x-table td.x-us { color: var(--ink); font-weight: 500; }
-      .x-yes, .x-no { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; vertical-align: middle; }
-      .x-yes { background: #e4eee7; color: var(--freed-t); }
-      .x-no { background: transparent; border: 1px solid var(--haze); color: var(--stone); }
-      .x-yes svg, .x-no svg { width: 13px; height: 13px; }
-      .x-us .x-yes { background: #d9e7de; }
+      .x-yes, .x-no { display: inline-block; width: 24px; height: 24px; vertical-align: middle; position: relative; }
+      .x-yes { border-radius: 50%; background: #dcece8 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%233b6f68' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3L12.5 5'/%3E%3C/svg%3E") center / 13px no-repeat; box-shadow: inset 0 0 0 1px rgba(111, 165, 156, 0.35); }
+      .x-us .x-yes { background-color: #cfe5df; }
+      .x-no::before { content: ""; position: absolute; left: 7px; right: 7px; top: 11px; height: 2px; border-radius: 2px; background: #8f8a93; }
+      .x-sm { display: none; }
       .x-us-logo { font: 400 26px/1 var(--serif); font-variation-settings: "opsz" 72, "SOFT" 100; letter-spacing: -0.01em; color: var(--dusk); }
 
       /* privacy */
@@ -341,22 +341,20 @@
         .x-log { padding: 12px 16px; font-size: 12.5px; }
 
         .x-shield__top { gap: 20px; }
-        .x-shield__mark { width: 104px; }
+        .x-shield__mark { width: 140px; }
         .x-note { margin-top: 28px; font-size: 15px; }
 
-        /* comparison: each row becomes a compact card */
-        .x-table-wrap { overflow: visible; border-radius: 24px; }
-        .x-table, .x-table tbody, .x-table tr, .x-table th, .x-table td { display: block; }
-        .x-table { min-width: 0; }
-        .x-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-        .x-table tbody tr { padding: 18px 20px 14px; border-bottom: 1px solid var(--mist); }
-        .x-table tbody tr:last-child { border-bottom: 0; }
-        .x-table th, .x-table td { border: 0; }
-        .x-table tbody th { padding: 0 0 8px; font-size: 17px; line-height: 1.35; }
-        .x-table td { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 40px; padding: 6px 0; text-align: right; font-size: 16px; line-height: 1.4; }
-        .x-table td::before { content: attr(data-label); flex: 1; text-align: left; font-size: 15px; font-weight: 400; color: var(--stone); }
-        .x-table td.x-us { margin: 2px -10px; padding: 6px 10px; border-radius: 12px; }
-        .x-table td.x-us::before { color: var(--dusk); font: 400 20px/1 var(--serif); font-variation-settings: "opsz" 72, "SOFT" 100; }
+        /* comparison: compact 4-column matrix */
+        .x-lg { display: none; }
+        .x-sm { display: inline; }
+        .x-table-wrap { overflow: hidden; border-radius: 24px; }
+        .x-table { min-width: 0; table-layout: fixed; }
+        .x-table th, .x-table td { padding: 0 2px; height: 52px; text-align: center; font-size: 13px; line-height: 1.25; overflow-wrap: anywhere; }
+        .x-table col.x-col-name { width: 40%; }
+        .x-table thead th { padding-top: 14px; padding-bottom: 10px; height: auto; font-size: 12px; letter-spacing: -0.01em; vertical-align: bottom; }
+        .x-table thead th.x-us .x-us-logo { font-size: 21px; }
+        .x-table tbody th { padding: 8px 6px 8px 14px; text-align: left; font-size: 15px; line-height: 1.3; overflow-wrap: normal; }
+        .x-table td.x-us { font-weight: 500; }
 
         .x-priv { gap: 14px; margin-bottom: 14px; }
         .x-priv div { padding: 26px 24px; border-radius: 24px; }
@@ -643,7 +641,7 @@
               <h2 class="x-h2" id="shield-h">Block ads and trackers on your <em>whole Mac</em>.</h2>
               <p class="x-lede">A free, system-wide ad blocker. Shield stops ads, trackers, telemetry and malware sites in every browser and app (Safari, Chrome, Arc, Brave, Edge, Firefox, even apps outside the browser) without slowing you down.</p>
             </div>
-            <img class="x-shield__mark x-reveal" src="shield-mark-512.png" alt="Swoop Shield mark" width="200" height="200" />
+            <img class="x-shield__mark x-reveal" src="shield-mark-v3-512.png" alt="Swoop Shield mark" width="200" height="200" />
           </div>
           <div class="x-grid">
             <div class="x-card x-reveal">
@@ -694,23 +692,24 @@
           </div>
           <div class="x-table-wrap x-reveal" tabindex="0" role="region" aria-label="Comparison table">
             <table class="x-table">
+              <colgroup><col class="x-col-name" /><col /><col /><col /></colgroup>
               <thead>
                 <tr>
                   <td></td>
                   <th scope="col" class="x-us"><span class="x-us-logo">swoop</span></th>
-                  <th scope="col">Typical launcher</th>
-                  <th scope="col">Paid Mac cleaners (e.g. CleanMyMac)</th>
+                  <th scope="col"><span class="x-lg">Typical launcher</span><span class="x-sm">Launchers</span></th>
+                  <th scope="col"><span class="x-lg">Paid Mac cleaners (e.g. CleanMyMac)</span><span class="x-sm">Cleaners</span></th>
                 </tr>
               </thead>
               <tbody id="cmp-body">
-                <tr><th scope="row">Launcher</th><td class="x-us">Y</td><td>Y</td><td>N</td></tr>
-                <tr><th scope="row">Clipboard history</th><td class="x-us">Y</td><td>Y</td><td>N</td></tr>
-                <tr><th scope="row">Window management</th><td class="x-us">Y</td><td>Y</td><td>N</td></tr>
-                <tr><th scope="row">Mac cleaner (free up disk space) with undo</th><td class="x-us">Y</td><td>N</td><td>Y</td></tr>
-                <tr><th scope="row">Uninstaller with leftovers</th><td class="x-us">Y</td><td>N</td><td>Y</td></tr>
-                <tr><th scope="row">Ad blocker for every browser and app</th><td class="x-us">Y</td><td>N</td><td>N</td></tr>
-                <tr><th scope="row">Price</th><td class="x-us">Free</td><td>Free tier, subscription for some features</td><td>Paid subscription</td></tr>
-                <tr><th scope="row">Open source</th><td class="x-us">Yes, MIT</td><td>N</td><td>N</td></tr>
+                <tr><th scope="row">Launcher</th><td class="x-us"><span class="x-yes" role="img" aria-label="Yes"></span></td><td><span class="x-yes" role="img" aria-label="Yes"></span></td><td><span class="x-no" role="img" aria-label="No"></span></td></tr>
+                <tr><th scope="row">Clipboard history</th><td class="x-us"><span class="x-yes" role="img" aria-label="Yes"></span></td><td><span class="x-yes" role="img" aria-label="Yes"></span></td><td><span class="x-no" role="img" aria-label="No"></span></td></tr>
+                <tr><th scope="row">Window management</th><td class="x-us"><span class="x-yes" role="img" aria-label="Yes"></span></td><td><span class="x-yes" role="img" aria-label="Yes"></span></td><td><span class="x-no" role="img" aria-label="No"></span></td></tr>
+                <tr><th scope="row"><span class="x-lg">Mac cleaner (free up disk space) with undo</span><span class="x-sm">Mac cleaner with undo</span></th><td class="x-us"><span class="x-yes" role="img" aria-label="Yes"></span></td><td><span class="x-no" role="img" aria-label="No"></span></td><td><span class="x-yes" role="img" aria-label="Yes"></span></td></tr>
+                <tr><th scope="row">Uninstaller with leftovers</th><td class="x-us"><span class="x-yes" role="img" aria-label="Yes"></span></td><td><span class="x-no" role="img" aria-label="No"></span></td><td><span class="x-yes" role="img" aria-label="Yes"></span></td></tr>
+                <tr><th scope="row"><span class="x-lg">Ad blocker for every browser and app</span><span class="x-sm">System-wide ad blocker</span></th><td class="x-us"><span class="x-yes" role="img" aria-label="Yes"></span></td><td><span class="x-no" role="img" aria-label="No"></span></td><td><span class="x-no" role="img" aria-label="No"></span></td></tr>
+                <tr><th scope="row">Price</th><td class="x-us">Free</td><td><span class="x-lg">Free tier, subscription for some features</span><span class="x-sm">Freemium</span></td><td><span class="x-lg">Paid subscription</span><span class="x-sm">Paid</span></td></tr>
+                <tr><th scope="row">Open source</th><td class="x-us"><span class="x-lg">Yes, MIT</span><span class="x-sm">MIT</span></td><td><span class="x-no" role="img" aria-label="No"></span></td><td><span class="x-no" role="img" aria-label="No"></span></td></tr>
               </tbody>
             </table>
           </div>
@@ -864,18 +863,6 @@
           drift();
         }
 
-        // comparison marks
-        var tick = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
-        var cross = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg>';
-        var cols = Array.prototype.map.call(document.querySelectorAll(".x-table thead th"), function (th) { return th.textContent.trim(); });
-        document.querySelectorAll("#cmp-body tr").forEach(function (tr) {
-          tr.querySelectorAll("td").forEach(function (td, n) { td.setAttribute("data-label", cols[n] || ""); });
-        });
-        document.querySelectorAll("#cmp-body td").forEach(function (td) {
-          var t = td.textContent.trim();
-          if (t === "Y") td.innerHTML = '<span class="x-yes" role="img" aria-label="Yes">' + tick + "</span>";
-          else if (t === "N") td.innerHTML = '<span class="x-no" role="img" aria-label="No">' + cross + "</span>";
-        });
 
         // launcher mock-up
         var q = document.getElementById("mock-q");
