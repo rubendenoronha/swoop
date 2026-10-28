@@ -12,7 +12,7 @@ final class MenuBarMonitor: NSObject, NSMenuDelegate {
     private let reader = StatsReader()
     private(set) var stats = SystemStats()
 
-    /// The Swoop mark as a menu-bar template image (vector PDF from Resources/MenuBar, copied into
+    /// The Swoop serif "s" as a menu-bar template image (vector PDF from Resources/MenuBar, copied into
     /// the bundle by build-app.sh). Falls back to an SF Symbol when run outside the bundle (swift run).
     private static let statusImage: NSImage? = {
         if let url = Bundle.main.url(forResource: "SwoopMenuBarTemplate", withExtension: "pdf"),
