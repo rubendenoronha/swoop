@@ -1,11 +1,11 @@
 :root {
   --swoop-dusk: #4A5A82; /* Dusk: rgb(74, 90, 130) */
-  --swoop-slate: #5F7393; /* Slate: rgb(95, 115, 147) */
-  --swoop-periwinkle: #9AA5CC; /* Periwinkle: rgb(154, 165, 204) */
-  --swoop-mauve: #9C8A9E; /* Mauve: rgb(156, 138, 158) */
-  --swoop-rose: #D29B9E; /* Rose: rgb(210, 155, 158) */
-  --swoop-peach: #E8A986; /* Peach: rgb(232, 169, 134) */
-  --swoop-shell: #F4DCCB; /* Shell: rgb(244, 220, 203) */
+  --swoop-slate: #6E76A0; /* Slate: rgb(110, 118, 160) */
+  --swoop-periwinkle: #7D7FA6; /* Lavender: rgb(125, 127, 166) */
+  --swoop-mauve: #A890A8; /* Mauve: rgb(168, 144, 168) */
+  --swoop-rose: #F2A88E; /* Coral: rgb(242, 168, 142) */
+  --swoop-peach: #F6C291; /* Apricot: rgb(246, 194, 145) */
+  --swoop-shell: #F8E2CC; /* Shell: rgb(248, 226, 204) */
   --swoop-cream: #F6F3EE; /* Cream: rgb(246, 243, 238) */
   --swoop-mist: #EEEAE4; /* Mist: rgb(238, 234, 228) */
   --swoop-haze: #E2DDD6; /* Haze: rgb(226, 221, 214) */
@@ -21,8 +21,8 @@
   --swoop-warn-text: #85590F;
   --swoop-danger-text: #A3433A;
   --swoop-shield-text: #3B6F68;
-  --swoop-gradient-sky: linear-gradient(180deg, #5B6E90 0%, #7383A3 30%, #8F8AA2 58%, #A28E9C 82%, #B9938F 100%);
-  --swoop-gradient-symbol: linear-gradient(135deg, #5A6D8F 0%, #8886A4 45%, #C3949B 80%, #DE9F8E 100%);
+  --swoop-gradient-sky: linear-gradient(180deg, #7D7FA6 0%, #A890A8 35%, #DDA594 70%, #F0B98E 100%);
+  --swoop-gradient-symbol: linear-gradient(180deg, #6A6E99 0%, #8E80A2 45%, #C8949A 80%, #E6AA8C 100%);
   --swoop-gradient-dawn: linear-gradient(180deg, #C9D0E8 0%, #E4E4EE 30%, #F3EFEC 62%, #F6F3EE 100%);
   --swoop-gradient-night: linear-gradient(180deg, #1F2231 0%, #2A2F45 45%, #3F3F57 80%, #5A4E60 100%);
   --swoop-gradient-shield: linear-gradient(135deg, #8DBDB2 0%, #4F857F 100%);
