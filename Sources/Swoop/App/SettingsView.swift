@@ -371,12 +371,16 @@ struct CloudSettings: View {
                     Button("Sign Out") { drive.signOut() }
                 } else {
                     Button(drive.signingIn ? "Waiting for your browser…" : "Sign In with Google") { drive.signIn() }
-                        .disabled(drive.signingIn || prefs.googleClientID.isEmpty)
+                        .disabled(drive.signingIn || !drive.canSignIn)
+                    Text("Opens Google in your browser. Swoop gets read-only access to search your Drive, plus access to files you upload with it. Tokens stay in your Keychain, and nothing passes through a Swoop server.")
+                        .font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
                 }
-                TextField("OAuth client ID", text: $prefs.googleClientID)
-                SecureField("Client secret (Desktop clients only)", text: $prefs.googleClientSecret)
-                Text("Swoop doesn't come with a shared Google client. In Google Cloud Console: create a project, enable the Google Drive API, set up the OAuth consent screen, then Credentials › Create credentials › OAuth client ID › Desktop app. Paste the client ID (and secret) here. Sign-in uses your browser with a loopback redirect and PKCE; tokens are kept in your Keychain. Swoop asks for read-only Drive access plus access to files it uploads.")
-                    .font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
+                DisclosureGroup("Advanced: use your own Google client") {
+                    TextField("OAuth client ID", text: $prefs.googleClientID)
+                    SecureField("Client secret", text: $prefs.googleClientSecret)
+                    Text("Optional. Leave empty to use Swoop's. To use your own: Google Cloud Console › enable the Google Drive API › Credentials › OAuth client ID › Desktop app.")
+                        .font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
+                }
                 LabeledContent("Upload hotkey") { HotkeyRecorder(actionID: "cloud.upload-drive", title: "Upload to Google Drive") }
                 LabeledContent("Search hotkey") { HotkeyRecorder(actionID: "cloud.search-drive", title: "Search Google Drive") }
             }

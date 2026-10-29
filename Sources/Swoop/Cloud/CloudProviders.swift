@@ -80,6 +80,26 @@ struct SimpleError: LocalizedError {
     var errorDescription: String? { message }
 }
 
+/// Swoop's own Google OAuth "Desktop app" client, so users only need to sign in.
+/// Google treats installed-app client secrets as non-confidential (they ship inside the
+/// app, and PKCE protects each sign-in). A build can override it with the Info.plist keys
+/// SwoopGoogleClientID / SwoopGoogleClientSecret (GOOGLE_CLIENT_ID / _SECRET at build time).
+enum GoogleClient {
+    static let defaultID = "__SWOOP_GOOGLE_CLIENT_ID__"
+    static let defaultSecretParts = ["__SWOOP_GOOGLE_SECRET_A__", "__SWOOP_GOOGLE_SECRET_B__"]
+
+    static var builtIn: (id: String, secret: String)? {
+        let plistID = (Bundle.main.object(forInfoDictionaryKey: "SwoopGoogleClientID") as? String ?? "")
+            .trimmingCharacters(in: .whitespaces)
+        if !plistID.isEmpty {
+            let secret = Bundle.main.object(forInfoDictionaryKey: "SwoopGoogleClientSecret") as? String ?? ""
+            return (plistID, secret)
+        }
+        guard !defaultID.hasPrefix("__") else { return nil }
+        return (defaultID, defaultSecretParts.joined())
+    }
+}
+
 final class GoogleDriveProvider: ObservableObject, CloudProvider {
     let service = CloudService.googleDrive
     private let keychainAccount = "google-drive"
@@ -97,17 +117,23 @@ final class GoogleDriveProvider: ObservableObject, CloudProvider {
 
     var isSignedIn: Bool { token != nil }
 
+    /// Your own client if you set one in Settings › Cloud › Advanced, otherwise Swoop's built-in one.
     private var config: OAuthConfig? {
         let id = Prefs.shared.googleClientID.trimmingCharacters(in: .whitespaces)
-        guard !id.isEmpty else { return nil }
-        let secret = Prefs.shared.googleClientSecret.trimmingCharacters(in: .whitespaces)
-        return OAuthConfig.googleDrive(clientID: id, clientSecret: secret.isEmpty ? nil : secret)
+        if !id.isEmpty {
+            let secret = Prefs.shared.googleClientSecret.trimmingCharacters(in: .whitespaces)
+            return OAuthConfig.googleDrive(clientID: id, clientSecret: secret.isEmpty ? nil : secret)
+        }
+        guard let c = GoogleClient.builtIn else { return nil }
+        return OAuthConfig.googleDrive(clientID: c.id, clientSecret: c.secret)
     }
+
+    var canSignIn: Bool { config != nil }
 
     func signIn() {
         guard let cfg = config else {
-            Actions.info("Add a Google client ID first",
-                         "Swoop doesn't ship a shared Google client. Create a free \"Desktop app\" OAuth client in Google Cloud Console (APIs & Services › Credentials, with the Google Drive API enabled), then paste its client ID (and secret) in Swoop Settings › Cloud.")
+            Actions.info("Google sign-in isn't available in this build",
+                         "Add your own Google client in Swoop Settings › Cloud › Advanced.")
             SettingsWindow.show(tab: .cloud)
             return
         }
@@ -162,6 +188,7 @@ final class GoogleDriveProvider: ObservableObject, CloudProvider {
                 }
                 self.store(t)
                 self.fetchAccount()
+                Prefs.shared.cloudSearchInLauncher = true
                 Notifier.show("Google Drive connected")
             }
         }.resume()

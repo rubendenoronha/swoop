@@ -35,9 +35,8 @@ final class Prefs: ObservableObject {
     @Published var menuBarShowsStats: Bool { didSet { d.set(menuBarShowsStats, forKey: "menuBarShowsStats") } }
 
     // MARK: Cloud
-    /// Google OAuth "Desktop app" client. Swoop ships without one (each distributor makes
-    /// their own in Google Cloud Console); the Info.plist key SwoopGoogleClientID, set at
-    /// build time with GOOGLE_CLIENT_ID, is the default.
+    /// Optional: your own Google OAuth "Desktop app" client (Settings › Cloud › Advanced).
+    /// Empty means Swoop's built-in client (GoogleClient.builtIn), so users just sign in.
     @Published var googleClientID: String { didSet { d.set(googleClientID, forKey: "googleClientID") } }
     @Published var googleClientSecret: String { didSet { d.set(googleClientSecret, forKey: "googleClientSecret") } }
     @Published var cloudSearchInLauncher: Bool { didSet { d.set(cloudSearchInLauncher, forKey: "cloudSearchInLauncher") } }
@@ -72,10 +71,8 @@ final class Prefs: ObservableObject {
         schedule = JSONStore.load(CleanupSchedule.self, from: "schedule.json") ?? CleanupSchedule()
         showMenuBarMonitor = d.bool(forKey: "showMenuBarMonitor")
         menuBarShowsStats = d.bool(forKey: "menuBarShowsStats")
-        let bundled = Bundle.main.object(forInfoDictionaryKey: "SwoopGoogleClientID") as? String ?? ""
-        googleClientID = d.string(forKey: "googleClientID") ?? bundled
-        googleClientSecret = d.string(forKey: "googleClientSecret")
-            ?? (Bundle.main.object(forInfoDictionaryKey: "SwoopGoogleClientSecret") as? String ?? "")
+        googleClientID = d.string(forKey: "googleClientID") ?? ""
+        googleClientSecret = d.string(forKey: "googleClientSecret") ?? ""
         cloudSearchInLauncher = d.bool(forKey: "cloudSearchInLauncher")
         onboardingDone = d.bool(forKey: "onboardingDone")
     }

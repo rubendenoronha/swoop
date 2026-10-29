@@ -63,7 +63,7 @@ The browser-extension zips built by CI include compiled rules and an `ATTRIBUTIO
 ## Cloud
 
 - **Google Drive**: sign in with OAuth 2.0 (loopback redirect + PKCE, tokens in your Keychain), search Drive from the launcher, open files in the browser, copy links, and quick-upload a file (the link is copied when it's done). Read-only Drive scope plus `drive.file` for uploads.
-  Swoop ships without a shared Google client: create a free *Desktop app* OAuth client in Google Cloud Console (with the Drive API enabled) and paste its ID in **Settings › Cloud**, or bake a default in at build time with `GOOGLE_CLIENT_ID=… ./scripts/build-app.sh`.
+  Just press **Sign in with Google** in **Settings › Cloud** (or run “Search Google Drive”) and allow access. Swoop uses its own Google client; you can swap in your own under Settings › Cloud › Advanced, or bake one in at build time with `GOOGLE_CLIENT_ID=… GOOGLE_CLIENT_SECRET=… ./scripts/build-app.sh`.
 - **iCloud Drive**: search and size the local iCloud Drive folder; no sign-in.
 - **Built to extend**: every service implements one `CloudProvider` protocol (search, usage, large files) on shared OAuth/PKCE/loopback pieces, so Dropbox and OneDrive slot in next.
 
