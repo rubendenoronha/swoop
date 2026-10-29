@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Privacy Policy · Swoop</title>
+<meta name="description" content="How Swoop handles your data. Short version: it stays on your Mac." />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter:wght@400;500;600&display=swap" />
+<style>
+:root{--ink:#1e1c21;--graphite:#3b3840;--stone:#6b6670;--cream:#f6f3ee;--haze:#e2ddd6;--dusk:#4a5a82;--sans:"Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;--serif:"Fraunces",Georgia,serif}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--graphite);font:16px/1.7 var(--sans)}
+.top{background:linear-gradient(115deg,#7D7FA6 0%,#A890A8 38%,#DDA594 72%,#F0B98E 100%);padding:28px 0 64px;color:#fff}
+.wrap{max-width:760px;margin:0 auto;padding:0 clamp(20px,5vw,40px)}
+.top nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:56px}
+.top nav a{color:#fff;text-decoration:none;font-size:15px;font-weight:500;text-shadow:0 1px 8px rgba(30,34,52,.35)}
+.top img{display:block;filter:drop-shadow(0 1px 8px rgba(30,34,52,.3))}
+h1{font:300 clamp(40px,7vw,60px)/1.05 var(--serif);margin:0 0 12px;letter-spacing:-.01em;text-shadow:0 2px 18px rgba(30,34,52,.35)}
+.top p{margin:0;font-size:15px;text-shadow:0 1px 10px rgba(30,34,52,.4)}
+main{padding:56px 0 80px}
+h2{font:400 26px/1.25 var(--serif);color:var(--ink);margin:44px 0 10px}
+h3{font:600 16px/1.4 var(--sans);color:var(--ink);margin:24px 0 6px}
+p,li{margin:0 0 14px}ul{padding-left:22px}
+a{color:var(--dusk)}
+.lede{font-size:18px;color:var(--ink)}
+.box{background:#fff;border:1px solid var(--haze);border-radius:16px;padding:20px 22px;margin:22px 0}
+.box p:last-child{margin:0}
+footer{border-top:1px solid var(--haze);padding:28px 0 48px;font-size:14px;color:var(--stone)}
+footer a{color:var(--stone);margin-right:18px}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<nav><a href="/" aria-label="Swoop home"><img src="/swoop-wordmark-light.svg" alt="swoop" width="100" height="30" /></a><a href="/">Back to Swoop</a></nav>
+<h1>Privacy Policy</h1><p>Last updated 29 October 2026</p>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Swoop is a free, open-source Mac app: a launcher, a Mac cleaner and an ad blocker. It's built to work on your Mac, not on our servers. We don't collect, sell or share your personal data.</p>
+<div class="box"><p><strong>The short version.</strong> Swoop has no accounts, no analytics, no tracking and no ads. Everything it scans, indexes and blocks stays on your Mac. If you choose to connect Google Drive, Swoop talks directly to Google from your Mac, and we never see your files or your Google data.</p></div>
+
+<h2>Who we are</h2>
+<p>Swoop is made by RDN Ventures in London, United Kingdom ("we", "us"). Questions about privacy: <a href="mailto:hello@swoopkey.com">hello@swoopkey.com</a>.</p>
+<p>This policy covers the Swoop app for macOS, the Swoop Shield browser extensions, and this website, swoopkey.com.</p>
+
+<h2>What stays on your Mac</h2>
+<p>Swoop works locally. The following never leaves your Mac and is never sent to us:</p>
+<ul>
+<li>Your app list, file search results, clipboard history, snippets, quicklinks, favourites and usage ranking.</li>
+<li>Cleaner scans: junk files, large and old files, duplicates, login items, disk maps and the undo log.</li>
+<li>Swoop Shield settings, allow lists and blocked-request counts.</li>
+<li>Your preferences. Sign-in tokens are stored in your macOS Keychain.</li>
+</ul>
+<p>Swoop contains no analytics or telemetry SDKs, and sends no crash reports or usage data to us.</p>
+
+<h2>When Swoop connects to the internet</h2>
+<p>Swoop only makes network requests to do things you've asked it to do:</p>
+<ul>
+<li><strong>Ad and tracker filter lists.</strong> Swoop Shield downloads public filter lists (for example EasyList) from their publishers or public mirrors such as GitHub and jsDelivr.</li>
+<li><strong>Update checks.</strong> Swoop checks GitHub for new versions of Swoop, and its app updater checks public catalogues (such as the Mac App Store lookup service and Homebrew) for updates to apps you have installed. Only app identifiers and version numbers are used.</li>
+<li><strong>Encrypted DNS.</strong> If you turn on Shield's encrypted DNS, your DNS lookups go to the resolver you pick (such as Quad9, Cloudflare, AdGuard or Mullvad), under that provider's privacy policy.</li>
+<li><strong>Web searches and quicklinks</strong> open in your browser with the search engine or site you chose.</li>
+<li><strong>Google Drive</strong>, only if you connect it (see below).</li>
+</ul>
+<p>These services may see your IP address, as with any internet request. We don't operate any of them and receive nothing from them.</p>
+
+<h2>Google Drive</h2>
+<p>Connecting Google Drive is optional. When you press <em>Sign in with Google</em>, Swoop opens Google's own sign-in page in your browser and asks for:</p>
+<ul>
+<li><strong>Read-only access to your Google Drive</strong> (<code>drive.readonly</code>), so you can search your Drive files from Swoop and see your storage usage and largest files.</li>
+<li><strong>Access to files Swoop creates</strong> (<code>drive.file</code>), so Swoop's Upload to Google Drive command can upload files you choose.</li>
+</ul>
+<p>How Swoop uses this data:</p>
+<ul>
+<li>File names, types, sizes, dates and links are fetched from Google directly to your Mac, shown to you in Swoop, and kept only in memory while you use them. Swoop does not download or read the contents of your files.</li>
+<li>Your Google access and refresh tokens are stored only in your Mac's Keychain. You can disconnect at any time in Swoop › Settings › Cloud › Sign Out, or at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.</li>
+<li>Your Google data is never sent to us or to any third party, never sold, never used for advertising, and never used to train AI or machine-learning models.</li>
+</ul>
+<div class="box"><p>Swoop's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p></div>
+
+<h2>This website</h2>
+<p>swoopkey.com is a static site hosted on GitHub Pages. It uses no cookies, analytics or trackers. GitHub may log technical information such as IP addresses to run and secure the service (see GitHub's privacy statement). Fonts are served by Google Fonts. Downloads come from GitHub Releases.</p>
+
+<h2>If you email us</h2>
+<p>If you contact us, we use your email address and message only to reply, and keep them only as long as needed for that. Issues you open on GitHub are public and governed by GitHub's terms.</p>
+
+<h2>Your rights</h2>
+<p>Because we don't hold personal data from the app, there is usually nothing for us to access, correct or delete. Under UK GDPR you can still ask us about any data we hold about you (for example, emails you've sent us) or complain to the Information Commissioner's Office (ico.org.uk). Swoop isn't directed at children under 13.</p>
+
+<h2>Changes</h2>
+<p>If we change this policy we'll update it here and change the date at the top. Swoop is open source, so you can check what it does in the code on <a href="https://github.com/rubendenoronha/swoop">GitHub</a>.</p>
+</div></main>
+<footer><div class="wrap"><a href="/">Home</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://github.com/rubendenoronha/swoop">GitHub</a><br />© 2026 RDN Ventures · MIT licence</div></footer>
+</body></html>
