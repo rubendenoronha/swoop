@@ -278,12 +278,15 @@ struct ScanningView: View {
 struct StartView: View {
     let text: String
     let button: String
+    /// A permission-dependent part of this module, explained inline when it's missing.
+    var feature: PermissionFeature? = nil
     let action: () -> Void
     var body: some View {
         VStack(spacing: 16) {
             Spacer()
             Text(text).multilineTextAlignment(.center).foregroundColor(.secondary).frame(maxWidth: 460)
             Button(button, action: action).controlSize(.large).keyboardShortcut(.defaultAction)
+            if let f = feature { PermissionInlineNote(feature: f).frame(maxWidth: 460) }
             Spacer()
         }.frame(maxWidth: .infinity)
     }

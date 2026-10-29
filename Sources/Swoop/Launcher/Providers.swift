@@ -88,10 +88,19 @@ final class Providers {
         } else {
             icon = .symbol(c.symbol)
         }
+        // A command whose permission is missing stays in the list, says so, and explains
+        // itself inline instead of closing the launcher and doing nothing.
+        let blocked = PermissionFeature.forCommand(id: c.id).flatMap { f in Permissions.isAvailable(f) ? nil : f }
+        let run: LauncherAction
+        if let f = blocked {
+            run = LauncherAction(title: "Set Up…", symbol: "lock.shield", closes: false) { PermissionGate.present(f) }
+        } else {
+            run = LauncherAction(title: "Run", symbol: "return", closes: c.closesLauncher, run: c.run)
+        }
         return LauncherItem(id: c.id, title: c.title, subtitle: c.subtitle.isEmpty ? c.group.rawValue : c.subtitle,
-                            icon: icon, accessory: hotkey ?? c.group.rawValue, keywords: c.keywords,
+                            icon: icon, accessory: blocked != nil ? "Needs setup" : (hotkey ?? c.group.rawValue), keywords: c.keywords,
                             actions: [
-                                LauncherAction(title: "Run", symbol: "return", closes: c.closesLauncher, run: c.run),
+                                run,
                                 LauncherAction(title: "Set Hotkey…", symbol: "keyboard", shortcut: "⌘↩") {
                                     SettingsWindow.show(tab: .hotkeys)
                                 },

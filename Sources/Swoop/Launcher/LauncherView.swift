@@ -96,6 +96,12 @@ struct LauncherView: View {
                     PreviewPane(item: item).frame(width: 300)
                 }
             }
+            if let f = noteFeature {
+                Divider().opacity(0.5)
+                PermissionNoteBar(feature: f, state: Permissions.state) {
+                    if let p = Permissions.state.missing(for: f) { Permissions.setUp(p) }
+                }
+            }
             Divider().opacity(0.5)
             footer
         }
@@ -117,6 +123,14 @@ struct LauncherView: View {
                     .transition(.opacity)
             }
         }
+    }
+
+    /// The feature to explain inline: one the user just tried, or the selected command's
+    /// when its permission is missing.
+    private var noteFeature: PermissionFeature? {
+        if let f = model.permissionNote { return f }
+        guard let id = model.selectedItem?.id, let f = PermissionFeature.forCommand(id: id) else { return nil }
+        return Permissions.isAvailable(f) ? nil : f
     }
 
     private var header: some View {

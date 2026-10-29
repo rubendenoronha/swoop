@@ -12,10 +12,7 @@ final class WindowManager {
     private var history: [(window: AXUIElement, frame: CGRect)] = []
 
     func apply(_ layout: WindowLayout) {
-        guard AXIsProcessTrusted() else {
-            Permissions.requestAccessibility(reason: "Swoop needs Accessibility permission to move and resize windows.")
-            return
-        }
+        guard PermissionGate.check(.windowManagement) else { return }
         guard let app = targetApp(), let win = focusedWindow(pid: app.processIdentifier),
               let current = frame(of: win) else {
             Notifier.show("No window to move", body: "Click the window you want to arrange, then try again.")

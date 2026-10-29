@@ -65,7 +65,7 @@ struct SpaceLensView: View {
                 }
             } else {
                 StartView(text: "Map your home folder or the whole disk. Folders you can't read without Full Disk Access show as smaller than they are.",
-                          button: "Map Home Folder") { m.scan(FileManager.default.homeDirectoryForCurrentUser) }
+                          button: "Map Home Folder", feature: .protectedFolders) { m.scan(FileManager.default.homeDirectoryForCurrentUser) }
             }
         }
     }
@@ -448,6 +448,7 @@ struct PrivacyView: View {
     var body: some View {
         VStack(spacing: 0) {
             ModuleHeader(module: .privacy, subtitle: "Clear traces of what you opened and browsed. Everything here is off until you tick it, and goes to the Trash so it can be restored.")
+            PermissionInlineNote(feature: .protectedFolders).padding(.horizontal)
             List(PrivacyCleaner.items) { item in
                 let existing = PrivacyCleaner.existing(item)
                 HStack(alignment: .top) {

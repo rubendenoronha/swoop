@@ -48,13 +48,10 @@ enum Onboarding {
 
 struct OnboardingView: View {
     @State private var step = 0
-    @State private var ax = Permissions.accessibility
-    @State private var fda = Permissions.fullDiskAccess
     /// Launch at login is on by default; the last step lets people opt out.
     @State private var openAtLogin = true
     @State private var loginNeedsApproval = SMAppService.mainApp.status == .requiresApproval
     @ObservedObject private var prefs = Prefs.shared
-    let timer = Timer.publish(every: 1.5, on: .main, in: .common).autoconnect()
 
     var body: some View {
         VStack(spacing: 18) {
@@ -63,19 +60,18 @@ struct OnboardingView: View {
                 switch step {
                 case 0: welcome
                 case 1: hotkey
-                case 2: accessibility
-                case 3: fullDisk
+                case 2: permissions
                 default: done
                 }
             }
             .frame(maxWidth: 480)
             Spacer()
             HStack {
-                if step > 0 && step < 4 { Button("Back") { step -= 1 } }
+                if step > 0 && step < 3 { Button("Back") { step -= 1 } }
                 Spacer()
-                HStack(spacing: 6) { ForEach(0..<5) { i in Circle().fill(i == step ? Color.accentColor : Color.secondary.opacity(0.3)).frame(width: 7, height: 7) } }
+                HStack(spacing: 6) { ForEach(0..<4) { i in Circle().fill(i == step ? Color.accentColor : Color.secondary.opacity(0.3)).frame(width: 7, height: 7) } }
                 Spacer()
-                if step < 4 {
+                if step < 3 {
                     Button(step == 0 ? "Get Started" : "Continue") { step += 1 }.keyboardShortcut(.defaultAction)
                 } else {
                     Button("Start Using Swoop") {
@@ -89,7 +85,6 @@ struct OnboardingView: View {
         }
         .padding(32)
         .frame(width: 620, height: 520)
-        .onReceive(timer) { _ in ax = Permissions.accessibility; fda = Permissions.fullDiskAccess }
     }
 
     private var welcome: some View {
@@ -126,35 +121,14 @@ struct OnboardingView: View {
         }
     }
 
-    private var accessibility: some View {
+    private var permissions: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Accessibility").font(.title.weight(.semibold))
-            Text("Lets Swoop move and resize windows, paste from clipboard history, expand snippets, and notice double-tap hotkeys. Swoop never records what you type beyond the last few characters needed to spot a snippet keyword, and nothing leaves your Mac.")
+            Text("Permissions").font(.title.weight(.semibold))
+            Text("All optional. Each one unlocks a few features, and Swoop tells you right where it's needed if one is off.")
                 .fixedSize(horizontal: false, vertical: true)
-            HStack {
-                Image(systemName: ax ? "checkmark.circle.fill" : "circle").foregroundColor(ax ? .green : .secondary)
-                Text(ax ? "Granted" : "Not granted yet")
-                Spacer()
-                if !ax { Button("Grant Access…") { Permissions.requestAccessibility(); Permissions.openAccessibilitySettings() } }
-            }
-            Text("In System Settings › Privacy & Security › Accessibility, switch Swoop on. You may need to quit and reopen Swoop afterwards.")
-                .font(.caption).foregroundColor(.secondary)
-        }
-        .onChange(of: ax) { granted in if granted { SnippetEngine.shared.refresh(); HotKeyCenter.shared.reload() } }
-    }
-
-    private var fullDisk: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Full Disk Access (optional)").font(.title.weight(.semibold))
-            Text("Without it, Swoop can't see some protected folders, such as Safari's cache and history. Cleaning still works everywhere else, and Space Lens shows those folders as smaller than they are.")
-                .fixedSize(horizontal: false, vertical: true)
-            HStack {
-                Image(systemName: fda ? "checkmark.circle.fill" : "circle").foregroundColor(fda ? .green : .secondary)
-                Text(fda ? "Granted" : "Not granted")
-                Spacer()
-                if !fda { Button("Open Full Disk Access…") { Permissions.openFullDiskAccessSettings() } }
-            }
-            Text("Click +, choose Swoop in Applications, and switch it on.").font(.caption).foregroundColor(.secondary)
+            ScrollView {
+                PrivacyPermissionsList(onChange: { _ in SnippetEngine.shared.refresh(); HotKeyCenter.shared.reload() })
+            }.frame(maxHeight: 330)
         }
     }
 

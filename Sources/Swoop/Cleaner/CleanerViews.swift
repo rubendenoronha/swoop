@@ -60,7 +60,7 @@ struct SmartScanView: View {
                 ScanningView(text: m.status)
             } else if !m.done && m.items.isEmpty {
                 StartView(text: "Smart Scan checks System Junk, leftovers from deleted apps, background items for adware, files over 1 GB, and app updates.",
-                          button: "Scan", action: m.start)
+                          button: "Scan", feature: .protectedFolders, action: m.start)
             } else {
                 HStack(spacing: 12) {
                     SummaryCard(title: "Junk to clean", value: Bytes.format(m.items.filter { $0.selected }.reduce(0) { $0 + $1.size }),
@@ -141,7 +141,7 @@ struct JunkView: View {
                 }
             }
             if m.scanning { ScanningView(text: m.status) }
-            else if !m.scanned { StartView(text: "Scan for junk in \(JunkScanner.enabledRules.count) places. You'll review everything before anything is removed.", button: "Scan", action: m.scan) }
+            else if !m.scanned { StartView(text: "Scan for junk in \(JunkScanner.enabledRules.count) places. You'll review everything before anything is removed.", button: "Scan", feature: .protectedFolders, action: m.scan) }
             else {
                 CleanItemList(items: $m.items, emptyText: "Your Mac is clean.")
                 HStack {

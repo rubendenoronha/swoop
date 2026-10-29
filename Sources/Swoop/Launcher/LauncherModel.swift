@@ -42,6 +42,8 @@ final class LauncherModel: ObservableObject {
     @Published var showActions = false
     @Published var actionSelection = 0
     @Published var toast: String?
+    /// A feature the user just tried that needs a permission (shown as an inline note).
+    @Published var permissionNote: PermissionFeature?
     @Published var focusToken = 0
     /// >0 while a sheet/alert of ours is up, so losing key focus doesn't close Swoop.
     var keepOpenDepth = 0
@@ -64,6 +66,7 @@ final class LauncherModel: ObservableObject {
     // MARK: results
 
     func refresh() {
+        permissionNote = nil
         generation += 1
         let gen = generation
         let q = query.trimmingCharacters(in: .whitespaces)

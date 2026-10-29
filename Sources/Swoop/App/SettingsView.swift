@@ -261,6 +261,7 @@ struct SnippetSettings: View {
                     Text("Placeholders: {clipboard} {date} {time} {datetime} {day} {date:yyyy-MM-dd} {uuid} {cursor}")
                         .font(.caption).foregroundColor(.secondary)
                     Toggle("Expand keywords as I type (needs Accessibility)", isOn: $prefs.snippetExpansionEnabled)
+                    if prefs.snippetExpansionEnabled { PermissionInlineNote(feature: .snippetExpansion) }
                 }.formStyle(.grouped).frame(minWidth: 380)
             } else {
                 Text("Select or add a snippet.").foregroundColor(.secondary).frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -399,19 +400,15 @@ struct CloudSettings: View {
 // MARK: - Permissions
 
 struct PermissionSettings: View {
-    @State private var ax = Permissions.accessibility
-    @State private var fda = Permissions.fullDiskAccess
-    let timer = Timer.publish(every: 2, on: .main, in: .common).autoconnect()
-
     var body: some View {
         Form {
             Section {
-                PermissionRow(title: "Accessibility", granted: ax,
-                              detail: "Window management, pasting from clipboard history and snippets, double-tap hotkeys, and text expansion.",
-                              action: { Permissions.requestAccessibility(); Permissions.openAccessibilitySettings() })
-                PermissionRow(title: "Full Disk Access", granted: fda,
-                              detail: "Optional. Lets the cleaner see Safari caches and history, Mail downloads and other protected folders, and lets Space Lens measure everything.",
-                              action: Permissions.openFullDiskAccessSettings)
+                PrivacyPermissionsList(onChange: { _ in SnippetEngine.shared.refresh(); HotKeyCenter.shared.reload() })
+            } header: {
+                Text("macOS privacy permissions")
+            } footer: {
+                Text("Swoop never changes these itself. Each switch lives in System Settings › Privacy & Security, and you can turn it off there at any time.")
+                    .font(.caption).foregroundColor(.secondary)
             }
             Section {
                 Text("System Events and Finder may ask for permission the first time you toggle dark mode, empty the Trash, or restart from Swoop. Swoop works without any of these; features that need them say so.")
@@ -419,7 +416,6 @@ struct PermissionSettings: View {
             }
         }
         .formStyle(.grouped)
-        .onReceive(timer) { _ in ax = Permissions.accessibility; fda = Permissions.fullDiskAccess }
     }
 }
 

@@ -100,8 +100,8 @@ struct HotkeyRecorder: View {
     private func assign(_ t: HotkeyTrigger) {
         var notes = HotkeyConflicts.check(t, for: actionID, in: HotkeyBindingList.current()).map { $0.message }
         if case .combo(let s) = t, let sys = SystemHotkeys.conflict(for: s), !notes.contains(sys) { notes.append(sys) }
-        if case .doubleTap = t, !AXIsProcessTrusted() {
-            notes.append("Double-tap shortcuts need Accessibility permission to work in other apps.")
+        if case .doubleTap = t, let note = Permissions.state.note(for: .doubleTapHotkeys) {
+            notes.append(note)
         }
         pending = notes
         prefs.setTrigger(t, for: actionID)

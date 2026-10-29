@@ -168,6 +168,9 @@ final class StatsReader {
 enum Permissions {
     static var accessibility: Bool { AXIsProcessTrusted() }
 
+    /// Input Monitoring (listen-only keyboard events). Accessibility implies it.
+    static var inputMonitoring: Bool { CGPreflightListenEventAccess() }
+
     /// Full Disk Access can't be queried directly; reading a TCC-protected file is the
     /// standard test.
     static var fullDiskAccess: Bool {
@@ -179,18 +182,60 @@ enum Permissions {
         return false
     }
 
+    static func isGranted(_ p: PrivacyPermission) -> Bool {
+        switch p {
+        case .accessibility: return accessibility
+        case .inputMonitoring: return inputMonitoring
+        case .fullDiskAccess: return fullDiskAccess
+        }
+    }
+
+    /// Cheap check for one feature (only probes the permissions it needs).
+    static func isAvailable(_ f: PermissionFeature) -> Bool { f.permissions.contains(where: isGranted) }
+
+    /// Whether the logged-in user is in the admin group. Standard users can still turn the
+    /// switches on, but macOS asks an administrator to approve each one.
+    static var isAdmin: Bool {
+        guard let pw = getpwuid(getuid()) else { return false }
+        let adminGID = getgrnam("admin")?.pointee.gr_gid ?? 80
+        if pw.pointee.pw_gid == adminGID { return true }
+        var count: Int32 = 32
+        var groups = [Int32](repeating: 0, count: Int(count))
+        while getgrouplist(pw.pointee.pw_name, Int32(bitPattern: pw.pointee.pw_gid), &groups, &count) == -1 {
+            count = max(count * 2, Int32(groups.count * 2))
+            if count > 4096 { break }
+            groups = [Int32](repeating: 0, count: Int(count))
+        }
+        return groups.prefix(Int(max(0, min(count, Int32(groups.count))))).contains(Int32(bitPattern: adminGID))
+    }
+
+    /// Everything granted right now, plus whether this is an admin account.
+    static var state: PermissionState {
+        PermissionState(granted: Set(PrivacyPermission.allCases.filter(isGranted)), isAdmin: isAdmin)
+    }
+
+    /// Asks macOS to list Swoop under the permission (where it can) and opens the exact pane.
+    /// Never touches TCC itself.
+    static func setUp(_ p: PrivacyPermission) {
+        switch p {
+        case .accessibility:
+            _ = AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": true] as CFDictionary)
+        case .inputMonitoring:
+            _ = CGRequestListenEventAccess()
+        case .fullDiskAccess:
+            break
+        }
+        Actions.openURLString(p.settingsURL)
+    }
+
     static func requestAccessibility(reason: String? = nil) {
         let opts = ["AXTrustedCheckOptionPrompt": true] as CFDictionary
         if !AXIsProcessTrustedWithOptions(opts), let r = reason { Notifier.show("Accessibility needed", body: r) }
     }
 
-    static func openAccessibilitySettings() {
-        Actions.openURLString("x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")
-    }
+    static func openAccessibilitySettings() { Actions.openURLString(PrivacyPermission.accessibility.settingsURL) }
 
-    static func openFullDiskAccessSettings() {
-        Actions.openURLString("x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles")
-    }
+    static func openFullDiskAccessSettings() { Actions.openURLString(PrivacyPermission.fullDiskAccess.settingsURL) }
 
     static func openKeyboardShortcuts() {
         Actions.openURLString("x-apple.systempreferences:com.apple.Keyboard-Settings.extension")

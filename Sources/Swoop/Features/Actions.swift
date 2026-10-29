@@ -25,9 +25,18 @@ enum Actions {
         pasteFrontmost()
     }
 
+    private static var explainedPaste = false
+
     static func pasteFrontmost() {
-        guard AXIsProcessTrusted() else {
-            Notifier.show("Copied", body: "Grant Accessibility permission to let Swoop paste for you.")
+        guard Permissions.isAvailable(.pasteForYou) else {
+            // Without Accessibility, Swoop still copies; it explains once per launch how to
+            // let it paste too.
+            if !explainedPaste {
+                explainedPaste = true
+                PermissionGate.present(.pasteForYou)
+            } else {
+                Notifier.show("Copied", body: "Press ⌘V to paste.")
+            }
             return
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
