@@ -103,13 +103,25 @@ final class LauncherModel: ObservableObject {
             let favs = ranker.favourites.compactMap { byID[$0] }.map { item -> LauncherItem in
                 var i = item; i.section = "Favourites"; return i
             }
-            let recent = ranker.top(8).filter { !ranker.isFavourite($0) }.compactMap { byID[$0] }.map { item -> LauncherItem in
-                var i = item; i.section = "Suggestions"; return i
+            let recent = ranker.top(6).filter { !ranker.isFavourite($0) }.compactMap { byID[$0] }.map { item -> LauncherItem in
+                var i = item; i.section = "Recently used"; return i
             }
+            // Always follow with the full list (apps, commands, settings), so the
+            // root never shrinks to just what was used last time.
+            var seen = Set((favs + recent).map { $0.id })
+            func rest(_ section: String, _ items: [LauncherItem]) -> [LauncherItem] {
+                items.filter { seen.insert($0.id).inserted }.map { var i = $0; i.section = section; return i }
+            }
+            let byTitle: (LauncherItem, LauncherItem) -> Bool = {
+                $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending
+            }
+            let apps = index.filter { $0.id.hasPrefix("app.") }.sorted(by: byTitle)
+            let settings = index.filter { $0.id.hasPrefix("settings.") }.sorted(by: byTitle)
+            let appOrSettingIDs = Set((apps + settings).map { $0.id })
+            let commands = index.filter { !appOrSettingIDs.contains($0.id) }
             out = favs + recent
-            if out.isEmpty {
-                out = Providers.shared.starterItems()
-            }
+            if out.isEmpty { out = Providers.shared.starterItems(); seen.formUnion(out.map { $0.id }) }
+            out += rest("Applications", apps) + rest("Commands", commands) + rest("System Settings", settings)
             return out
         }
         if let calc = Providers.shared.calculatorItem(q) { out.append(calc) }

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Swoop Shield",
   "short_name": "Swoop Shield",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Blocks ads, trackers and malware on web pages, including in-page ads that DNS blocking can't remove. Part of Swoop for Mac. No telemetry.",
   "homepage_url": "https://swoopkey.com",
   "minimum_chrome_version": "111",
