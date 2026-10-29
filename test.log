@@ -1,0 +1,500 @@
+Building for debugging...
+[0/4] Write sources
+[3/4] Write swift-version--79AA4F9932D1E87A.txt
+[5/32] Compiling SwoopCore Models.swift
+[6/32] Compiling ShieldCore DomainIndex.swift
+[7/32] Compiling ShieldCore DomainMatcher.swift
+[8/35] Compiling SwoopCore Hotkeys.swift
+[9/35] Compiling SwoopCore Insights.swift
+[10/35] Compiling SwoopCore JunkRules.swift
+[11/35] Compiling SwoopCore Leftovers.swift
+[12/35] Compiling SwoopCore Calculator.swift
+[13/35] Compiling SwoopCore Catalogs.swift
+[14/35] Compiling SwoopCore Cloud.swift
+[15/35] Compiling SwoopCore FuzzyMatcher.swift
+[16/35] Emitting module SwoopCore
+[17/35] Emitting module ShieldCore
+[29/39] Compiling SwoopCore ScriptCommands.swift
+[30/39] Compiling SwoopCore Shortcut.swift
+[31/39] Compiling SwoopCore Snippets.swift
+[32/39] Compiling ShieldCore SHA256.swift
+[36/39] Compiling ShieldCore SafariConverter.swift
+[37/39] Compiling ShieldCore ShieldCompiler.swift
+[38/39] Compiling ShieldCore ShieldEngine.swift
+[39/39] Compiling ShieldCore ShieldXPCProtocol.swift
+[40/65] Compiling Swoop SnippetEngine.swift
+[41/65] Compiling Swoop SystemActions.swift
+[42/65] Compiling Swoop WindowManager.swift
+[43/65] Compiling Swoop HotKeyCenter.swift
+[44/65] Compiling Swoop HotkeyRecorder.swift
+[45/65] Compiling Swoop Commands.swift
+[46/65] Compiling Swoop LauncherController.swift
+[47/65] Compiling Swoop LauncherModel.swift
+[48/65] Compiling Swoop CleanerWindow.swift
+[49/65] Compiling Swoop FileRemover.swift
+[50/65] Compiling Swoop Scanners.swift
+[51/65] Compiling Swoop SystemScanners.swift
+[52/65] Compiling Swoop CloudProviders.swift
+[53/65] Compiling Swoop Actions.swift
+[54/65] Compiling Swoop Clipboard.swift
+[55/65] Compiling Swoop ScriptCommands.swift
+[56/73] Emitting module Swoop
+[57/73] Compiling Swoop AppDelegate.swift
+[58/73] Compiling Swoop MenuBarMonitor.swift
+[59/73] Compiling Swoop Onboarding.swift
+[60/73] Compiling Swoop Prefs.swift
+[61/73] Compiling Swoop SettingsView.swift
+[62/73] Compiling Swoop Storage.swift
+[63/73] Compiling Swoop Background.swift
+[64/73] Compiling Swoop CleanerViews.swift
+[65/73] Compiling Swoop CleanerViews2.swift
+[66/73] Compiling Swoop LauncherView.swift
+[67/73] Compiling Swoop Providers.swift
+[68/73] Compiling Swoop PaxDetector.swift
+[69/73] Compiling Swoop ShieldCommands.swift
+[70/73] Compiling Swoop ShieldController.swift
+[71/73] Compiling Swoop ShieldListManager.swift
+[72/73] Compiling Swoop ShieldView.swift
+[73/73] Compiling Swoop main.swift
+Build of target: 'Swoop' complete! (109.98s)
+[0/1] Planning build
+Building for debugging...
+[0/2] Write sources
+[1/2] Write swift-version--79AA4F9932D1E87A.txt
+[3/6] Compiling SwoopShieldExtension ShieldExtension.swift
+[4/6] Compiling SwoopShieldExtension DNSProxyProvider.swift
+[5/6] Compiling SwoopShieldExtension FilterDataProvider.swift
+[6/6] Emitting module SwoopShieldExtension
+[7/7] Compiling SwoopShieldExtension main.swift
+Build of target: 'SwoopShieldExtension' complete! (2.73s)
+Building for debugging...
+[0/2] Write sources
+[1/2] Write swift-version--79AA4F9932D1E87A.txt
+[3/4] Emitting module SwoopSafariBlocker
+[4/4] Compiling SwoopSafariBlocker main.swift
+Build of target: 'SwoopSafariBlocker' complete! (1.54s)
+Building for debugging...
+[0/2] Write sources
+[1/2] Write swift-version--79AA4F9932D1E87A.txt
+[3/4] Emitting module SwoopSafariWebExtension
+[4/4] Compiling SwoopSafariWebExtension main.swift
+Build of target: 'SwoopSafariWebExtension' complete! (2.95s)
+Building for debugging...
+[0/2] Write sources
+[1/2] Write swift-version--79AA4F9932D1E87A.txt
+[3/4] Emitting module swoop_resolver
+[4/4] Compiling swoop_resolver main.swift
+Build of target: 'swoop-resolver' complete! (1.82s)
+Building for debugging...
+[0/2] Write sources
+[1/2] Write swift-version--79AA4F9932D1E87A.txt
+[3/4] Emitting module swoop_shield_compile
+[4/4] Compiling swoop_shield_compile main.swift
+Build of target: 'swoop-shield-compile' complete! (3.09s)
+Building for debugging...
+[0/25] Write swoop-shield-compile-entitlement.plist
+[0/25] Write SwoopShieldExtension-entitlement.plist
+[0/25] Write swoop-resolver-entitlement.plist
+[1/25] Write SwoopSafariBlocker-entitlement.plist
+[2/25] Write SwoopSafariWebExtension-entitlement.plist
+[5/25] Write Swoop-entitlement.plist
+[6/25] Write swift-version--79AA4F9932D1E87A.txt
+[7/25] Write Objects.LinkFileList
+[13/25] Linking SwoopSafariBlocker
+[14/25] Linking swoop-resolver
+[15/25] Linking swoop-shield-compile
+[16/25] Applying SwoopSafariBlocker
+[17/25] Linking SwoopSafariWebExtension
+[18/25] Applying swoop-resolver
+[19/25] Applying swoop-shield-compile
+[20/25] Applying SwoopSafariWebExtension
+[21/25] Linking SwoopShieldExtension
+[22/25] Applying SwoopShieldExtension
+[23/25] Linking Swoop
+[24/25] Applying Swoop
+Build complete! (5.45s)
+[0/1] Planning build
+Building for debugging...
+[0/6] Write sources
+[0/8] /Users/runner/work/swoop/swoop/.build/x86_64-apple-macosx/debug/SwoopPackageTests.derived/runner.swift
+[3/21] Write sources
+[4/21] Write swift-version--79AA4F9932D1E87A.txt
+[6/14] Compiling ShieldCoreTests ParserTests.swift
+[7/15] Compiling ShieldCoreTests MatcherTests.swift
+[8/15] Emitting module ShieldCoreTests
+[9/15] Compiling ShieldCoreTests BrowserAndEngineTests.swift
+[10/15] Compiling SwoopCoreTests CoreTests.swift
+[11/15] Emitting module SwoopCoreTests
+[12/15] Compiling SwoopCoreTests PaxProtectionTests.swift
+[13/15] Compiling ShieldCoreTests PaxCompatibilityTests.swift
+[14/17] Compiling SwoopPackageTests runner.swift
+[15/17] Emitting module SwoopPackageTests
+[15/17] Write Objects.LinkFileList
+[16/17] Linking SwoopPackageTests
+Build complete! (44.09s)
+Test Suite 'All tests' started at 2026-10-29 00:38:17.714.
+Test Suite 'SwoopPackageTests.xctest' started at 2026-10-29 00:38:17.717.
+Test Suite 'CNAMETests' started at 2026-10-29 00:38:17.717.
+Test Case '-[ShieldCoreTests.CNAMETests testAllowedAliasStopsTheWalk]' started.
+Test Case '-[ShieldCoreTests.CNAMETests testAllowedAliasStopsTheWalk]' passed (0.006 seconds).
+Test Case '-[ShieldCoreTests.CNAMETests testBuiltInTrackersOnlyAcrossSites]' started.
+Test Case '-[ShieldCoreTests.CNAMETests testBuiltInTrackersOnlyAcrossSites]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.CNAMETests testChainFromWireResponse]' started.
+Test Case '-[ShieldCoreTests.CNAMETests testChainFromWireResponse]' passed (0.140 seconds).
+Test Case '-[ShieldCoreTests.CNAMETests testCloakedTrackerIsBlocked]' started.
+Test Case '-[ShieldCoreTests.CNAMETests testCloakedTrackerIsBlocked]' passed (0.003 seconds).
+Test Case '-[ShieldCoreTests.CNAMETests testExplicitAllowOfQueryWins]' started.
+Test Case '-[ShieldCoreTests.CNAMETests testExplicitAllowOfQueryWins]' passed (0.005 seconds).
+Test Case '-[ShieldCoreTests.CNAMETests testLoopAndLengthLimits]' started.
+Test Case '-[ShieldCoreTests.CNAMETests testLoopAndLengthLimits]' passed (0.005 seconds).
+Test Suite 'CNAMETests' passed at 2026-10-29 00:38:17.879.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.161 (0.162) seconds
+Test Suite 'CalculatorTests' started at 2026-10-29 00:38:17.879.
+Test Case '-[SwoopCoreTests.CalculatorTests testArithmetic]' started.
+Test Case '-[SwoopCoreTests.CalculatorTests testArithmetic]' passed (0.009 seconds).
+Test Case '-[SwoopCoreTests.CalculatorTests testDisplay]' started.
+Test Case '-[SwoopCoreTests.CalculatorTests testDisplay]' passed (0.011 seconds).
+Test Case '-[SwoopCoreTests.CalculatorTests testFunctionsAndConstants]' started.
+Test Case '-[SwoopCoreTests.CalculatorTests testFunctionsAndConstants]' passed (0.007 seconds).
+Test Case '-[SwoopCoreTests.CalculatorTests testNotACalculation]' started.
+Test Case '-[SwoopCoreTests.CalculatorTests testNotACalculation]' passed (0.015 seconds).
+Test Case '-[SwoopCoreTests.CalculatorTests testUnitConversions]' started.
+Test Case '-[SwoopCoreTests.CalculatorTests testUnitConversions]' passed (0.014 seconds).
+Test Suite 'CalculatorTests' passed at 2026-10-29 00:38:17.937.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.056 (0.058) seconds
+Test Suite 'CloudTests' started at 2026-10-29 00:38:17.937.
+Test Case '-[SwoopCoreTests.CloudTests testAuthURLAndRedirect]' started.
+Test Case '-[SwoopCoreTests.CloudTests testAuthURLAndRedirect]' passed (0.011 seconds).
+Test Case '-[SwoopCoreTests.CloudTests testDriveParsing]' started.
+Test Case '-[SwoopCoreTests.CloudTests testDriveParsing]' passed (0.040 seconds).
+Test Case '-[SwoopCoreTests.CloudTests testSHA256AndPKCE]' started.
+Test Case '-[SwoopCoreTests.CloudTests testSHA256AndPKCE]' passed (0.010 seconds).
+Test Case '-[SwoopCoreTests.CloudTests testTokenParse]' started.
+Test Case '-[SwoopCoreTests.CloudTests testTokenParse]' passed (0.001 seconds).
+Test Suite 'CloudTests' passed at 2026-10-29 00:38:18.001.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.063 (0.064) seconds
+Test Suite 'CompilerTests' started at 2026-10-29 00:38:18.001.
+Test Case '-[ShieldCoreTests.CompilerTests testCatalogIsConsistent]' started.
+Test Case '-[ShieldCoreTests.CompilerTests testCatalogIsConsistent]' passed (0.002 seconds).
+Test Case '-[ShieldCoreTests.CompilerTests testEndToEnd]' started.
+Test Case '-[ShieldCoreTests.CompilerTests testEndToEnd]' passed (0.009 seconds).
+Test Case '-[ShieldCoreTests.CompilerTests testProfileBuilder]' started.
+Test Case '-[ShieldCoreTests.CompilerTests testProfileBuilder]' passed (0.001 seconds).
+Test Suite 'CompilerTests' passed at 2026-10-29 00:38:18.013.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.012 (0.012) seconds
+Test Suite 'CosmeticCompilerTests' started at 2026-10-29 00:38:18.013.
+Test Case '-[ShieldCoreTests.CosmeticCompilerTests testBundle]' started.
+Test Case '-[ShieldCoreTests.CosmeticCompilerTests testBundle]' passed (0.001 seconds).
+Test Suite 'CosmeticCompilerTests' passed at 2026-10-29 00:38:18.015.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'CryptoTests' started at 2026-10-29 00:38:18.015.
+Test Case '-[ShieldCoreTests.CryptoTests testBloomFilter]' started.
+Test Case '-[ShieldCoreTests.CryptoTests testBloomFilter]' passed (0.467 seconds).
+Test Case '-[ShieldCoreTests.CryptoTests testIncrementalEqualsOneShot]' started.
+Test Case '-[ShieldCoreTests.CryptoTests testIncrementalEqualsOneShot]' passed (0.005 seconds).
+Test Case '-[ShieldCoreTests.CryptoTests testSHA256Vectors]' started.
+Test Case '-[ShieldCoreTests.CryptoTests testSHA256Vectors]' passed (1.976 seconds).
+Test Suite 'CryptoTests' passed at 2026-10-29 00:38:20.463.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 2.448 (2.449) seconds
+Test Suite 'DNRTests' started at 2026-10-29 00:38:20.463.
+Test Case '-[ShieldCoreTests.DNRTests testGroupingAndPriorities]' started.
+Test Case '-[ShieldCoreTests.DNRTests testGroupingAndPriorities]' passed (0.237 seconds).
+Test Suite 'DNRTests' passed at 2026-10-29 00:38:20.701.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.237 (0.237) seconds
+Test Suite 'DNSMessageTests' started at 2026-10-29 00:38:20.701.
+Test Case '-[ShieldCoreTests.DNSMessageTests testAddressResponseAndHTTPSAlias]' started.
+Test Case '-[ShieldCoreTests.DNSMessageTests testAddressResponseAndHTTPSAlias]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.DNSMessageTests testBlockedResponses]' started.
+Test Case '-[ShieldCoreTests.DNSMessageTests testBlockedResponses]' passed (0.002 seconds).
+Test Case '-[ShieldCoreTests.DNSMessageTests testMalformedInputIsRejected]' started.
+Test Case '-[ShieldCoreTests.DNSMessageTests testMalformedInputIsRejected]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.DNSMessageTests testQueryRoundTrip]' started.
+Test Case '-[ShieldCoreTests.DNSMessageTests testQueryRoundTrip]' passed (0.001 seconds).
+Test Suite 'DNSMessageTests' passed at 2026-10-29 00:38:20.706.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.005 (0.005) seconds
+Test Suite 'DomainIndexTests' started at 2026-10-29 00:38:20.706.
+Test Case '-[ShieldCoreTests.DomainIndexTests testBadfilterDisablesRule]' started.
+Test Case '-[ShieldCoreTests.DomainIndexTests testBadfilterDisablesRule]' passed (0.002 seconds).
+Test Case '-[ShieldCoreTests.DomainIndexTests testComplexRules]' started.
+Test Case '-[ShieldCoreTests.DomainIndexTests testComplexRules]' passed (0.003 seconds).
+Test Case '-[ShieldCoreTests.DomainIndexTests testMatchesNaiveSetOnRandomData]' started.
+Test Case '-[ShieldCoreTests.DomainIndexTests testMatchesNaiveSetOnRandomData]' passed (0.977 seconds).
+Test Case '-[ShieldCoreTests.DomainIndexTests testRoundTripAndHeader]' started.
+Test Case '-[ShieldCoreTests.DomainIndexTests testRoundTripAndHeader]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.DomainIndexTests testSubtreeExactAndAttribution]' started.
+Test Case '-[ShieldCoreTests.DomainIndexTests testSubtreeExactAndAttribution]' passed (0.003 seconds).
+Test Case '-[ShieldCoreTests.DomainIndexTests testTamperAndGarbageAreRejected]' started.
+Test Case '-[ShieldCoreTests.DomainIndexTests testTamperAndGarbageAreRejected]' passed (0.002 seconds).
+Test Suite 'DomainIndexTests' passed at 2026-10-29 00:38:21.694.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.987 (0.988) seconds
+Test Suite 'DomainMatcherTests' started at 2026-10-29 00:38:21.694.
+Test Case '-[ShieldCoreTests.DomainMatcherTests testNoListsStillAppliesUserRules]' started.
+Test Case '-[ShieldCoreTests.DomainMatcherTests testNoListsStillAppliesUserRules]' passed (0.002 seconds).
+Test Case '-[ShieldCoreTests.DomainMatcherTests testPrecedence]' started.
+Test Case '-[ShieldCoreTests.DomainMatcherTests testPrecedence]' passed (0.007 seconds).
+Test Case '-[ShieldCoreTests.DomainMatcherTests testWildcardExceptionsAndCustomRegex]' started.
+Test Case '-[ShieldCoreTests.DomainMatcherTests testWildcardExceptionsAndCustomRegex]' passed (0.003 seconds).
+Test Suite 'DomainMatcherTests' passed at 2026-10-29 00:38:21.706.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.012 (0.012) seconds
+Test Suite 'DomainTests' started at 2026-10-29 00:38:21.706.
+Test Case '-[ShieldCoreTests.DomainTests testGlob]' started.
+Test Case '-[ShieldCoreTests.DomainTests testGlob]' passed (0.000 seconds).
+Test Case '-[ShieldCoreTests.DomainTests testIPAddresses]' started.
+Test Case '-[ShieldCoreTests.DomainTests testIPAddresses]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.DomainTests testNormalize]' started.
+Test Case '-[ShieldCoreTests.DomainTests testNormalize]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.DomainTests testRegistrableDomainAndHosts]' started.
+Test Case '-[ShieldCoreTests.DomainTests testRegistrableDomainAndHosts]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.DomainTests testSuffixesAndSubdomain]' started.
+Test Case '-[ShieldCoreTests.DomainTests testSuffixesAndSubdomain]' passed (0.000 seconds).
+Test Suite 'DomainTests' passed at 2026-10-29 00:38:21.709.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+Test Suite 'FuzzyMatcherTests' started at 2026-10-29 00:38:21.709.
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testBestScoreAcrossFields]' started.
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testBestScoreAcrossFields]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testCaseAndDiacriticInsensitive]' started.
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testCaseAndDiacriticInsensitive]' passed (0.002 seconds).
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testEmptyQueryMatchesEverything]' started.
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testEmptyQueryMatchesEverything]' passed (0.000 seconds).
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testExactBeatsLonger]' started.
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testExactBeatsLonger]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testPrefixBeatsScattered]' started.
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testPrefixBeatsScattered]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testSubsequenceRequired]' started.
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testSubsequenceRequired]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testWordStartsAndAcronyms]' started.
+Test Case '-[SwoopCoreTests.FuzzyMatcherTests testWordStartsAndAcronyms]' passed (0.001 seconds).
+Test Suite 'FuzzyMatcherTests' passed at 2026-10-29 00:38:21.716.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.006 (0.006) seconds
+Test Suite 'InsightTests' started at 2026-10-29 00:38:21.716.
+Test Case '-[SwoopCoreTests.InsightTests testAppcastAndCask]' started.
+Test Case '-[SwoopCoreTests.InsightTests testAppcastAndCask]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.InsightTests testBatteryParse]' started.
+Test Case '-[SwoopCoreTests.InsightTests testBatteryParse]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.InsightTests testEmojiCatalog]' started.
+Test Case '-[SwoopCoreTests.InsightTests testEmojiCatalog]' passed (0.082 seconds).
+Test Case '-[SwoopCoreTests.InsightTests testMaintenanceCatalog]' started.
+Test Case '-[SwoopCoreTests.InsightTests testMaintenanceCatalog]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.InsightTests testPersistenceAnalyzer]' started.
+Test Case '-[SwoopCoreTests.InsightTests testPersistenceAnalyzer]' passed (0.002 seconds).
+Test Case '-[SwoopCoreTests.InsightTests testRemovalLogAndSchedule]' started.
+Test Case '-[SwoopCoreTests.InsightTests testRemovalLogAndSchedule]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.InsightTests testTreemapCoversAreaWithoutOverlap]' started.
+Test Case '-[SwoopCoreTests.InsightTests testTreemapCoversAreaWithoutOverlap]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.InsightTests testVersions]' started.
+Test Case '-[SwoopCoreTests.InsightTests testVersions]' passed (0.001 seconds).
+Test Suite 'InsightTests' passed at 2026-10-29 00:38:21.805.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.089 (0.090) seconds
+Test Suite 'JunkRulesTests' started at 2026-10-29 00:38:21.805.
+Test Case '-[SwoopCoreTests.JunkRulesTests testBrokenDownloads]' started.
+Test Case '-[SwoopCoreTests.JunkRulesTests testBrokenDownloads]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.JunkRulesTests testCachesExcludeAppleBrowsersAndSwoop]' started.
+Test Case '-[SwoopCoreTests.JunkRulesTests testCachesExcludeAppleBrowsersAndSwoop]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.JunkRulesTests testClassifyAndExpand]' started.
+Test Case '-[SwoopCoreTests.JunkRulesTests testClassifyAndExpand]' passed (0.004 seconds).
+Test Case '-[SwoopCoreTests.JunkRulesTests testDefaults]' started.
+Test Case '-[SwoopCoreTests.JunkRulesTests testDefaults]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.JunkRulesTests testEveryRuleHasASafetyNote]' started.
+Test Case '-[SwoopCoreTests.JunkRulesTests testEveryRuleHasASafetyNote]' passed (0.000 seconds).
+Test Case '-[SwoopCoreTests.JunkRulesTests testGlob]' started.
+Test Case '-[SwoopCoreTests.JunkRulesTests testGlob]' passed (0.000 seconds).
+Test Case '-[SwoopCoreTests.JunkRulesTests testLanguageFiles]' started.
+Test Case '-[SwoopCoreTests.JunkRulesTests testLanguageFiles]' passed (0.001 seconds).
+Test Suite 'JunkRulesTests' passed at 2026-10-29 00:38:21.814.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.008 (0.008) seconds
+Test Suite 'LeftoverTests' started at 2026-10-29 00:38:21.814.
+Test Case '-[SwoopCoreTests.LeftoverTests testBundleIDExtraction]' started.
+Test Case '-[SwoopCoreTests.LeftoverTests testBundleIDExtraction]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.LeftoverTests testBundleIDMatches]' started.
+Test Case '-[SwoopCoreTests.LeftoverTests testBundleIDMatches]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.LeftoverTests testNameMatchOnlyWhenDistinctive]' started.
+Test Case '-[SwoopCoreTests.LeftoverTests testNameMatchOnlyWhenDistinctive]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.LeftoverTests testNoFalsePositives]' started.
+Test Case '-[SwoopCoreTests.LeftoverTests testNoFalsePositives]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.LeftoverTests testOrphans]' started.
+Test Case '-[SwoopCoreTests.LeftoverTests testOrphans]' passed (0.001 seconds).
+Test Suite 'LeftoverTests' passed at 2026-10-29 00:38:21.818.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+Test Suite 'ListIntegrityTests' started at 2026-10-29 00:38:21.818.
+Test Case '-[ShieldCoreTests.ListIntegrityTests testAcceptsAndRecords]' started.
+Test Case '-[ShieldCoreTests.ListIntegrityTests testAcceptsAndRecords]' passed (0.002 seconds).
+Test Case '-[ShieldCoreTests.ListIntegrityTests testRejections]' started.
+Test Case '-[ShieldCoreTests.ListIntegrityTests testRejections]' passed (0.007 seconds).
+Test Case '-[ShieldCoreTests.ListIntegrityTests testSignedManifest]' started.
+Test Case '-[ShieldCoreTests.ListIntegrityTests testSignedManifest]' passed (0.002 seconds).
+Test Suite 'ListIntegrityTests' passed at 2026-10-29 00:38:21.829.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.011 (0.011) seconds
+Test Suite 'LocalResolverTests' started at 2026-10-29 00:38:21.829.
+Test Case '-[ShieldCoreTests.LocalResolverTests testServerBlocksForwardsAndUncloaks]' started.
+Test Case '-[ShieldCoreTests.LocalResolverTests testServerBlocksForwardsAndUncloaks]' passed (0.019 seconds).
+Test Case '-[ShieldCoreTests.LocalResolverTests testUpstreamFailureGivesServfail]' started.
+Test Case '-[ShieldCoreTests.LocalResolverTests testUpstreamFailureGivesServfail]' passed (0.002 seconds).
+Test Suite 'LocalResolverTests' passed at 2026-10-29 00:38:21.850.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.021 (0.021) seconds
+Test Suite 'ModelTests' started at 2026-10-29 00:38:21.850.
+Test Case '-[SwoopCoreTests.ModelTests testBytes]' started.
+Test Case '-[SwoopCoreTests.ModelTests testBytes]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.ModelTests testClipboardHistoryDedupePinPrune]' started.
+Test Case '-[SwoopCoreTests.ModelTests testClipboardHistoryDedupePinPrune]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.ModelTests testClipboardPrivacy]' started.
+Test Case '-[SwoopCoreTests.ModelTests testClipboardPrivacy]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.ModelTests testDuplicates]' started.
+Test Case '-[SwoopCoreTests.ModelTests testDuplicates]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.ModelTests testFileKindAndFilter]' started.
+Test Case '-[SwoopCoreTests.ModelTests testFileKindAndFilter]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.ModelTests testLaunchctl]' started.
+Test Case '-[SwoopCoreTests.ModelTests testLaunchctl]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.ModelTests testRankerFrequencyAndFavourites]' started.
+Test Case '-[SwoopCoreTests.ModelTests testRankerFrequencyAndFavourites]' passed (0.001 seconds).
+Test Suite 'ModelTests' passed at 2026-10-29 00:38:21.855.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.004 (0.005) seconds
+Test Suite 'PathSafetyTests' started at 2026-10-29 00:38:21.855.
+Test Case '-[SwoopCoreTests.PathSafetyTests testApplications]' started.
+Test Case '-[SwoopCoreTests.PathSafetyTests testApplications]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.PathSafetyTests testDotDotCannotEscape]' started.
+Test Case '-[SwoopCoreTests.PathSafetyTests testDotDotCannotEscape]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.PathSafetyTests testHomeRules]' started.
+Test Case '-[SwoopCoreTests.PathSafetyTests testHomeRules]' passed (0.002 seconds).
+Test Case '-[SwoopCoreTests.PathSafetyTests testSystemDenied]' started.
+Test Case '-[SwoopCoreTests.PathSafetyTests testSystemDenied]' passed (0.001 seconds).
+Test Suite 'PathSafetyTests' passed at 2026-10-29 00:38:21.860.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.005 (0.005) seconds
+Test Suite 'PaxCompatibilityTests' started at 2026-10-29 00:38:21.860.
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testAnySingleSignalMeansPresent]' started.
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testAnySingleSignalMeansPresent]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testBuiltInBrowserRulesNeverBlockPax]' started.
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testBuiltInBrowserRulesNeverBlockPax]' passed (0.008 seconds).
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testConfigRoundTripAndOldConfigs]' started.
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testConfigRoundTripAndOldConfigs]' passed (0.002 seconds).
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testEngineInPaxModeNeverBlocksPaxAndSkipsBypassBlocking]' started.
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testEngineInPaxModeNeverBlocksPaxAndSkipsBypassBlocking]' passed (0.004 seconds).
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testIdentifiers]' started.
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testIdentifiers]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testLayersAllowedNextToPax]' started.
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testLayersAllowedNextToPax]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testLocalDNSOwnership]' started.
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testLocalDNSOwnership]' passed (0.000 seconds).
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testNoSignalsMeansAbsent]' started.
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testNoSignalsMeansAbsent]' passed (0.000 seconds).
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testProtectedHostsAndIPs]' started.
+Test Case '-[ShieldCoreTests.PaxCompatibilityTests testProtectedHostsAndIPs]' passed (0.001 seconds).
+Test Suite 'PaxCompatibilityTests' passed at 2026-10-29 00:38:21.879.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.018 (0.019) seconds
+Test Suite 'PaxProtectionTests' started at 2026-10-29 00:38:21.879.
+Test Case '-[SwoopCoreTests.PaxProtectionTests testApps]' started.
+Test Case '-[SwoopCoreTests.PaxProtectionTests testApps]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.PaxProtectionTests testLaunchItemsProcessesProfiles]' started.
+Test Case '-[SwoopCoreTests.PaxProtectionTests testLaunchItemsProcessesProfiles]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.PaxProtectionTests testMaintenanceTasksDontTouchPax]' started.
+Test Case '-[SwoopCoreTests.PaxProtectionTests testMaintenanceTasksDontTouchPax]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.PaxProtectionTests testPathSafetyDeniesPaxBeforeApplicationsRule]' started.
+Test Case '-[SwoopCoreTests.PaxProtectionTests testPathSafetyDeniesPaxBeforeApplicationsRule]' passed (0.000 seconds).
+Test Case '-[SwoopCoreTests.PaxProtectionTests testProtectedPaths]' started.
+Test Case '-[SwoopCoreTests.PaxProtectionTests testProtectedPaths]' passed (0.003 seconds).
+Test Case '-[SwoopCoreTests.PaxProtectionTests testSecurityCheckNeverFlagsPax]' started.
+Test Case '-[SwoopCoreTests.PaxProtectionTests testSecurityCheckNeverFlagsPax]' passed (0.001 seconds).
+Test Suite 'PaxProtectionTests' passed at 2026-10-29 00:38:21.886.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.006 (0.007) seconds
+Test Suite 'PolicyAndEngineTests' started at 2026-10-29 00:38:21.886.
+Test Case '-[ShieldCoreTests.PolicyAndEngineTests testConfigCodable]' started.
+Test Case '-[ShieldCoreTests.PolicyAndEngineTests testConfigCodable]' passed (0.002 seconds).
+Test Case '-[ShieldCoreTests.PolicyAndEngineTests testEncryptedDNSPolicy]' started.
+Test Case '-[ShieldCoreTests.PolicyAndEngineTests testEncryptedDNSPolicy]' passed (0.002 seconds).
+Test Case '-[ShieldCoreTests.PolicyAndEngineTests testEnginePausesAndPrecedence]' started.
+Test Case '-[ShieldCoreTests.PolicyAndEngineTests testEnginePausesAndPrecedence]' passed (0.004 seconds).
+Test Case '-[ShieldCoreTests.PolicyAndEngineTests testFlowVerdicts]' started.
+Test Case '-[ShieldCoreTests.PolicyAndEngineTests testFlowVerdicts]' passed (0.003 seconds).
+Test Case '-[ShieldCoreTests.PolicyAndEngineTests testHandleQueryProducesBlockedAnswer]' started.
+Test Case '-[ShieldCoreTests.PolicyAndEngineTests testHandleQueryProducesBlockedAnswer]' passed (0.002 seconds).
+Test Case '-[ShieldCoreTests.PolicyAndEngineTests testStatsCollector]' started.
+Test Case '-[ShieldCoreTests.PolicyAndEngineTests testStatsCollector]' passed (0.002 seconds).
+Test Suite 'PolicyAndEngineTests' passed at 2026-10-29 00:38:21.902.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.015 (0.016) seconds
+Test Suite 'RuleParserTests' started at 2026-10-29 00:38:21.902.
+Test Case '-[ShieldCoreTests.RuleParserTests testABPHostRuleFeedsDNSAndBrowser]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testABPHostRuleFeedsDNSAndBrowser]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testBadfilter]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testBadfilter]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testBrowserOnlyModifiersStayOutOfDNS]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testBrowserOnlyModifiersStayOutOfDNS]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testCommentsAndMetadata]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testCommentsAndMetadata]' passed (0.000 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testCosmeticRules]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testCosmeticRules]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testDNSModifiers]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testDNSModifiers]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testExceptionAndImportant]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testExceptionAndImportant]' passed (0.000 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testHostsSyntax]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testHostsSyntax]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testPathRulesStartingWithSlashAreNotRegex]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testPathRulesStartingWithSlashAreNotRegex]' passed (0.000 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testPlainDomainsAndWildcards]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testPlainDomainsAndWildcards]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testRegexDependsOnListKind]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testRegexDependsOnListKind]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testScriptletDialects]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testScriptletDialects]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testUnknownAndUnsupportedModifiers]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testUnknownAndUnsupportedModifiers]' passed (0.001 seconds).
+Test Case '-[ShieldCoreTests.RuleParserTests testUserRuleProblems]' started.
+Test Case '-[ShieldCoreTests.RuleParserTests testUserRuleProblems]' passed (0.001 seconds).
+Test Suite 'RuleParserTests' passed at 2026-10-29 00:38:21.912.
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.009 (0.010) seconds
+Test Suite 'SafariConverterTests' started at 2026-10-29 00:38:21.912.
+Test Case '-[ShieldCoreTests.SafariConverterTests testCosmeticConversion]' started.
+Test Case '-[ShieldCoreTests.SafariConverterTests testCosmeticConversion]' passed (0.025 seconds).
+Test Case '-[ShieldCoreTests.SafariConverterTests testSplittingKeepsExceptionsInEveryChunk]' started.
+Test Case '-[ShieldCoreTests.SafariConverterTests testSplittingKeepsExceptionsInEveryChunk]' passed (0.004 seconds).
+Test Case '-[ShieldCoreTests.SafariConverterTests testTriggersAndActions]' started.
+Test Case '-[ShieldCoreTests.SafariConverterTests testTriggersAndActions]' passed (0.002 seconds).
+Test Case '-[ShieldCoreTests.SafariConverterTests testURLFilterConversion]' started.
+Test Case '-[ShieldCoreTests.SafariConverterTests testURLFilterConversion]' passed (0.002 seconds).
+Test Suite 'SafariConverterTests' passed at 2026-10-29 00:38:21.946.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.033 (0.034) seconds
+Test Suite 'ScriptAndLinkTests' started at 2026-10-29 00:38:21.946.
+Test Case '-[SwoopCoreTests.ScriptAndLinkTests testOtherCommentStylesAndRejects]' started.
+Test Case '-[SwoopCoreTests.ScriptAndLinkTests testOtherCommentStylesAndRejects]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.ScriptAndLinkTests testParseRaycastHeader]' started.
+Test Case '-[SwoopCoreTests.ScriptAndLinkTests testParseRaycastHeader]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.ScriptAndLinkTests testQuicklinks]' started.
+Test Case '-[SwoopCoreTests.ScriptAndLinkTests testQuicklinks]' passed (0.001 seconds).
+Test Suite 'ScriptAndLinkTests' passed at 2026-10-29 00:38:21.949.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.002 (0.003) seconds
+Test Suite 'ScriptletArgTests' started at 2026-10-29 00:38:21.949.
+Test Case '-[ShieldCoreTests.ScriptletArgTests testBackslashesInRegexArgsSurvive]' started.
+Test Case '-[ShieldCoreTests.ScriptletArgTests testBackslashesInRegexArgsSurvive]' passed (0.001 seconds).
+Test Suite 'ScriptletArgTests' passed at 2026-10-29 00:38:21.949.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'SnippetTests' started at 2026-10-29 00:38:21.949.
+Test Case '-[SwoopCoreTests.SnippetTests testCursor]' started.
+Test Case '-[SwoopCoreTests.SnippetTests testCursor]' passed (0.000 seconds).
+Test Case '-[SwoopCoreTests.SnippetTests testMatcherResetsOnReturn]' started.
+Test Case '-[SwoopCoreTests.SnippetTests testMatcherResetsOnReturn]' passed (0.000 seconds).
+Test Case '-[SwoopCoreTests.SnippetTests testMatcherSuffixAndBackspace]' started.
+Test Case '-[SwoopCoreTests.SnippetTests testMatcherSuffixAndBackspace]' passed (0.000 seconds).
+Test Case '-[SwoopCoreTests.SnippetTests testPlaceholders]' started.
+Test Case '-[SwoopCoreTests.SnippetTests testPlaceholders]' passed (0.002 seconds).
+Test Case '-[SwoopCoreTests.SnippetTests testUnknownPlaceholderKept]' started.
+Test Case '-[SwoopCoreTests.SnippetTests testUnknownPlaceholderKept]' passed (0.000 seconds).
+Test Suite 'SnippetTests' passed at 2026-10-29 00:38:21.954.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.004 (0.005) seconds
+Test Suite 'WindowAndHotkeyTests' started at 2026-10-29 00:38:21.954.
+Test Case '-[SwoopCoreTests.WindowAndHotkeyTests testDoubleTap]' started.
+Test Case '-[SwoopCoreTests.WindowAndHotkeyTests testDoubleTap]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.WindowAndHotkeyTests testLayouts]' started.
+Test Case '-[SwoopCoreTests.WindowAndHotkeyTests testLayouts]' passed (0.002 seconds).
+Test Case '-[SwoopCoreTests.WindowAndHotkeyTests testShortcutParsing]' started.
+Test Case '-[SwoopCoreTests.WindowAndHotkeyTests testShortcutParsing]' passed (0.001 seconds).
+Test Case '-[SwoopCoreTests.WindowAndHotkeyTests testTriggersAndConflicts]' started.
+Test Case '-[SwoopCoreTests.WindowAndHotkeyTests testTriggersAndConflicts]' passed (0.001 seconds).
+Test Suite 'WindowAndHotkeyTests' passed at 2026-10-29 00:38:21.959.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.004 (0.005) seconds
+Test Suite 'SwoopPackageTests.xctest' passed at 2026-10-29 00:38:21.959.
+	 Executed 136 tests, with 0 failures (0 unexpected) in 4.221 (4.242) seconds
+Test Suite 'All tests' passed at 2026-10-29 00:38:21.959.
+	 Executed 136 tests, with 0 failures (0 unexpected) in 4.221 (4.245) seconds
+◇ Test run started.
+↳ Testing Library Version: 124.4
+↳ Target Platform: x86_64-apple-macos14.0
+✔ Test run with 0 tests passed after 0.001 seconds.

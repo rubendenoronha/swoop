@@ -1,0 +1,259 @@
+
+==> Building Swoop 0.2.3 (release)
+Building for production...
+[0/21] Write sources
+[8/21] Write swift-version--79AA4F9932D1E87A.txt
+[10/25] Compiling SwoopSafariBlocker main.swift
+[10/25] Write Objects.LinkFileList
+[11/25] Linking SwoopSafariBlocker
+[13/25] Compiling SwoopSafariWebExtension main.swift
+[13/25] Write Objects.LinkFileList
+[14/25] Linking SwoopSafariWebExtension
+[16/25] Compiling SwoopCore Calculator.swift
+[17/25] Compiling ShieldCore BloomFilter.swift
+[18/29] Compiling swoop_resolver main.swift
+[18/29] Write Objects.LinkFileList
+[19/29] Linking swoop-resolver
+[21/29] Compiling SwoopShieldExtension DNSProxyProvider.swift
+[21/29] Write Objects.LinkFileList
+[23/29] Compiling swoop_shield_compile main.swift
+[23/29] Write Objects.LinkFileList
+[24/29] Linking SwoopShieldExtension
+[25/29] Linking swoop-shield-compile
+[27/29] Compiling Swoop AppDelegate.swift
+[27/29] Write Objects.LinkFileList
+[28/29] Linking Swoop
+Build complete! (155.21s)
+Building for production...
+[0/21] Write sources
+[8/21] Write swift-version--79AA4F9932D1E87A.txt
+[10/25] Compiling SwoopSafariBlocker main.swift
+[10/25] Write Objects.LinkFileList
+[11/25] Linking SwoopSafariBlocker
+[13/25] Compiling SwoopSafariWebExtension main.swift
+[13/25] Write Objects.LinkFileList
+[14/25] Linking SwoopSafariWebExtension
+[16/25] Compiling SwoopCore Calculator.swift
+[17/25] Compiling ShieldCore BloomFilter.swift
+[18/29] Compiling swoop_resolver main.swift
+[18/29] Write Objects.LinkFileList
+[20/29] Compiling SwoopShieldExtension DNSProxyProvider.swift
+[20/29] Write Objects.LinkFileList
+[21/29] Linking swoop-resolver
+[23/29] Compiling swoop_shield_compile main.swift
+[23/29] Write Objects.LinkFileList
+[24/29] Linking SwoopShieldExtension
+[25/29] Linking swoop-shield-compile
+[27/29] Compiling Swoop AppDelegate.swift
+[27/29] Write Objects.LinkFileList
+[28/29] Linking Swoop
+Build complete! (127.98s)
+
+==> Assembling Swoop.app
+   app icon: AppIcon
+
+==> Assembling Swoop Shield
+   system extension: bundled but not activatable (needs Developer ID, APPLE_TEAM_ID and both profiles)
+   Safari App Group: Z94GSK7JA8.com.swoopkey.swoop.shieldZ94GSK7JA8
+
+==> Signing ([signing identity])
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/MacOS/swoop-resolver
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/MacOS/swoop-resolver
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker1.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker1.appex
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker3.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker3.appex
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker5.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker5.appex
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker2.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker2.appex
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker4.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker4.appex
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker6.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker6.appex
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldPageCleaner.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldPageCleaner.appex
+/Users/runner/work/swoop/swoop/dist/Swoop.app: valid on disk
+/Users/runner/work/swoop/swoop/dist/Swoop.app: satisfies its Designated Requirement
+
+==> Notarising Swoop.app
+Conducting pre-submission checks for Swoop-notarise.zip and initiating connection to the Apple notary service...
+Submission ID received
+  id: a562b6b3-f85c-436b-94fa-1a4a570f50ae
+Successfully uploaded file
+  id: a562b6b3-f85c-436b-94fa-1a4a570f50ae
+  path: /var/folders/20/jp1_0n3n7kndh6rnbqb5344m0000gn/T/tmp.K7fSRCBqm1/Swoop-notarise.zip
+Waiting for processing to complete. Wait timeout is set to 1800.0 second(s).
+
+Current status: In Progress...
+Current status: In Progress....
+Current status: In Progress.....
+Current status: Accepted......Processing complete
+  id: a562b6b3-f85c-436b-94fa-1a4a570f50ae
+  status: Accepted
+Processing: /Users/runner/work/swoop/swoop/dist/Swoop.app
+error is Error Domain=NSURLErrorDomain Code=-1005 "The network connection was lost." UserInfo={_kCFStreamErrorCodeKey=-4, NSUnderlyingError=0x600003891290 {Error Domain=kCFErrorDomainCFNetwork Code=-1005 "(null)" UserInfo={NSErrorPeerAddressKey=<CFData 0x60000159cd70 [0x7ff85aef04e0]>{length = 16, capacity = 16, bytes = 0x100201bb11f8c01c0000000000000000}, _kCFStreamErrorCodeKey=-4, _kCFStreamErrorDomainKey=4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <F4F7175F-80E5-404F-89A5-35E68101E209>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <F4F7175F-80E5-404F-89A5-35E68101E209>.<1>"
+), NSLocalizedDescription=The network connection was lost., NSErrorFailingURLStringKey=https://api.apple-cloudkit.com/database/1/com.apple.gk.ticket-delivery/production/public/records/lookup, NSErrorFailingURLKey=https://api.apple-cloudkit.com/database/1/com.apple.gk.ticket-delivery/production/public/records/lookup, _kCFStreamErrorDomainKey=4}
+CloudKit's response is inconsistent with expections: (null)
+The staple and validate action failed! Error 68.
+   (stapling Swoop.app failed, attempt 1; retrying in 15s)
+Processing: /Users/runner/work/swoop/swoop/dist/Swoop.app
+error is Error Domain=NSURLErrorDomain Code=-1005 "The network connection was lost." UserInfo={_kCFStreamErrorCodeKey=-4, NSUnderlyingError=0x6000024de4c0 {Error Domain=kCFErrorDomainCFNetwork Code=-1005 "(null)" UserInfo={NSErrorPeerAddressKey=<CFData 0x6000009d5360 [0x7ff85aef04e0]>{length = 16, capacity = 16, bytes = 0x100201bb11f8c01c0000000000000000}, _kCFStreamErrorCodeKey=-4, _kCFStreamErrorDomainKey=4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <1E0E5986-0CF2-489D-8511-5C1C7B1C1E2F>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <1E0E5986-0CF2-489D-8511-5C1C7B1C1E2F>.<1>"
+), NSLocalizedDescription=The network connection was lost., NSErrorFailingURLStringKey=https://api.apple-cloudkit.com/database/1/com.apple.gk.ticket-delivery/production/public/records/lookup, NSErrorFailingURLKey=https://api.apple-cloudkit.com/database/1/com.apple.gk.ticket-delivery/production/public/records/lookup, _kCFStreamErrorDomainKey=4}
+CloudKit's response is inconsistent with expections: (null)
+The staple and validate action failed! Error 68.
+   (stapling Swoop.app failed, attempt 2; retrying in 30s)
+Processing: /Users/runner/work/swoop/swoop/dist/Swoop.app
+error is Error Domain=NSURLErrorDomain Code=-1005 "The network connection was lost." UserInfo={_kCFStreamErrorCodeKey=-4, NSUnderlyingError=0x600002044cf0 {Error Domain=kCFErrorDomainCFNetwork Code=-1005 "(null)" UserInfo={NSErrorPeerAddressKey=<CFData 0x600000d5e800 [0x7ff85aef04e0]>{length = 16, capacity = 16, bytes = 0x100201bb11fa61620000000000000000}, _kCFStreamErrorCodeKey=-4, _kCFStreamErrorDomainKey=4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <EB24F98C-44CA-4054-AB7D-044A145D96C6>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <EB24F98C-44CA-4054-AB7D-044A145D96C6>.<1>"
+), NSLocalizedDescription=The network connection was lost., NSErrorFailingURLStringKey=https://api.apple-cloudkit.com/database/1/com.apple.gk.ticket-delivery/production/public/records/lookup, NSErrorFailingURLKey=https://api.apple-cloudkit.com/database/1/com.apple.gk.ticket-delivery/production/public/records/lookup, _kCFStreamErrorDomainKey=4}
+CloudKit's response is inconsistent with expections: (null)
+The staple and validate action failed! Error 68.
+   (stapling Swoop.app failed, attempt 3; retrying in 45s)
+Processing: /Users/runner/work/swoop/swoop/dist/Swoop.app
+Processing: /Users/runner/work/swoop/swoop/dist/Swoop.app
+The staple and validate action worked!
+
+==> Creating Swoop-0.2.3.dmg
+   styled DMG (background + icon layout)
+hdiutil: verify: checksum of "/Users/runner/work/swoop/swoop/dist/Swoop-0.2.3.dmg" is VALID
+
+==> Notarising Swoop-0.2.3.dmg
+Conducting pre-submission checks for Swoop-0.2.3.dmg and initiating connection to the Apple notary service...
+Submission ID received
+  id: 51061ff3-4212-4417-870c-ae09be4833fb
+Successfully uploaded file
+  id: 51061ff3-4212-4417-870c-ae09be4833fb
+  path: /Users/runner/work/swoop/swoop/dist/Swoop-0.2.3.dmg
+Waiting for processing to complete. Wait timeout is set to 1800.0 second(s).
+
+Current status: In Progress...
+Current status: In Progress....
+Current status: In Progress.....
+Current status: In Progress......
+Current status: Accepted.......Processing complete
+  id: 51061ff3-4212-4417-870c-ae09be4833fb
+  status: Accepted
+Processing: /Users/runner/work/swoop/swoop/dist/Swoop-0.2.3.dmg
+error is Error Domain=NSURLErrorDomain Code=-1005 "The network connection was lost." UserInfo={_kCFStreamErrorCodeKey=-4, NSUnderlyingError=0x6000015aced0 {Error Domain=kCFErrorDomainCFNetwork Code=-1005 "(null)" UserInfo={NSErrorPeerAddressKey=<CFData 0x6000038a59a0 [0x7ff85aef04e0]>{length = 16, capacity = 16, bytes = 0x100201bb11fa61660000000000000000}, _kCFStreamErrorCodeKey=-4, _kCFStreamErrorDomainKey=4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <D0267551-6CE4-41BA-B962-D7E31A22E9C4>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <D0267551-6CE4-41BA-B962-D7E31A22E9C4>.<1>"
+), NSLocalizedDescription=The network connection was lost., NSErrorFailingURLStringKey=https://api.apple-cloudkit.com/database/1/com.apple.gk.ticket-delivery/production/public/records/lookup, NSErrorFailingURLKey=https://api.apple-cloudkit.com/database/1/com.apple.gk.ticket-delivery/production/public/records/lookup, _kCFStreamErrorDomainKey=4}
+CloudKit's response is inconsistent with expections: (null)
+The staple and validate action failed! Error 68.
+   (stapling Swoop-0.2.3.dmg failed, attempt 1; retrying in 15s)
+Processing: /Users/runner/work/swoop/swoop/dist/Swoop-0.2.3.dmg
+Processing: /Users/runner/work/swoop/swoop/dist/Swoop-0.2.3.dmg
+The staple and validate action worked!
+/Users/runner/work/swoop/swoop/dist/Swoop.app: accepted
+source=Notarized Developer ID
+/Users/runner/work/swoop/swoop/dist/Swoop-0.2.3.dmg: accepted
+source=Notarized Developer ID
+
+==> Done
+App: /Users/runner/work/swoop/swoop/dist/Swoop.app ( 24M)
+DMG: /Users/runner/work/swoop/swoop/dist/Swoop-0.2.3.dmg ( 10M)
+bfaf3a8f80f136d15b1fb046493069856cda8e312bdaeaf439c091bd55d7bf02  /Users/runner/work/swoop/swoop/dist/Swoop-0.2.3.dmg
+
+==> Check the bundle
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/MacOS/swoop-resolver
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/MacOS/swoop-resolver
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker1.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker1.appex
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker3.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker3.appex
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker5.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker5.appex
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker2.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker2.appex
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker4.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker4.appex
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker6.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldBlocker6.appex
+--prepared:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldPageCleaner.appex
+--validated:/Users/runner/work/swoop/swoop/dist/Swoop.app/Contents/PlugIns/SwoopShieldPageCleaner.appex
+dist/Swoop.app: valid on disk
+dist/Swoop.app: satisfies its Designated Requirement
+architectures: x86_64 arm64
+minos: 13.0
+{
+  "CFBundleDevelopmentRegion" => "en"
+  "CFBundleDisplayName" => "Swoop"
+  "CFBundleExecutable" => "Swoop"
+  "CFBundleIconFile" => "AppIcon"
+  "CFBundleIdentifier" => "com.swoopkey.swoop"
+  "CFBundleInfoDictionaryVersion" => "6.0"
+  "CFBundleName" => "Swoop"
+  "CFBundlePackageType" => "APPL"
+  "CFBundleShortVersionString" => "0.2.3"
+  "CFBundleVersion" => "17"
+  "LSApplicationCategoryType" => "public.app-category.productivity"
+  "LSMinimumSystemVersion" => "13.0"
+  "LSUIElement" => 1
+  "NSAppleEventsUsageDescription" => "Swoop uses System Events and Finder for commands you run: toggling dark mode, emptying the Trash, restarting, and managing login items."
+  "NSHighResolutionCapable" => 1
+  "NSHumanReadableCopyright" => "© 2026 DE NORONHA LTD. MIT Licence. swoopkey.com"
+  "NSSupportsAutomaticTermination" => 0
+  "SwoopAppGroup" => "Z94GSK7JA8.com.swoopkey.swoop.shield"
+  "SwoopGoogleClientID" => ""
+  "SwoopGoogleClientSecret" => ""
+  "SwoopShieldMachService" => "Z94GSK7JA8.com.swoopkey.swoop.shield.xpc"
+  "SwoopTeamID" => "Z94GSK7JA8"
+}
+
+==> Swoop Shield
+{
+  "CFBundleDevelopmentRegion" => "en"
+  "CFBundleDisplayName" => "Swoop Shield"
+  "CFBundleExecutable" => "com.swoopkey.swoop.shield"
+  "CFBundleIdentifier" => "com.swoopkey.swoop.shield"
+  "CFBundleInfoDictionaryVersion" => "6.0"
+  "CFBundleName" => "Swoop Shield"
+  "CFBundlePackageType" => "SYSX"
+  "CFBundleShortVersionString" => "0.2.3"
+  "CFBundleVersion" => "17"
+  "LSMinimumSystemVersion" => "13.0"
+  "NetworkExtension" => {
+    "NEMachServiceName" => "Z94GSK7JA8.com.swoopkey.swoop.shield.xpc"
+    "NEProviderClasses" => {
+      "com.apple.networkextension.dns-proxy" => "DNSProxyProvider"
+      "com.apple.networkextension.filter-data" => "FilterDataProvider"
+    }
+  }
+  "NSHumanReadableCopyright" => "© 2026 DE NORONHA LTD. MIT Licence."
+  "NSSystemExtensionUsageDescription" => "Swoop Shield blocks ads, trackers and malware for every app on this Mac by filtering DNS on-device."
+  "SwoopAppGroup" => "Z94GSK7JA8.com.swoopkey.swoop.shield"
+  "SwoopTeamID" => "Z94GSK7JA8"
+}
+swoop-resolver: x86_64 arm64
+com.swoopkey.swoop.shield: x86_64 arm64
+SwoopSafariBlocker: x86_64 arm64
+SwoopSafariWebExtension: x86_64 arm64
+app entitlements:
+{
+  "com.apple.security.application-groups" => [
+    0 => "Z94GSK7JA8.com.swoopkey.swoop.shield"
+  ]
+  "com.apple.security.automation.apple-events" => 1
+}
+system extension entitlements:
+{
+  "com.apple.security.app-sandbox" => 1
+}
+No provisioning profiles: Shield runs without the system extension
+Format Description: UDIF read-only compressed (zlib)
+Class Name: CUDIFDiskImage
+Checksum Type: CRC32
+Size Information:
+	CUDIFEncoding-bytes-total: 9498823
+	Total Empty Bytes: 6211584
+	Sector Count: 65680
+	Total Bytes: 33628160
+	CUDIFEncoding-bytes-wasted: 0
+	Total Non-Empty Bytes: 27416576
+	Compressed Ratio: 0.34645551654590273
+	CUDIFEncoding-bytes-in-use: 9498823
+dist/Swoop.app: accepted
+source=Notarized Developer ID
+origin=[signing identity]

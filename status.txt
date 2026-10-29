@@ -1,0 +1,5 @@
+status: success
+run: https://github.com/rubendenoronha/swoop/actions/runs/40794959480
+commit: 5f511de0098ef769d71e40691d86a1c8da6ee17a
+ref: refs/tags/v0.2.3
+finished: 2026-10-29T00:47:29Z
