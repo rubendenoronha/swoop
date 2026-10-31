@@ -294,6 +294,20 @@
       .x-foot ul a:hover { color: var(--dusk); }
       .x-foot p { margin: 0; width: 100%; font-size: 14px; }
 
+      /* follow row */
+      .x-follow { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; width: 100%; }
+      .x-follow__cap { font-size: 14px; color: var(--stone); }
+      .x-foot .x-follow p.x-follow__cap { width: auto; }
+      .x-follow__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0; }
+      .x-follow__list a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; color: var(--graphite); opacity: 0.7; transition: color 0.3s, opacity 0.3s; }
+      .x-follow__list a:hover, .x-follow__list a:focus-visible { color: var(--dusk); opacity: 1; }
+      .x-follow__list svg { width: 18px; height: 18px; display: block; }
+      .x-foot .x-follow__list { margin-left: -13px; }
+      .x-final .x-follow { justify-content: center; margin-top: 20px; }
+      .x-final .x-follow__cap { color: #fff; opacity: 0.75; margin: 0; }
+      .x-final .x-follow__list a { color: #fff; opacity: 0.6; }
+      .x-final .x-follow__list a:hover, .x-final .x-follow__list a:focus-visible { color: #fff; opacity: 1; }
+
       /* tablet */
       @media (max-width: 960px) {
         .x-priv div { padding: 30px 24px; }
@@ -370,6 +384,9 @@
         .x-foot { padding: 32px 0 28px; }
         .x-foot__in { flex-direction: column; align-items: flex-start; gap: 12px; }
         .x-foot ul { flex-direction: column; gap: 0; margin-left: -10px; }
+        .x-foot ul.x-follow__list { flex-direction: row; margin-left: -13px; }
+        .x-final .x-follow { flex-direction: column; gap: 4px; }
+        .x-final .x-follow__list { justify-content: center; }
       }
 
       /* reveal: gentle fades */
@@ -802,9 +819,27 @@
             <a class="x-btn x-btn--glass" href="https://github.com/rubendenoronha/swoop">View on GitHub</a>
           </div>
           <p class="x-fine">Free · Open source (MIT) · macOS 13 Ventura or later · Apple silicon and Intel</p>
+          <div class="x-follow">
+            <p class="x-follow__cap">Follow @swoopkey</p>
+            <ul class="x-follow__list">
+              <li><a href="https://www.instagram.com/swoopkey/" target="_blank" rel="noopener" aria-label="Swoop on Instagram"><svg aria-hidden="true" focusable="false"><use href="#x-i-ig" /></svg></a></li>
+              <li><a href="https://www.tiktok.com/@swoopkey" target="_blank" rel="noopener" aria-label="Swoop on TikTok"><svg aria-hidden="true" focusable="false"><use href="#x-i-tt" /></svg></a></li>
+              <li><a href="https://x.com/swoopkey" target="_blank" rel="noopener" aria-label="Swoop on X"><svg aria-hidden="true" focusable="false"><use href="#x-i-x" /></svg></a></li>
+              <li><a href="https://www.linkedin.com/company/swoopkey" target="_blank" rel="noopener" aria-label="Swoop on LinkedIn"><svg aria-hidden="true" focusable="false"><use href="#x-i-li" /></svg></a></li>
+              <li><a href="https://www.facebook.com/swoopkey" target="_blank" rel="noopener" aria-label="Swoop on Facebook"><svg aria-hidden="true" focusable="false"><use href="#x-i-fb" /></svg></a></li>
+            </ul>
+          </div>
         </div>
       </section>
     </main>
+
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <symbol id="x-i-ig" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" /><circle cx="12" cy="12" r="4.2" /></g><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor" /></symbol>
+      <symbol id="x-i-tt" viewBox="0 0 24 24"><path fill="currentColor" d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.150-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" /></symbol>
+      <symbol id="x-i-x" viewBox="0 0 24 24"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></symbol>
+      <symbol id="x-i-li" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></symbol>
+      <symbol id="x-i-fb" viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07z" /></symbol>
+    </svg>
 
     <footer class="x-foot">
       <div class="x-wrap x-foot__in">
@@ -817,6 +852,16 @@
           <li><a href="/privacy/">Privacy</a></li>
           <li><a href="/terms/">Terms</a></li>
         </ul>
+        <div class="x-follow">
+          <p class="x-follow__cap">Follow @swoopkey</p>
+          <ul class="x-follow__list">
+            <li><a href="https://www.instagram.com/swoopkey/" target="_blank" rel="noopener" aria-label="Swoop on Instagram"><svg aria-hidden="true" focusable="false"><use href="#x-i-ig" /></svg></a></li>
+            <li><a href="https://www.tiktok.com/@swoopkey" target="_blank" rel="noopener" aria-label="Swoop on TikTok"><svg aria-hidden="true" focusable="false"><use href="#x-i-tt" /></svg></a></li>
+            <li><a href="https://x.com/swoopkey" target="_blank" rel="noopener" aria-label="Swoop on X"><svg aria-hidden="true" focusable="false"><use href="#x-i-x" /></svg></a></li>
+            <li><a href="https://www.linkedin.com/company/swoopkey" target="_blank" rel="noopener" aria-label="Swoop on LinkedIn"><svg aria-hidden="true" focusable="false"><use href="#x-i-li" /></svg></a></li>
+            <li><a href="https://www.facebook.com/swoopkey" target="_blank" rel="noopener" aria-label="Swoop on Facebook"><svg aria-hidden="true" focusable="false"><use href="#x-i-fb" /></svg></a></li>
+          </ul>
+        </div>
         <p>© 2026 RDN Ventures · MIT licence</p>
       </div>
     </footer>
