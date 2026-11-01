@@ -4,6 +4,8 @@
 # daily ping (Sources/SwoopCore/ActiveUserPing.swift) fetches
 #   https://github.com/rubendenoronha/swoop/releases/download/heartbeat/ping.txt
 # and GitHub's download_count on that asset is how active users are counted.
+# It also hosts `click.txt`: the Download buttons on swoopkey.com fetch it once per click
+# (cookieless, no ID), so its download_count counts real-browser download clicks, not bots.
 #
 # Idempotent and safe: it never re-uploads (that would reset the count) and keeps the
 # release a prerelease that is never "Latest", so releases/latest/download/Swoop.dmg
@@ -42,5 +44,17 @@ jobs:
             printf 'swoop\n' > ping.txt
             gh release upload heartbeat ping.txt
           fi
+      - name: Ensure click.txt (never re-upload)
+        run: |
+          set -euo pipefail
+          if gh release view heartbeat --json assets -q '.assets[].name' | grep -qx click.txt; then
+            echo "click.txt already there, leaving it (and its count) alone"
+          else
+            printf 'swoop\n' > click.txt
+            gh release upload heartbeat click.txt
+          fi
+      - name: Report
+        run: |
+          set -euo pipefail
           gh release view heartbeat --json assets -q '.assets[] | "\(.name) \(.size) bytes, \(.downloadCount) downloads"'
           echo "latest release: $(gh api repos/$GH_REPO/releases/latest -q .tag_name)"
