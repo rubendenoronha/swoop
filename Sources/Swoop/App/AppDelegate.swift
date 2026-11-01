@@ -15,6 +15,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         MenuBarMonitor.shared.start()
         CleanupScheduler.shared.start()
         ShieldController.shared.start()
+        ActiveUserPingService.shared.start()
         DispatchQueue.global(qos: .utility).async { _ = Providers.scanApps() }
         if !Prefs.shared.onboardingDone {
             Onboarding.show()

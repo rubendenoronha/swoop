@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: MIT
+#
+# Makes sure the `heartbeat` release and its `ping.txt` asset exist. The app's anonymous
+# daily ping (Sources/SwoopCore/ActiveUserPing.swift) fetches
+#   https://github.com/rubendenoronha/swoop/releases/download/heartbeat/ping.txt
+# and GitHub's download_count on that asset is how active users are counted.
+#
+# Idempotent and safe: it never re-uploads (that would reset the count) and keeps the
+# release a prerelease that is never "Latest", so releases/latest/download/Swoop.dmg
+# (the site's Download button) is unaffected.
+name: heartbeat
+
+on:
+  workflow_dispatch:
+  push:
+    paths: [".github/workflows/heartbeat.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  ensure:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Ensure heartbeat release
+        run: |
+          set -euo pipefail
+          if ! gh release view heartbeat >/dev/null 2>&1; then
+            gh release create heartbeat --prerelease --latest=false \
+              --title "Heartbeat (anonymous active-user count)" \
+              --notes "Not a version of Swoop. Hosts ping.txt for the anonymous daily ping. Details: https://swoopkey.com/privacy/"
+          fi
+      - name: Ensure ping.txt (never re-upload)
+        run: |
+          set -euo pipefail
+          if gh release view heartbeat --json assets -q '.assets[].name' | grep -qx ping.txt; then
+            echo "ping.txt already there, leaving it (and its count) alone"
+          else
+            printf 'swoop\n' > ping.txt
+            gh release upload heartbeat ping.txt
+          fi
+          gh release view heartbeat --json assets -q '.assets[] | "\(.name) \(.size) bytes, \(.downloadCount) downloads"'
+          echo "latest release: $(gh api repos/$GH_REPO/releases/latest -q .tag_name)"

@@ -151,6 +151,13 @@ struct GeneralSettings: View {
                 Toggle("Show CPU and memory in the menu bar", isOn: $prefs.menuBarShowsStats)
                     .onChange(of: prefs.menuBarShowsStats) { _ in MenuBarMonitor.shared.refreshVisibility() }
             }
+            Section("Privacy") {
+                Toggle("Send an anonymous daily ping so we can count active users", isOn: $prefs.anonymousDailyPing)
+                Text("Once a day Swoop fetches one tiny public file from GitHub, with no ID, no personal data and nothing about how you use your Mac, so we can count how many people use it. Turn it off any time.")
+                    .font(.caption).foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
+                Button("How the ping works (swoopkey.com/privacy)") { NSWorkspace.shared.open(ActiveUserPing.privacyURL) }
+                    .buttonStyle(.link)
+            }
             Section {
                 Button("Show Welcome Again") { Onboarding.show() }
             }
@@ -450,7 +457,7 @@ struct AboutSettings: View {
             Image(nsImage: NSApp.applicationIconImage).resizable().frame(width: 96, height: 96)
             Text("Swoop").font(.largeTitle.weight(.semibold))
             Text("Version \(version)").foregroundColor(.secondary)
-            Text("A free, open-source launcher and Mac cleaner. No accounts, no upsells, no tracking.")
+            Text("A free, open-source launcher and Mac cleaner. No accounts, no upsells, no tracking: just one anonymous daily ping you can switch off in Settings.")
                 .multilineTextAlignment(.center).frame(maxWidth: 420)
             Button("swoopkey.com") { Actions.openURLString("https://swoopkey.com") }.buttonStyle(.link)
             Text("© 2026 DE NORONHA LTD · MIT Licence").font(.caption).foregroundColor(.secondary)

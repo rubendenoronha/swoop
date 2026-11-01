@@ -11,7 +11,7 @@
 
 macOS 13 Ventura or later · Apple silicon and Intel (universal) · Swift / SwiftUI + AppKit · MIT licence · [swoopkey.com](https://swoopkey.com)
 
-No accounts, no subscriptions, no upsells, no telemetry. Swoop is not on the Mac App Store: the App Sandbox would stop a launcher and cleaner from doing their job.
+No accounts, no subscriptions, no upsells, no tracking: just one [anonymous daily ping](#anonymous-daily-ping) you can switch off. Swoop is not on the Mac App Store: the App Sandbox would stop a launcher and cleaner from doing their job.
 
 ## Launcher
 
@@ -42,7 +42,7 @@ Settings › Shield, or type "shield" in the launcher. Full design and setup: [`
 - **Browsers:** Safari content blockers (6 extensions, split under Safari's rule limit) and a Safari Web Extension, plus a Manifest V3 extension for Chrome, Arc, Brave, Edge, Vivaldi, Opera and Firefox (declarativeNetRequest, cosmetic filtering, scriptlets). **Honest limits:** DNS blocking can't remove ads served from the same domain as the content, such as YouTube video ads or sponsored posts. The browser extensions handle those best-effort, and YouTube changes often.
 - **Works with Pax:** if [Pax](https://paxpeace.com) is on the Mac, Shield never touches DNS, `/etc/hosts` or the firewall and never blocks Pax's servers; it blocks ads in your browsers instead, and the cleaner never removes or disables Pax. See [Using Swoop with Pax](docs/SHIELD.md#using-swoop-with-pax).
 - **Control:** on/off, pause (5 min, 1 h, until tomorrow), per-app and per-site pause, an allowlist, custom rules in Adblock or hosts syntax with live validation, top blocked domains and apps, a searchable query log (stored only on this Mac, auto-deleted), a blocked-today counter in the menu bar, and launcher commands ("Pause Ads for 5 Minutes", "Allow This Site", "Shield Stats"…), each bindable to a hotkey.
-- **Private:** everything runs on the Mac. No telemetry, and nothing about what you browse leaves the machine.
+- **Private:** everything runs on the Mac. Nothing about what you browse leaves the machine.
 
 ### Filter list credits
 
@@ -88,6 +88,20 @@ Nothing is removed without your review. Items go to the Trash by default (perman
 - **Menu bar monitor**: CPU and memory in the menu bar, disk free, and quick actions (Free Up RAM, Smart Scan, Restore…).
 
 **Safety rules** (`Sources/SwoopCore/PathSafety.swift`, unit-tested): Swoop only removes things inside your home folder, app bundles in `/Applications` and (opt-in) their `.lproj` folders. It never touches `/System`, `/usr`, `/Library`, `/private` or other SIP/system paths, other users' folders, iCloud Drive, Keychains, Mail, Messages, Photos libraries, iPhone backups, SSH/GPG/cloud credentials, Apple's own containers, or Swoop's own data. Symlinks are never followed out of a safe location.
+
+## Anonymous daily ping
+
+To count how many people use Swoop, the app sends one anonymous ping a day, and only while **Settings › General › Privacy › Send an anonymous daily ping** is on (it's on by default; switch it off any time).
+
+The ping is a single plain HTTPS `GET` of a tiny public file, at most once per calendar day (UTC):
+
+    https://github.com/rubendenoronha/swoop/releases/download/heartbeat/ping.txt
+
+It carries no identifier, no cookie, no query string, no body and no device, usage or browsing data; the User-Agent is just `Swoop`. Swoop stores only the date of the last ping, so it doesn't send two in a day. GitHub counts downloads of that file on the public [`heartbeat` release](https://github.com/rubendenoronha/swoop/releases/tag/heartbeat), and the count's growth per day is roughly the number of Macs that opened Swoop that day. Like any web request, GitHub sees the IP address the request comes from; we never receive it. Anyone can read the count:
+
+    curl -s https://api.github.com/repos/rubendenoronha/swoop/releases/tags/heartbeat | grep download_count
+
+The code is [`Sources/SwoopCore/ActiveUserPing.swift`](Sources/SwoopCore/ActiveUserPing.swift) and [`Sources/Swoop/App/ActiveUserPingService.swift`](Sources/Swoop/App/ActiveUserPingService.swift). More at [swoopkey.com/privacy](https://swoopkey.com/privacy/).
 
 ## Build
 

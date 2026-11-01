@@ -41,6 +41,12 @@ final class Prefs: ObservableObject {
     @Published var googleClientSecret: String { didSet { d.set(googleClientSecret, forKey: "googleClientSecret") } }
     @Published var cloudSearchInLauncher: Bool { didSet { d.set(cloudSearchInLauncher, forKey: "cloudSearchInLauncher") } }
 
+    // MARK: Privacy
+    /// The anonymous daily ping used to count active users (see SwoopCore/ActiveUserPing.swift).
+    @Published var anonymousDailyPing: Bool {
+        didSet { d.set(anonymousDailyPing, forKey: ActiveUserPing.enabledKey); if anonymousDailyPing { ActiveUserPingService.shared.check() } }
+    }
+
     @Published var onboardingDone: Bool { didSet { d.set(onboardingDone, forKey: "onboardingDone") } }
 
     private init() {
@@ -49,6 +55,7 @@ final class Prefs: ObservableObject {
             "clipboardEnabled": true, "clipboardRetentionDays": 30, "snippetExpansionEnabled": true,
             "deletePermanently": false, "showMenuBarMonitor": true, "menuBarShowsStats": true,
             "cloudSearchInLauncher": true, "onboardingDone": false,
+            ActiveUserPing.enabledKey: ActiveUserPing.enabledByDefault,
         ])
         launcherHotkey = d.string(forKey: "launcherHotkey") ?? "opt+space"
         var b = (d.dictionary(forKey: "bindings") as? [String: String]) ?? [:]
@@ -74,6 +81,7 @@ final class Prefs: ObservableObject {
         googleClientID = d.string(forKey: "googleClientID") ?? ""
         googleClientSecret = d.string(forKey: "googleClientSecret") ?? ""
         cloudSearchInLauncher = d.bool(forKey: "cloudSearchInLauncher")
+        anonymousDailyPing = d.bool(forKey: ActiveUserPing.enabledKey)
         onboardingDone = d.bool(forKey: "onboardingDone")
     }
 
