@@ -1,0 +1,122 @@
+Building for debugging...
+[0/4] Write sources
+[3/4] Write swift-version--79AA4F9932D1E87A.txt
+[5/33] Emitting module ShieldCore
+[6/33] Compiling ShieldCore BloomFilter.swift
+[7/33] Compiling ShieldCore BrowserRuleCompiler.swift
+[8/33] Compiling ShieldCore CNAMEUncloaker.swift
+[9/33] Compiling ShieldCore DNSMessage.swift
+[14/33] Compiling SwoopCore FuzzyMatcher.swift
+[15/40] Compiling ShieldCore DomainIndex.swift
+[16/40] Compiling ShieldCore DomainMatcher.swift
+[17/40] Compiling ShieldCore EncryptedDNSPolicy.swift
+[18/40] Compiling SwoopCore ActiveUserPing.swift
+[19/40] Compiling SwoopCore Calculator.swift
+[20/40] Compiling SwoopCore Catalogs.swift
+[21/40] Compiling SwoopCore Cloud.swift
+[22/40] Compiling SwoopCore ScriptCommands.swift
+[23/40] Compiling SwoopCore Shortcut.swift
+[24/40] Compiling SwoopCore Snippets.swift
+[29/40] Emitting module SwoopCore
+[37/40] Compiling ShieldCore SafariConverter.swift
+[38/40] Compiling ShieldCore ShieldCompiler.swift
+[39/40] Compiling ShieldCore ShieldEngine.swift
+[40/40] Compiling ShieldCore ShieldXPCProtocol.swift
+[41/67] Compiling Swoop SnippetEngine.swift
+[42/67] Compiling Swoop SystemActions.swift
+[43/67] Compiling Swoop WindowManager.swift
+[44/67] Compiling Swoop HotKeyCenter.swift
+[45/67] Compiling Swoop HotkeyRecorder.swift
+[46/67] Compiling Swoop Commands.swift
+[47/67] Compiling Swoop LauncherController.swift
+[48/67] Compiling Swoop LauncherModel.swift
+[49/75] Compiling Swoop ActiveUserPingService.swift
+[50/75] Compiling Swoop AppDelegate.swift
+[51/75] Compiling Swoop MenuBarMonitor.swift
+[52/75] Compiling Swoop Onboarding.swift
+[53/75] Compiling Swoop Prefs.swift
+[54/75] Compiling Swoop SettingsView.swift
+[55/75] Compiling Swoop Storage.swift
+[56/75] Compiling Swoop Background.swift
+[57/75] Compiling Swoop CleanerViews.swift
+[58/75] Emitting module Swoop
+[59/75] Compiling Swoop CleanerViews2.swift
+[60/75] Compiling Swoop CleanerWindow.swift
+[61/75] Compiling Swoop FileRemover.swift
+[62/75] Compiling Swoop Scanners.swift
+[63/75] Compiling Swoop SystemScanners.swift
+[64/75] Compiling Swoop CloudProviders.swift
+[65/75] Compiling Swoop Actions.swift
+[66/75] Compiling Swoop Clipboard.swift
+[67/75] Compiling Swoop ScriptCommands.swift
+[68/75] Compiling Swoop LauncherView.swift
+[69/75] Compiling Swoop Providers.swift
+[70/75] Compiling Swoop PaxDetector.swift
+[71/75] Compiling Swoop ShieldCommands.swift
+[72/75] Compiling Swoop ShieldController.swift
+[73/75] Compiling Swoop ShieldListManager.swift
+[74/75] Compiling Swoop ShieldView.swift
+[75/75] Compiling Swoop main.swift
+Build of target: 'Swoop' complete! (46.94s)
+[0/1] Planning build
+Building for debugging...
+[0/2] Write sources
+[1/2] Write swift-version--79AA4F9932D1E87A.txt
+[3/6] Compiling SwoopShieldExtension ShieldExtension.swift
+[4/7] Compiling SwoopShieldExtension FilterDataProvider.swift
+[5/7] Compiling SwoopShieldExtension DNSProxyProvider.swift
+[6/7] Emitting module SwoopShieldExtension
+[7/7] Compiling SwoopShieldExtension main.swift
+Build of target: 'SwoopShieldExtension' complete! (1.33s)
+Building for debugging...
+[0/2] Write sources
+[1/2] Write swift-version--79AA4F9932D1E87A.txt
+[3/4] Emitting module SwoopSafariBlocker
+[4/4] Compiling SwoopSafariBlocker main.swift
+Build of target: 'SwoopSafariBlocker' complete! (0.82s)
+Building for debugging...
+[0/2] Write sources
+[1/2] Write swift-version--79AA4F9932D1E87A.txt
+[3/4] Emitting module SwoopSafariWebExtension
+[4/4] Compiling SwoopSafariWebExtension main.swift
+Build of target: 'SwoopSafariWebExtension' complete! (0.91s)
+Building for debugging...
+[0/2] Write sources
+[1/2] Write swift-version--79AA4F9932D1E87A.txt
+[3/4] Emitting module swoop_resolver
+[4/4] Compiling swoop_resolver main.swift
+Build of target: 'swoop-resolver' complete! (1.11s)
+Building for debugging...
+[0/2] Write sources
+[1/2] Write swift-version--79AA4F9932D1E87A.txt
+[3/4] Emitting module swoop_shield_compile
+[4/4] Compiling swoop_shield_compile main.swift
+Build of target: 'swoop-shield-compile' complete! (0.98s)
+Building for debugging...
+[0/25] Write swoop-resolver-entitlement.plist
+[0/25] Write swoop-shield-compile-entitlement.plist
+[0/25] Write SwoopShieldExtension-entitlement.plist
+[0/25] Write SwoopSafariWebExtension-entitlement.plist
+[4/25] Write SwoopSafariBlocker-entitlement.plist
+[5/25] Write Swoop-entitlement.plist
+[6/25] Write swift-version--79AA4F9932D1E87A.txt
+[7/25] Write Objects.LinkFileList
+[13/25] Linking SwoopSafariBlocker
+[14/25] Linking SwoopSafariWebExtension
+[15/25] Applying SwoopSafariBlocker
+[16/25] Linking swoop-resolver
+[17/25] Applying SwoopSafariWebExtension
+[18/25] Linking SwoopShieldExtension
+[19/25] Applying swoop-resolver
+[20/25] Applying SwoopShieldExtension
+[21/25] Linking swoop-shield-compile
+[22/25] Applying swoop-shield-compile
+[23/25] Linking Swoop
+[24/25] Applying Swoop
+Build complete! (2.78s)
+[0/1] Planning build
+Building for debugging...
+[0/7] Write sources
+[0/9] /Users/runner/work/swoop/swoop/.build/x86_64-apple-macosx/debug/SwoopPackageTests.derived/runner.swift
+[3/21] Write sources
+[4/21] Write swift-version--79AA4F9932D1E87A.txt

@@ -1,0 +1,5 @@
+status: cancelled
+run: https://github.com/rubendenoronha/swoop/actions/runs/41334901818
+commit: 3cfbf367952911a999c28a024dbbc691cf4ca5b9
+ref: refs/heads/main
+finished: 2026-11-01T18:08:26Z
