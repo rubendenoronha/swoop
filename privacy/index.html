@@ -36,11 +36,11 @@ footer a{color:var(--stone);margin-right:18px}
 <body>
 <header class="top"><div class="wrap">
 <nav><a href="/" aria-label="Swoop home"><img src="/swoop-wordmark-light.svg" alt="swoop" width="100" height="30" /></a><a href="/">Back to Swoop</a></nav>
-<h1>Privacy Policy</h1><p>Last updated 29 October 2026</p>
+<h1>Privacy Policy</h1><p>Last updated 1 November 2026</p>
 </div></header>
 <main><div class="wrap">
 <p class="lede">Swoop is a free, open-source Mac app: a launcher, a Mac cleaner and an ad blocker. It's built to work on your Mac, not on our servers. We don't collect, sell or share your personal data.</p>
-<div class="box"><p><strong>The short version.</strong> Swoop has no accounts, no analytics, no tracking and no ads. Everything it scans, indexes and blocks stays on your Mac. If you choose to connect Google Drive, Swoop talks directly to Google from your Mac, and we never see your files or your Google data.</p></div>
+<div class="box"><p><strong>The short version.</strong> Swoop has no accounts, no analytics, no tracking and no ads. Everything it scans, indexes and blocks stays on your Mac. The only thing that lets us count users is one <a href="#daily-ping">anonymous daily ping</a> with no ID or data in it, which you can switch off. If you choose to connect Google Drive, Swoop talks directly to Google from your Mac, and we never see your files or your Google data.</p></div>
 
 <h2>Who we are</h2>
 <p>Swoop is made by RDN Ventures in London, United Kingdom ("we", "us"). Questions about privacy: <a href="mailto:hello@swoopkey.com">hello@swoopkey.com</a>.</p>
@@ -54,7 +54,7 @@ footer a{color:var(--stone);margin-right:18px}
 <li>Swoop Shield settings, allow lists and blocked-request counts.</li>
 <li>Your preferences. Sign-in tokens are stored in your macOS Keychain.</li>
 </ul>
-<p>Swoop contains no analytics or telemetry SDKs, and sends no crash reports or usage data to us.</p>
+<p>Swoop contains no analytics or telemetry SDKs, and sends no crash reports or usage data to us. The one exception to "nothing is sent" is the <a href="#daily-ping">anonymous daily ping</a> below, which contains no data about you or your Mac.</p>
 
 <h2>When Swoop connects to the internet</h2>
 <p>Swoop only makes network requests to do things you've asked it to do:</p>
@@ -64,8 +64,20 @@ footer a{color:var(--stone);margin-right:18px}
 <li><strong>Encrypted DNS.</strong> If you turn on Shield's encrypted DNS, your DNS lookups go to the resolver you pick (such as Quad9, Cloudflare, AdGuard or Mullvad), under that provider's privacy policy.</li>
 <li><strong>Web searches and quicklinks</strong> open in your browser with the search engine or site you chose.</li>
 <li><strong>Google Drive</strong>, only if you connect it (see below).</li>
+<li><strong>The anonymous daily ping</strong>, while it's switched on (see below).</li>
 </ul>
 <p>These services may see your IP address, as with any internet request. We don't operate any of them and receive nothing from them.</p>
+
+<h2 id="daily-ping">The anonymous daily ping</h2>
+<p>We'd like to know roughly how many people use Swoop, without knowing who they are. So versions of Swoop released from November 2026 onward send one anonymous ping a day:</p>
+<ul>
+<li><strong>What it is.</strong> At most once per calendar day (UTC), Swoop makes a single plain web request (an HTTPS <code>GET</code>) for a tiny public file on GitHub: <code>https://github.com/rubendenoronha/swoop/releases/download/heartbeat/ping.txt</code>.</li>
+<li><strong>What it contains.</strong> Nothing about you. No identifier or device ID, no cookie, no account, no Mac model or macOS version, no list of apps, no usage or browsing data. The request has no query string and no body, and its User-Agent is simply "Swoop". Swoop stores only the date of the last ping on your Mac, so it doesn't send two in one day.</li>
+<li><strong>What we see.</strong> Only GitHub's public download count for that file. The count's growth each day is roughly the number of Macs that used Swoop that day. We can't tell one ping from another, and we can't link a ping to a person or a Mac. Anyone can see the same count at <a href="https://api.github.com/repos/rubendenoronha/swoop/releases/tags/heartbeat">api.github.com/repos/rubendenoronha/swoop/releases/tags/heartbeat</a>.</li>
+<li><strong>GitHub.</strong> As with any internet request, GitHub sees the IP address the request comes from and handles it under the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a>. We don't receive IP addresses or any logs from GitHub.</li>
+<li><strong>How to turn it off.</strong> It's on by default. Switch it off at any time in Swoop › Settings › General › Privacy › <em>Send an anonymous daily ping so we can count active users</em>. When it's off, Swoop sends nothing at all.</li>
+</ul>
+<p>The code is open source: <a href="https://github.com/rubendenoronha/swoop/blob/3b1bac47d87050fd6f1c38d8b94aa64d8657c9ef/Sources/SwoopCore/ActiveUserPing.swift">ActiveUserPing.swift</a>.</p>
 
 <h2>Google Drive</h2>
 <p>Connecting Google Drive is optional. When you press <em>Sign in with Google</em>, Swoop opens Google's own sign-in page in your browser and asks for:</p>
