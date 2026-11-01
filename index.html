@@ -689,7 +689,7 @@
             <div class="x-card x-reveal">
               <span class="x-badge x-badge--teal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span>
               <h3 class="x-h3">Stays on your Mac</h3>
-              <p>All filtering happens locally. No telemetry.</p>
+              <p>All filtering happens locally. No accounts, no tracking: just one anonymous daily ping you can switch off.</p>
             </div>
           </div>
           <div class="x-note">
@@ -743,7 +743,7 @@
           <div class="x-priv">
             <div class="x-reveal"><b>No accounts.</b><p>Download it, open it, use it. Nothing to sign up for.</p></div>
             <div class="x-reveal"><b>No subscriptions.</b><p>Every feature is free, now and later.</p></div>
-            <div class="x-reveal"><b>No telemetry.</b><p>Swoop doesn't phone home. Your data stays on your Mac.</p></div>
+            <div class="x-reveal"><b>No tracking.</b><p>No accounts, no tracking: just one anonymous daily ping you can switch off. Your data stays on your Mac.</p></div>
           </div>
           <div class="x-store x-reveal">
             <span class="x-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-4-4m4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></span>
@@ -798,11 +798,11 @@
             </details>
             <details>
               <summary>Is my data sent anywhere?</summary>
-              <div><p>No. There are no accounts and no telemetry, and everything stays on your Mac.</p></div>
+              <div><p>Your files and data stay on your Mac. No accounts, no tracking: just one anonymous daily ping you can switch off. <a href="/privacy/#daily-ping">How the ping works</a>.</p></div>
             </details>
             <details>
               <summary>How do I open it the first time?</summary>
-              <div><p>If macOS says it can't verify the developer, right-click Swoop in Applications and choose Open.</p></div>
+              <div><p>Open the DMG and drag Swoop to Applications, then open it from there. Swoop is signed and notarised by Apple, so it opens like any other app.</p></div>
             </details>
           </div>
         </div>
@@ -868,6 +868,19 @@
 
     <script>
       (function () {
+        // download counter: one anonymous, cookieless hit per click on a Download button (see /privacy/#download-counter).
+        // Fire-and-forget; the link's own href still starts the download straight away.
+        var CLICK = "https://github.com/rubendenoronha/swoop/releases/download/heartbeat/click.txt";
+        function countClick() {
+          try {
+            if (window.fetch) { fetch(CLICK, { mode: "no-cors", cache: "no-store", credentials: "omit", keepalive: true, referrerPolicy: "no-referrer" }).catch(function () {}); }
+            else { var i = new Image(); i.referrerPolicy = "no-referrer"; i.src = CLICK; }
+          } catch (e) {}
+        }
+        Array.prototype.forEach.call(document.querySelectorAll('a[href="https://github.com/rubendenoronha/swoop/releases/latest/download/Swoop.dmg"]'), function (a) {
+          a.addEventListener("click", countClick, { passive: true });
+        });
+
         // nav background on scroll
         var nav = document.getElementById("nav");
         function onScroll() { nav.classList.toggle("is-scrolled", window.scrollY > 24); }

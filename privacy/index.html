@@ -40,7 +40,7 @@ footer a{color:var(--stone);margin-right:18px}
 </div></header>
 <main><div class="wrap">
 <p class="lede">Swoop is a free, open-source Mac app: a launcher, a Mac cleaner and an ad blocker. It's built to work on your Mac, not on our servers. We don't collect, sell or share your personal data.</p>
-<div class="box"><p><strong>The short version.</strong> Swoop has no accounts, no analytics, no tracking and no ads. Everything it scans, indexes and blocks stays on your Mac. The only thing that lets us count users is one <a href="#daily-ping">anonymous daily ping</a> with no ID or data in it, which you can switch off. If you choose to connect Google Drive, Swoop talks directly to Google from your Mac, and we never see your files or your Google data.</p></div>
+<div class="box"><p><strong>The short version.</strong> Swoop has no accounts, no analytics, no tracking and no ads. Everything it scans, indexes and blocks stays on your Mac. The only thing that lets us count users is one <a href="#daily-ping">anonymous daily ping</a> with no ID or data in it, which you can switch off. On this website, the Download button adds one to an anonymous <a href="#download-counter">download counter</a>, with no cookies or IDs. If you choose to connect Google Drive, Swoop talks directly to Google from your Mac, and we never see your files or your Google data.</p></div>
 
 <h2>Who we are</h2>
 <p>Swoop is made by RDN Ventures in London, United Kingdom ("we", "us"). Questions about privacy: <a href="mailto:hello@swoopkey.com">hello@swoopkey.com</a>.</p>
@@ -69,7 +69,7 @@ footer a{color:var(--stone);margin-right:18px}
 <p>These services may see your IP address, as with any internet request. We don't operate any of them and receive nothing from them.</p>
 
 <h2 id="daily-ping">The anonymous daily ping</h2>
-<p>We'd like to know roughly how many people use Swoop, without knowing who they are. So versions of Swoop released from November 2026 onward send one anonymous ping a day:</p>
+<p>We'd like to know roughly how many people use Swoop, without knowing who they are. So starting with Swoop 0.2.5 (November 2026), Swoop sends one anonymous ping a day. Swoop 0.2.4 and earlier never send it.</p>
 <ul>
 <li><strong>What it is.</strong> At most once per calendar day (UTC), Swoop makes a single plain web request (an HTTPS <code>GET</code>) for a tiny public file on GitHub: <code>https://github.com/rubendenoronha/swoop/releases/download/heartbeat/ping.txt</code>.</li>
 <li><strong>What it contains.</strong> Nothing about you. No identifier or device ID, no cookie, no account, no Mac model or macOS version, no list of apps, no usage or browsing data. The request has no query string and no body, and its User-Agent is simply "Swoop". Swoop stores only the date of the last ping on your Mac, so it doesn't send two in one day.</li>
@@ -94,7 +94,15 @@ footer a{color:var(--stone);margin-right:18px}
 <div class="box"><p>Swoop's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p></div>
 
 <h2>This website</h2>
-<p>swoopkey.com is a static site hosted on GitHub Pages. It uses no cookies, analytics or trackers. GitHub may log technical information such as IP addresses to run and secure the service (see GitHub's privacy statement). Fonts are served by Google Fonts. Downloads come from GitHub Releases.</p>
+<p>swoopkey.com is a static site hosted on GitHub Pages. It uses no cookies, no analytics service and no trackers. GitHub may log technical information such as IP addresses to run and secure the service (see GitHub's privacy statement). Fonts are served by Google Fonts. Downloads come from GitHub Releases.</p>
+
+<h2 id="download-counter">The download button counter</h2>
+<p>We'd like to know how many real people download Swoop, rather than bots. So when you click a Download button on this site, your browser also makes one plain request for a tiny public file on GitHub: <code>https://github.com/rubendenoronha/swoop/releases/download/heartbeat/click.txt</code>. It doesn't slow down or change your download.</p>
+<ul>
+<li><strong>What it contains.</strong> Nothing about you: no cookie, no identifier, no query string, no referrer, and nothing is stored in your browser.</li>
+<li><strong>What we see.</strong> Only GitHub's public download count for that file, the same number anyone can see at <a href="https://api.github.com/repos/rubendenoronha/swoop/releases/tags/heartbeat">api.github.com/repos/rubendenoronha/swoop/releases/tags/heartbeat</a>. GitHub sees your IP address, as with the download itself, under the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a>. We don't receive IP addresses or logs.</li>
+<li><strong>How to avoid it.</strong> It only runs with JavaScript on. You can also download Swoop directly from <a href="https://github.com/rubendenoronha/swoop/releases/latest">GitHub Releases</a>.</li>
+</ul>
 
 <h2>If you email us</h2>
 <p>If you contact us, we use your email address and message only to reply, and keep them only as long as needed for that. Issues you open on GitHub are public and governed by GitHub's terms.</p>
